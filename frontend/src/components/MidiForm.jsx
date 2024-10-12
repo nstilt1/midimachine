@@ -62,8 +62,8 @@ const MidiForm = ({ wasmModule }) => {
       combinedBinary.set(fileBinary);
       combinedBinary.set(textBinary, fileBinary.length);
 
-      console.log("useSameChords = " + useSameChords);
-      console.log("key: " + key);
+      //console.log("useSameChords = " + useSameChords);
+      //console.log("key: " + key);
       const midiBinary = wasmModule.generate_midi(combinedBinary, selectedOption, useSameChords, numChords, key);
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
