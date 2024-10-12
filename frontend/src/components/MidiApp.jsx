@@ -11,7 +11,7 @@ const MidiApp = () => {
     const loadWasm = async () => {
       try {
         const wasm = await import('../../public/musicgen.js');
-        console.log(wasm);
+        // console.log(wasm);
         await wasm.default();
         setWasmModule(wasm);
       } catch (error) {
