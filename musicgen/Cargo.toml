@@ -1,0 +1,22 @@
+[package]
+name = "musicgen"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+getrandom = { version = "0.2.9", features = ["js"] }
+midly = "0.5.3"
+rand = { version = "0.8.5", default-features = false, features = ["std_rng", "std"] }
+sha2 = "0.10"
+wasm-bindgen = { version = "0.2" }
+
+[profile.release]
+opt-level = 'z'     # optimize for size
+lto = true          # enable link time optimization
+panic = 'abort'     # reduce binary size by not including panic messages
+codegen-units = 1   # fewer codegen units for better optimization
