@@ -8,7 +8,7 @@
 Install dependencies: 
 
 ```sh
-cd frontent-non-ts
+cd frontend
 npm install
 ```
 
@@ -20,7 +20,7 @@ chmod +x build_wasm.sh
 ./build_wasm.sh
 ```
 
-After building the Rust code, the `musicgen/pkg/musicgen_bg.wasm` file will need to be moved to `frontend-non-ts/public/` for changes to take effect. If you changed the function signature of the WASM function, then you will also need to move the `musicgen/pkg/musicgen.js` file to the same folder.
+After building the Rust code, the `musicgen/pkg/musicgen_bg.wasm` file will need to be moved to `frontend/public/` for changes to take effect. If you changed the function signature of the WASM function, then you will also need to move the `musicgen/pkg/musicgen.js` file to the same folder.
 
 ## Running the web server locally
 
