@@ -5,6 +5,7 @@ import React, { useRef, useState } from 'react';
 import MidiPlayer from "./MidiPlayer";
 import ChatBar from "./ChatBar";
 import Selector from "./Selector";
+import NumberInput from "./NumberInput";
 
 const MidiForm = ({ wasmModule }) => {
   const [textInput, setTextInput] = useState('');
@@ -13,6 +14,7 @@ const MidiForm = ({ wasmModule }) => {
   const [midiFile, setMidiFile] = useState(null);
   const [numChords, setNumChords] = useState(20);
   const [key, setKey] = useState('random');
+  const [vibe, setVibe] = useState('default');
 
   const fileInputRef = useRef(null);
 
@@ -28,10 +30,10 @@ const MidiForm = ({ wasmModule }) => {
     setUseSameChords(!useSameChords);
   }
 
-  const handleNumChordsChange = (event) => {
+  const handleNumChordsChange = (value) => {
     // ensure the number stored in `numChords` is greater than 0
-    if (event.target.value > 0) {
-      setNumChords(Math.round(event.target.value));
+    if (value > 0) {
+      setNumChords(Math.round(value));
     }
   }
 
@@ -55,8 +57,12 @@ const MidiForm = ({ wasmModule }) => {
             const fileArrayBuffer = await fileInputRef.current.files[0].arrayBuffer();
             fileBinary = new Uint8Array(fileArrayBuffer);
         }
-      
-      const textBinary = new TextEncoder().encode(textInput);
+      let textBinary;
+      if (vibe == "default") {
+        textBinary = new TextEncoder().encode(textInput);
+      } else {
+        textBinary = new TextEncoder().encode(textInput + vibe);
+      }
 
       const combinedBinary = new Uint8Array(fileBinary.length + textBinary.length);
       combinedBinary.set(fileBinary);
@@ -104,6 +110,20 @@ const MidiForm = ({ wasmModule }) => {
     { label: "B minor", value: "Bmaj" }
   ];
 
+  const vibes = [
+    { label: "Default vibe", value: "default"},
+    { label: "Vibe 1", value: "1" },
+    { label: "Vibe 2", value: "2" },
+    { label: "Vibe 3", value: "3" },
+    { label: "Vibe 4", value: "4" },
+    { label: "Vibe 5", value: "5" },
+    { label: "Vibe 6", value: "6" },
+    { label: "Vibe 7", value: "7" },
+    { label: "Vibe 8", value: "8" },
+    { label: "Vibe 9", value: "9" },
+    { label: "Vibe 10", value: "10" }
+  ];
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -134,18 +154,24 @@ const MidiForm = ({ wasmModule }) => {
             />
             <label htmlFor="useSameChords">Use same chords for melody and chords?</label>
             <br/>
-            <input
-              type="number"
-              id="numChords"
+            <NumberInput
+              value={numChords}
               onChange={handleNumChordsChange}
+              id="numChords"
+              labelText="# of chords:"
             />
             Num Chords
-            <p>Key</p>
             <Selector 
               options={keys} 
               selectedOption={key}
               onChange={setKey}
               label="Choose a key:"
+            />
+            <Selector
+              options={vibes}
+              selectedOption={vibe}
+              onChange={setVibe}
+              label="Choose a vibe:"
             />
           </div>
         </div>

@@ -7,7 +7,7 @@ const Selector = ({ options, selectedOption, onChange, label }) => {
     };
   
     return (
-      <form className="w-full max-w-sm">
+      <div className="w-full max-w-sm">
         <div className="mb-3">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="dropdown">
             {label}
@@ -31,7 +31,7 @@ const Selector = ({ options, selectedOption, onChange, label }) => {
             </div>
           </div>
         </div>
-      </form>
+      </div>
     );
 };
   
