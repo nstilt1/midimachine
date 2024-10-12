@@ -26,7 +26,7 @@ pub struct Music {
 macro_rules! pick_chord_placement_method {
     ($music_obj:expr, $user_selected_type:expr, $num_chords:expr, $should_use_same_chords:expr, $(($chord_placement_str:expr, $method:ident)),*) => {
         if $should_use_same_chords {
-            let mut chords = vec![Chord::default(); $num_chords.unwrap_or(DEFAULT_NUM_CHORDS)];
+            let mut chords = vec![Chord::default(); $num_chords];
             for chord in chords.iter_mut() {
                 *chord = $music_obj.pick_chord()?;
             }
@@ -45,7 +45,7 @@ macro_rules! pick_chord_placement_method {
             match $user_selected_type {
                 $(
                     $chord_placement_str => {
-                        for i in 0..$num_chords.unwrap_or(DEFAULT_NUM_CHORDS) {
+                        for i in 0..$num_chords {
                             let chord = $music_obj.pick_chord()?;
                             $music_obj.$method(&chord, 4, (i as u32 * 4).into());
                         }
@@ -131,7 +131,7 @@ impl Music {
     /**
      * Makes some music midily
      */
-    pub fn make_music(&mut self, num_chords: Option<usize>, generation_mode: &str, should_use_same_chords: bool) -> Result<Vec<TrackEvent>, HttpError> {
+    pub fn make_music(&mut self, num_chords: usize, generation_mode: &str, should_use_same_chords: bool) -> Result<Vec<TrackEvent>, HttpError> {
         let mut last_chords: Vec<Vec<u8>> = Vec::new();
 
         // determine chords before any other RNG calls are made so that the 

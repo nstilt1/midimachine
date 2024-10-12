@@ -27,7 +27,10 @@ const MidiForm = ({ wasmModule }) => {
   }
 
   const handleNumChordsChange = (event) => {
-    setNumChords(event.target.value);
+    // ensure the number stored in `numChords` is greater than 0
+    if (event.target.value > 0) {
+      setNumChords(Math.round(event.target.value));
+    }
   }
 
   const handleSubmit = async (event) => {
@@ -58,7 +61,7 @@ const MidiForm = ({ wasmModule }) => {
       combinedBinary.set(textBinary, fileBinary.length);
 
       console.log("useSameChords = " + useSameChords);
-      const midiBinary = wasmModule.generate_midi(combinedBinary, selectedOption, useSameChords);
+      const midiBinary = wasmModule.generate_midi(combinedBinary, selectedOption, useSameChords, numChords);
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
       const midiUrl = URL.createObjectURL(midiBlob);
@@ -103,7 +106,6 @@ const MidiForm = ({ wasmModule }) => {
             <input
               type="number"
               id="numChords"
-              value="20"
               onChange={handleNumChordsChange}
             />
             Num Chords

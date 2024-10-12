@@ -38,12 +38,12 @@ impl From<&str> for Error {
 }
 
 #[wasm_bindgen]
-pub fn generate_midi(file_content: &[u8], generation_mode: &str, should_use_same_chords: bool) -> Result<Vec<u8>, Error> {
+pub fn generate_midi(file_content: &[u8], generation_mode: &str, should_use_same_chords: bool, num_chords: usize) -> Result<Vec<u8>, Error> {
     let hash = Sha256::digest(file_content);
     
     // smoke the hash
     let mut musician = Music::smoke_hash(hash)?;
-    let track = musician.make_music(Some(30), generation_mode, should_use_same_chords)?;
+    let track = musician.make_music(num_chords, generation_mode, should_use_same_chords)?;
 
     let smf = Smf {
         header: midly::Header { format: midly::Format::SingleTrack, timing: midly::Timing::Metrical(96.into()) },
