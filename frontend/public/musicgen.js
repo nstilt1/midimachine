@@ -128,16 +128,19 @@ function getArrayU8FromWasm0(ptr, len) {
 * @param {string} generation_mode
 * @param {boolean} should_use_same_chords
 * @param {number} num_chords
+* @param {string} key
 * @returns {Uint8Array}
 */
-export function generate_midi(file_content, generation_mode, should_use_same_chords, num_chords) {
+export function generate_midi(file_content, generation_mode, should_use_same_chords, num_chords, key) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passArray8ToWasm0(file_content, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
         const ptr1 = passStringToWasm0(generation_mode, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len1 = WASM_VECTOR_LEN;
-        wasm.generate_midi(retptr, ptr0, len0, ptr1, len1, should_use_same_chords, num_chords);
+        const ptr2 = passStringToWasm0(key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len2 = WASM_VECTOR_LEN;
+        wasm.generate_midi(retptr, ptr0, len0, ptr1, len1, should_use_same_chords, num_chords, ptr2, len2);
         var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
         var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
         var r2 = getDataViewMemory0().getInt32(retptr + 4 * 2, true);
@@ -145,9 +148,9 @@ export function generate_midi(file_content, generation_mode, should_use_same_cho
         if (r3) {
             throw takeObject(r2);
         }
-        var v3 = getArrayU8FromWasm0(r0, r1).slice();
+        var v4 = getArrayU8FromWasm0(r0, r1).slice();
         wasm.__wbindgen_free(r0, r1 * 1, 1);
-        return v3;
+        return v4;
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }

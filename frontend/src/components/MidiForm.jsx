@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useRef, useState } from 'react';
 import MidiPlayer from "./MidiPlayer";
 import ChatBar from "./ChatBar";
+import Selector from "./Selector";
 
 const MidiForm = ({ wasmModule }) => {
   const [textInput, setTextInput] = useState('');
@@ -11,6 +12,7 @@ const MidiForm = ({ wasmModule }) => {
   const [useSameChords, setUseSameChords] = useState(false);
   const [midiFile, setMidiFile] = useState(null);
   const [numChords, setNumChords] = useState(20);
+  const [key, setKey] = useState('random');
 
   const fileInputRef = useRef(null);
 
@@ -61,7 +63,8 @@ const MidiForm = ({ wasmModule }) => {
       combinedBinary.set(textBinary, fileBinary.length);
 
       console.log("useSameChords = " + useSameChords);
-      const midiBinary = wasmModule.generate_midi(combinedBinary, selectedOption, useSameChords, numChords);
+      console.log("key: " + key);
+      const midiBinary = wasmModule.generate_midi(combinedBinary, selectedOption, useSameChords, numChords, key);
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
       const midiUrl = URL.createObjectURL(midiBlob);
@@ -72,6 +75,34 @@ const MidiForm = ({ wasmModule }) => {
       alert("An error occurred while generating the MIDI file.");
     }
   };
+
+  const keys = [
+    { label: "Pick one for me", value: "random" },
+    { label: "C minor", value: "Cmin" },
+    { label: "C# minor", value: "C#min" },
+    { label: "D minor", value: "Dmin" },
+    { label: "D# minor", value: "D#min" },
+    { label: "E minor", value: "Emin" },
+    { label: "F minor", value: "Fmin" },
+    { label: "F# minor", value: "F#min" },
+    { label: "G minor", value: "Gmin" },
+    { label: "G# minor", value: "G#min" },
+    { label: "A minor", value: "Amin" },
+    { label: "A# minor", value: "A#min" },
+    { label: "B minor", value: "Bmin" },
+    { label: "C major", value: "Cmaj" },
+    { label: "C# major", value: "C#maj" },
+    { label: "D major", value: "Dmaj" },
+    { label: "D# major", value: "D#maj" },
+    { label: "E major", value: "Emaj" },
+    { label: "F major", value: "Fmaj" },
+    { label: "F# major", value: "F#maj" },
+    { label: "G major", value: "Gmaj" },
+    { label: "G# major", value: "G#maj" },
+    { label: "A major", value: "Amaj" },
+    { label: "A# major", value: "A#maj" },
+    { label: "B minor", value: "Bmaj" }
+  ];
 
   return (
     <div>
@@ -109,6 +140,13 @@ const MidiForm = ({ wasmModule }) => {
               onChange={handleNumChordsChange}
             />
             Num Chords
+            <p>Key</p>
+            <Selector 
+              options={keys} 
+              selectedOption={key}
+              onChange={setKey}
+              label="Choose a key:"
+            />
           </div>
         </div>
         <div>

@@ -57,13 +57,41 @@ macro_rules! pick_chord_placement_method {
     };
 }
 
+const KEYS: [&str; 12] = [
+    "C",
+    "C#",
+    "D",
+    "D#",
+    "E",
+    "F",
+    "F#",
+    "G",
+    "G#",
+    "A",
+    "A#",
+    "B"
+];
+
 impl Music {
-    pub fn smoke_hash(hash: sha2::digest::Output<Sha256>) -> Result<Music, HttpError> {
+    pub fn smoke_hash(hash: sha2::digest::Output<Sha256>, chosen_key: &str) -> Result<Music, HttpError> {
         let mut stash = [0u8; 32];
         stash.copy_from_slice(&hash);
         let mut math_magician = MathMagician::share_hash(stash);
 
-        let key = math_magician.pick_note();
+        // initialize key with RNG first so that the output remains the same as 
+        // when the key is randomly chosen
+        let mut key = math_magician.pick_note();
+        if chosen_key.ne("random") {
+            for (i, k) in KEYS.iter().enumerate() {
+                let len = k.len();
+                if chosen_key[..len] == **k {
+                    let is_major = chosen_key[len..] == *"maj";
+                    key = (i as u16 + is_major as u16 * 3) % 12;
+                    break;
+                }
+            }
+        }
+
         let minor7 = ChordType::new(&[0, 10, 15, 19], &[0, 2, 5, 6, 10], None);
         let major7 = ChordType::new(&[0, 11, 16, 19], &[3, 8], None);
         let diminished = ChordType::new(&[0, 3, 6], &[3, 6], None);
@@ -121,8 +149,8 @@ impl Music {
         return Ok(Music {
             math_magician,
             midi_file: MidiFile::new(),
-            key: key,
-            notes_of_chords: notes_of_chords,
+            key,
+            notes_of_chords,
             _chord_types: chord_types,
             _chords_of_scale: chords_of_scale
         })
@@ -198,7 +226,7 @@ impl Music {
         let note_lengths = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
         //println!("Beggining for loop");
         for note in notes.iter() {
-            let t_note = (note + 12 * octave) as u8;
+            let t_note = (note + 12 * octave + self.key as i16) as u8;
             
             let mut total_time = 0.0;
             //println!("Beggining inner loop");
@@ -239,7 +267,7 @@ impl Music {
         let optional_notes = chord.get_optional_notes();
         for note in optional_notes.iter() {
             if self.math_magician.big_decision(0, 100) > 69 {
-                let t_note = (note + 12 * octave) as u8;
+                let t_note = (note + 12 * octave + self.key as i16) as u8;
                 self.midi_file.add_note_beats(t_note, initial_time as f64, note_length, 80);
             }
         }
@@ -417,5 +445,28 @@ impl Music {
             result.push((octave_shift + n2 + octave) as u8);
         }
         return result;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    macro_rules! init_music {
+        ($chosen_key:expr) => {
+            Music::smoke_hash(Default::default(), $chosen_key).unwrap()
+        };
+    }
+
+    #[test]
+    fn key_parsing() {
+        let m = init_music!("Cminor");
+        assert_eq!(m.key, 0);
+        let m = init_music!("Cmajor");
+        assert_eq!(m.key, 3);
+        let m = init_music!("Dminor");
+        assert_eq!(m.key, 2);
+        let m = init_music!("Dmajor");
+        assert_eq!(m.key, 5);
     }
 }
