@@ -7,7 +7,7 @@ import ChatBar from "./ChatBar";
 import Selector from "./Selector";
 import NumberInput from "./NumberInput";
 
-const MidiForm = ({ wasmModule }) => {
+const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [textInput, setTextInput] = useState('');
   const [selectedOption, setSelectedOption] = useState('melody');
   const [useSameChords, setUseSameChords] = useState(false);
@@ -128,7 +128,7 @@ const MidiForm = ({ wasmModule }) => {
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Select an Option:</label>
+        {showExtraControls && <div><label>Select an Option:</label>
           <div>
             <input
               type="radio"
@@ -146,6 +146,7 @@ const MidiForm = ({ wasmModule }) => {
               required
             />
             Chords
+            <br/>
             <input 
               type="checkbox"
               id="useSameChords"
@@ -153,7 +154,6 @@ const MidiForm = ({ wasmModule }) => {
               onChange={handleUseSameChordsChange}
             />
             <label htmlFor="useSameChords">Use same chords for melody and chords?</label>
-            <br/>
             <NumberInput
               value={numChords}
               onChange={handleNumChordsChange}
@@ -167,13 +167,15 @@ const MidiForm = ({ wasmModule }) => {
               onChange={setKey}
               label="Choose a key:"
             />
+            </div>
+            
+          </div>}
             <Selector
               options={vibes}
               selectedOption={vibe}
               onChange={setVibe}
               label="Choose a vibe:"
             />
-          </div>
         </div>
         <div>
           <ChatBar  
