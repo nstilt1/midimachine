@@ -7,17 +7,18 @@ import ChatBar from "./ChatBar";
 import Selector from "./Selector";
 import NumberInput from "./NumberInput";
 import MultiSelect from "./MultiSelector";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 const MidiForm = ({ wasmModule, showExtraControls }) => {
-  const [textInput, setTextInput] = useState('');
-  const [selectedOption, setSelectedOption] = useState('melody');
-  const [useSameChords, setUseSameChords] = useState(false);
+  const [textInput, setTextInput] = useLocalStorage("textInput", '');
+  const [selectedOption, setSelectedOption] = useLocalStorage("selectedOption", 'melody');
+  const [useSameChords, setUseSameChords] = useLocalStorage("useSameChords", false);
   const [midiFile, setMidiFile] = useState(null);
-  const [numChords, setNumChords] = useState(20);
-  const [key, setKey] = useState('random');
-  const [vibe, setVibe] = useState('default');
-  const [chordGroup, setChordGroup] = useState('default');
-  const [customChords, setCustomChords] = useState([]);
+  const [numChords, setNumChords] = useLocalStorage("numChords", 20);
+  const [key, setKey] = useLocalStorage("key", 'random');
+  const [vibe, setVibe] = useLocalStorage("vibe", 'default');
+  const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
+  const [customChords, setCustomChords] = useLocalStorage("customChords", []);
 
   const fileInputRef = useRef(null);
 
