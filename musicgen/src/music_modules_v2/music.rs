@@ -7,6 +7,30 @@ use crate::my_modules::error::HttpError;
 
 use super::{chord_type::ChordType, chord::Chord, utils::{MathMagician, add_octaves}, midi::MidiFile};
 
+macro_rules! define_consts {
+    ($(($const_name:ident, $value:literal)),*) => {
+        $(
+            #[allow(unused)]
+            const $const_name: u8 = $value;
+        )*
+    };
+}
+
+define_consts!(
+    (C, 0),
+    (CSHARP, 1),
+    (D, 2),
+    (DSHARP, 3),
+    (E, 4),
+    (F, 5),
+    (FSHARP, 6),
+    (G, 7),
+    (GSHARP, 8),
+    (A, 9),
+    (ASHARP, 10),
+    (B, 11)
+);
+
 #[derive(Debug)]
 pub struct Music {
     math_magician: MathMagician,
@@ -108,36 +132,31 @@ impl Music {
         }
 
         // default chord type definitions
-        let minor7 = ChordType::new(&[0, 10, 15, 19], &[0, 2, 5, 6, 10], None);
-        let major7 = ChordType::new(&[0, 11, 16, 19], &[3, 8], None);
-        let diminished = ChordType::new(&[0, 3, 6], &[3, 6], None);
-        let augmented = ChordType::new(&[0,4,8], &[2,6,10], Some(&[12]));
+        let minor7 = ChordType::new(&[0, 10, 15, 19], &[C, D, F, FSHARP, ASHARP], None);
+        let major7 = ChordType::new(&[0, 11, 16, 19], &[DSHARP, GSHARP], None);
+        let diminished = ChordType::new(&[0, 3, 6], &[DSHARP, FSHARP], None);
+        let augmented = ChordType::new(&[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
         //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
-        let major6 = ChordType::new(&[0, 9, 16, 19], &[3, 8, 10], Some(&[23]));
+        let major6 = ChordType::new(&[0, 9, 16, 19], &[DSHARP, GSHARP, ASHARP], Some(&[23]));
 
-        let minor6 = ChordType::new(&[0, 9, 15, 19], &[0, 2, 5, 7], None);
-        let major9 = ChordType::new(&[0, 4, 10, 14], &[0, 5, 7], None);
-        let major7sharp9 = ChordType::new(&[0, 4, 10, 15], &[0, 2, 7, 9], None);
-        let major7flat5sharp9 = ChordType::new(&[0, 4, 10, 15, 18], &[0, 9], None);
-        let major9flat5 = ChordType::new(&[0, 4, 10, 15, 17], &[0, 9], None);
-        let major7flat9 = ChordType::new(&[0, 4, 10, 13], &[0, 2], None);
+        let minor6 = ChordType::new(&[0, 9, 15, 19], &[C, D, F, G], None);
+        let major9 = ChordType::new(&[0, 4, 10, 14], &[C, F, G], None);
+        let major7sharp9 = ChordType::new(&[0, 4, 10, 15], &[C, D, G, A], None);
+        let major7flat5sharp9 = ChordType::new(&[0, 4, 10, 15, 18], &[C, A], None);
+        let major9flat5 = ChordType::new(&[0, 4, 10, 15, 17], &[C, A], None);
+        let major7flat9 = ChordType::new(&[0, 4, 10, 13], &[C, D], None);
 
         // extra chord types
-        let major = ChordType::new(&[0, 4, 7], &[3, 8, 10], None);
-        let minor = ChordType::new(&[0, 3, 7], &[0, 2, 5, 7], None);
+        let major = ChordType::new(&[0, 4, 7], &[DSHARP, GSHARP, ASHARP], None);
+        let minor = ChordType::new(&[0, 3, 7], &[C, D, F, G], None);
 
-        let minor9 = ChordType::new(&[0, 3, 7, 10, 14], &[7], None);
+        let minor9 = ChordType::new(&[0, 3, 7, 10, 14], &[G], None);
 
 
-        //let major13 = ChordType::new([0, 5, 10, 21, 26, 31].into(), [0].into(), Some([0, 5].into()));
-        //let dominant9 = ChordType::new([0, 4, 9, 14, 18].into(), [1].into(), None);
-        //let major6add9 = ChordType::new([])
-
-        // add high e string version of minor6, major9, and major7sharp9,
-        // as well as the low E string version of mjaor 9, major7sharp9
-        // also add major6add9
-
-        //let chord_types = vec![minor7, major7, major, minor, diminished, augmented, major6];
+        let major13 = ChordType::new(&[0, 5, 10, 21, 26, 31], &[C], Some(&[0, 5]));
+        let dominant9 = ChordType::new(&[0, 4, 9, 14, 18], &[CSHARP], None);
+        
+        let add9 = ChordType::new(&[0, 4, 7, 14], &[DSHARP, ASHARP], None);
 
         let chord_types = match chord_type_group {
             "default" => vec![
@@ -181,7 +200,10 @@ impl Music {
                     ("major7flat9", major7flat9),
                     ("major", major),
                     ("minor", minor),
-                    ("minor9", minor9)
+                    ("minor9", minor9),
+                    ("major13", major13),
+                    ("dominant9", dominant9),
+                    ("add9", add9)
                 );
                 chord_types
             },

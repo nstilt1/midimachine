@@ -152,11 +152,14 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     "major6",
     "minor6",
     "major9",
+    "minor9",
     "major7sharp9",
     "major7flat5sharp9",
     "major9flat5",
     "major7flat9",
-    "minor9"
+    "major13",
+    "dominant9",
+    "add9"
   ];
 
   return (
