@@ -6,6 +6,7 @@ import MidiPlayer from "./MidiPlayer";
 import ChatBar from "./ChatBar";
 import Selector from "./Selector";
 import NumberInput from "./NumberInput";
+import MultiSelect from "./MultiSelector";
 
 const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [textInput, setTextInput] = useState('');
@@ -15,6 +16,8 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [numChords, setNumChords] = useState(20);
   const [key, setKey] = useState('random');
   const [vibe, setVibe] = useState('default');
+  const [chordGroup, setChordGroup] = useState('default');
+  const [customChords, setCustomChords] = useState([]);
 
   const fileInputRef = useRef(null);
 
@@ -29,6 +32,14 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const handleUseSameChordsChange = (event) => {
     setUseSameChords(!useSameChords);
   }
+
+  const handleChordTypeSelection = (option) => {
+    if (customChords.includes(option)) {
+      setCustomChords(customChords.filter((item) => item !== option));
+    } else {
+      setCustomChords([...customChords, option]);
+    }
+  };
 
   const handleNumChordsChange = (value) => {
     // ensure the number stored in `numChords` is greater than 0
@@ -70,7 +81,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
 
       //console.log("useSameChords = " + useSameChords);
       //console.log("key: " + key);
-      const midiBinary = wasmModule.generate_midi(combinedBinary, selectedOption, useSameChords, numChords, key);
+      const midiBinary = wasmModule.generate_midi(combinedBinary, selectedOption, useSameChords, numChords, key, customChords, chordGroup);
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
       const midiUrl = URL.createObjectURL(midiBlob);
@@ -124,6 +135,29 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     { label: "Vibe 10", value: "10" }
   ];
 
+  const chordGroups = [
+    { label: "Default", value: "default" },
+    { label: "Original", value: "original" },
+    { label: "Custom", value: "custom" }
+  ];
+
+  const customChordTypes = [
+    "major",
+    "minor",
+    "minor7",
+    "major7",
+    "diminished",
+    "augmented",
+    "major6",
+    "minor6",
+    "major9",
+    "major7sharp9",
+    "major7flat5sharp9",
+    "major9flat5",
+    "major7flat9",
+    "minor9"
+  ];
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -167,6 +201,17 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
               onChange={setKey}
               label="Choose a key:"
             />
+            <Selector 
+              options={chordGroups}
+              selectedOption={chordGroup}
+              onChange={setChordGroup}
+              label="Choose a chord group:"
+            />
+            {chordGroup == "custom" && <MultiSelect
+              options={customChordTypes}
+              selectedOptions={customChords}
+              setSelectedOptions={handleChordTypeSelection}
+            />}
             </div>
             
           </div>}

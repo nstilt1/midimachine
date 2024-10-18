@@ -1,3 +1,6 @@
+use std::collections::HashSet;
+
+use js_sys::Array;
 use midly::Smf;
 use music_modules_v2::Music;
 use my_modules::error::HttpError;
@@ -38,11 +41,22 @@ impl From<&str> for Error {
 }
 
 #[wasm_bindgen]
-pub fn generate_midi(file_content: &[u8], generation_mode: &str, should_use_same_chords: bool, num_chords: usize, key: &str) -> Result<Vec<u8>, Error> {
+pub fn generate_midi(
+    file_content: &[u8], 
+    generation_mode: &str, 
+    should_use_same_chords: bool, 
+    num_chords: usize, 
+    key: &str,
+    chord_selection: Array,
+    chord_type_group: &str
+) -> Result<Vec<u8>, Error> {
     let hash = Sha256::digest(file_content);
     
+    let chord_selection_hashset: HashSet<String> = chord_selection.iter()
+        .map(|js_val| js_val.as_string().unwrap_or_default())
+        .collect();
     // smoke the hash
-    let mut musician = Music::smoke_hash(hash, key)?;
+    let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group)?;
     let track = musician.make_music(num_chords, generation_mode, should_use_same_chords)?;
 
     let smf = Smf {
