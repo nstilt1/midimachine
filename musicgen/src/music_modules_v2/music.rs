@@ -308,7 +308,7 @@ impl Music {
         loop {
             let chord_list = self.notes_of_chords[note as usize].to_owned();
             if chord_list.len() != 0 {
-                return Ok(chord_list[self.math_magician.big_decision(0, (chord_list.len() - 1) as u16) as usize].to_owned());
+                return Ok(chord_list[self.math_magician.big_decision(0..chord_list.len()) as usize].to_owned());
             }
             i += 1;
             note = (note + 1) % 12;
@@ -320,7 +320,7 @@ impl Music {
 
     /// Picks a random chord from the `all_chords` 1-dimensional list of chords.
     fn pick_chord_1d(&mut self) -> Result<Chord, HttpError> {
-        let chord_index = self.math_magician.big_decision(0, (self.all_chords.len() - 1) as u16);
+        let chord_index = self.math_magician.big_decision(0..self.all_chords.len());
         Ok(self.all_chords[chord_index as usize].to_owned())
     }
 
@@ -351,7 +351,7 @@ impl Music {
                             max_length = 6 - note_lengths.iter().position(|&r| r == total_time).unwrap() as i32;
                         }
                     }
-                    let i = self.math_magician.big_decision(0, max_length as u16);
+                    let i = self.math_magician.big_decision(0..=max_length);
                     total_time += note_lengths[i as usize];
                     self.midi_file.add_note_beats(t_note, initial_time as f64 + total_time, total_time, 80);
 
@@ -372,7 +372,7 @@ impl Music {
         }
         let optional_notes = chord.get_optional_notes();
         for note in optional_notes.iter() {
-            if self.math_magician.big_decision(0, 100) > 69 {
+            if self.math_magician.big_decision(0..=100) > 69 {
                 let t_note = (note + 12 * octave + self.key as i16) as u8;
                 self.midi_file.add_note_beats(t_note, initial_time as f64, note_length, 80);
             }
@@ -462,14 +462,14 @@ impl Music {
                     max_index = note_lengths.len()-1;
                 }
 
-                let i = self.math_magician.big_decision(0, max_index as u16);
+                let i = self.math_magician.big_decision(0..=max_index);
                 let duration = note_lengths[i as usize];
 
                 self.midi_file.add_note_beats(
                     t_note + self.key as u8, 
                     initial_time as f64 + total_time, 
                     duration,
-                    self.math_magician.big_decision(70, 90) as u8
+                    self.math_magician.big_decision(70..=90) as u8
                 );
                 total_time += duration;
             }
@@ -505,14 +505,14 @@ impl Music {
                     max_index = note_lengths.len()-1;
                 }
 
-                let i = self.math_magician.big_decision(0, max_length as u16);
+                let i = self.math_magician.big_decision(0..max_length as u16);
                 let duration = note_lengths[i as usize];
 
                 self.midi_file.add_note_beats(
                     note + self.key as u8, 
                     initial_time as f64 + total_time, 
                     duration,
-                    self.math_magician.big_decision(70, 90) as u8
+                    self.math_magician.big_decision(70..=90) as u8
                 );
                 total_time += duration;
             }
@@ -526,9 +526,9 @@ impl Music {
         let intervals = chord.chord_type.note_intervals.to_owned();
         let octave: i16;
         if intervals[0] + chord.root < 6 {
-            octave = (self.math_magician.big_decision(4, 5) * 12) as i16;
+            octave = (self.math_magician.big_decision(4..=5) * 12) as i16;
         }else{
-            octave = (self.math_magician.big_decision(3, 4) * 12) as i16;
+            octave = (self.math_magician.big_decision(3..=4) * 12) as i16;
         }
         for n in 0..intervals.len() {
             let i = intervals[n];

@@ -2,7 +2,7 @@ static PPQ: u32 = 96;
 
 use std::time::SystemTime;
 
-use rand::{Rng, SeedableRng, rngs::StdRng};
+use rand::{distributions::uniform::{SampleRange, SampleUniform}, rngs::StdRng, Rng, SeedableRng};
 
 /**
  * Convert beats to ticks
@@ -30,8 +30,12 @@ impl MathMagician {
     /**
      * Math magician cleverly picks a number between min and max, inclusive
      */
-    pub fn big_decision(&mut self, min: u16, max: u16) -> u16 {
-        return self.noggin.gen_range(min..=max);
+    pub fn big_decision<T, R>(&mut self, r: R) -> T 
+    where 
+        T: SampleUniform,
+        R: SampleRange<T>
+    {
+        return self.noggin.gen_range(r);
     }
     /**
      * Math magician picks a note between 0 and 11, inclusive
