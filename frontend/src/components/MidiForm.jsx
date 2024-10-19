@@ -19,6 +19,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [vibe, setVibe] = useLocalStorage("vibe", 'default');
   const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
   const [customChords, setCustomChords] = useLocalStorage("customChords", []);
+  const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original')
 
   const fileInputRef = useRef(null);
 
@@ -82,7 +83,15 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
 
       //console.log("useSameChords = " + useSameChords);
       //console.log("key: " + key);
-      const midiBinary = wasmModule.generate_midi(combinedBinary, selectedOption, useSameChords, numChords, key, customChords, chordGroup);
+      const midiBinary = wasmModule.generate_midi(
+        combinedBinary, 
+        selectedOption, 
+        useSameChords, 
+        numChords, key, 
+        customChords, 
+        chordGroup,
+        chord_picking_method
+      );
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
       const midiUrl = URL.createObjectURL(midiBlob);
@@ -162,6 +171,11 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     "add9"
   ];
 
+  const chordPickingMethods = [
+    { label: "Original", value: "original" },
+    { label: "1D", value: "1D" }
+  ]
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -216,6 +230,12 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
               selectedOptions={customChords}
               setSelectedOptions={handleChordTypeSelection}
             />}
+            <Selector
+              options={chordPickingMethods}
+              selectedOptions={chord_picking_method}
+              onChange={setChordPickingMethod}
+              label="Choose a chord picking method:"
+            />
             </div>
             
           </div>}

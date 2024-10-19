@@ -48,7 +48,8 @@ pub fn generate_midi(
     num_chords: usize, 
     key: &str,
     chord_selection: Array,
-    chord_type_group: &str
+    chord_type_group: &str,
+    chord_picking_method: &str
 ) -> Result<Vec<u8>, Error> {
     let hash = Sha256::digest(file_content);
     
@@ -57,7 +58,7 @@ pub fn generate_midi(
         .collect();
     // smoke the hash
     let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group)?;
-    let track = musician.make_music(num_chords, generation_mode, should_use_same_chords)?;
+    let track = musician.make_music(num_chords, generation_mode, should_use_same_chords, chord_picking_method)?;
 
     let smf = Smf {
         header: midly::Header { format: midly::Format::SingleTrack, timing: midly::Timing::Metrical(96.into()) },

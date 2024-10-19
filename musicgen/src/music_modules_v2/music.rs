@@ -38,28 +38,42 @@ pub struct Music {
     key: u16,
     _chord_types: Vec<ChordType>,
     notes_of_chords: Vec<Vec<Chord>>,
-    _chords_of_scale: Vec<Chord>
+    all_chords: Vec<Chord>
 }
 
-/// This macro picks a chord based on the user's request.
+/// This macro picks chords to play and places them in the track.
+/// 
+/// There are two ways that chords can be picked:
+/// 
+/// * `original` - chords are randomly picked from a 2D array. The rows of the 
+/// array are notes, and the columns are lists of chords that contain the 
+/// row's note. Chords with more notes are somewhat more likely to be picked.
+/// * `1D` - chords are randomly picked from a 1D array. Each chord has a 
+/// roughly equal probability of getting picked.
 /// 
 /// This could have been written prettier by checking the user's input inside 
-/// the for-loop, but then every iteration of the for-loop would have at least 
-/// one extra comparison. And potentially more than one if more output types 
-/// are added later.
+/// the for-loops, but then every iteration of the for-loop would have at 
+/// least one extra comparison. And potentially more than one if more output 
+/// types are added later.
 macro_rules! pick_chord_placement_method {
-    ($music_obj:expr, $user_selected_type:expr, $num_chords:expr, $should_use_same_chords:expr, $(($chord_placement_str:expr, $method:ident)),*) => {
+    ($music_obj:expr, $user_selected_type:expr, $num_chords:expr, $should_use_same_chords:expr, $chord_picking_method:expr, $(($chord_placement_str:expr, $placement_method:ident)),*) => {
         if $should_use_same_chords {
             let mut chords = vec![Chord::default(); $num_chords];
-            for chord in chords.iter_mut() {
-                *chord = $music_obj.pick_chord()?;
+            if $chord_picking_method == "original" {
+                for chord in chords.iter_mut() {
+                    *chord = $music_obj.pick_chord()?;
+                }
+            } else if $chord_picking_method == "1D" {
+                for chord in chords.iter_mut() {
+                    *chord = $music_obj.pick_chord_1d()?;
+                }
             }
 
             match $user_selected_type {
                 $(
                     $chord_placement_str => {
                         for (i, chord) in chords.iter().enumerate() {
-                            $music_obj.$method(&chord, 4, (i as u32 * 4).into());
+                            $music_obj.$placement_method(&chord, 4, (i as u32 * 4).into());
                         }
                     },
                 )*
@@ -69,9 +83,16 @@ macro_rules! pick_chord_placement_method {
             match $user_selected_type {
                 $(
                     $chord_placement_str => {
-                        for i in 0..$num_chords {
-                            let chord = $music_obj.pick_chord()?;
-                            $music_obj.$method(&chord, 4, (i as u32 * 4).into());
+                        if $chord_picking_method == "original" {
+                            for i in 0..$num_chords {
+                                let chord = $music_obj.pick_chord()?;
+                                $music_obj.$placement_method(&chord, 4, (i as u32 * 4).into());
+                            }
+                        } else if $chord_picking_method == "1D" {
+                            for i in 0..$num_chords {
+                                let chord = $music_obj.pick_chord_1d()?;
+                                $music_obj.$placement_method(&chord, 4, (i as u32 * 4).into());
+                            }
                         }
                     }
                 )*
@@ -111,7 +132,7 @@ impl Music {
         hash: sha2::digest::Output<Sha256>, 
         chosen_key: &str, 
         chord_selections: &HashSet<String>, 
-        chord_type_group: &str
+        chord_type_group: &str,
     ) -> Result<Music, HttpError> {
         let mut stash = [0u8; 32];
         stash.copy_from_slice(&hash);
@@ -132,7 +153,7 @@ impl Music {
         }
 
         // default chord type definitions
-        let minor7 = ChordType::new(&[0, 10, 15, 19], &[C, D, F, FSHARP, ASHARP], None);
+        let minor7 = ChordType::new(&[0, 10, 15, 19], &[C, D, F, FSHARP, G, ASHARP], None);
         let major7 = ChordType::new(&[0, 11, 16, 19], &[DSHARP, GSHARP], None);
         let diminished = ChordType::new(&[0, 3, 6], &[DSHARP, FSHARP], None);
         let augmented = ChordType::new(&[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
@@ -211,12 +232,12 @@ impl Music {
         };
 
         let mut notes_of_chords: Vec<Vec<Chord>> = (0..12).map(|_| Vec::new()).collect();
-        let mut chords_of_scale: Vec<Chord> = Vec::new();
+        let mut all_chords: Vec<Chord> = Vec::new();
 
         for ct in chord_types.iter() {
             for r in ct.clone().roots {
                 let chord = Chord::new(r, &ct);
-                chords_of_scale.push(chord.clone());
+                all_chords.push(chord.clone());
                 for note in chord.get_notes() {
                     notes_of_chords[(note % 12) as usize].push(chord.clone());
                 }
@@ -229,14 +250,14 @@ impl Music {
             key,
             notes_of_chords,
             _chord_types: chord_types,
-            _chords_of_scale: chords_of_scale
+            all_chords
         })
     }
 
     /**
      * Makes some music midily
      */
-    pub fn make_music(&mut self, num_chords: usize, generation_mode: &str, should_use_same_chords: bool) -> Result<Vec<TrackEvent>, HttpError> {
+    pub fn make_music(&mut self, num_chords: usize, generation_mode: &str, should_use_same_chords: bool, chord_picking_method: &str) -> Result<Vec<TrackEvent>, HttpError> {
         let mut last_chords: Vec<Vec<u8>> = Vec::new();
 
         // determine chords before any other RNG calls are made so that the 
@@ -247,6 +268,7 @@ impl Music {
             generation_mode, 
             num_chords,
             should_use_same_chords,
+            chord_picking_method,
             ("melody", original_place),
             ("chords", place_chord_regular)
         );
@@ -279,6 +301,7 @@ impl Music {
         
     }
 
+    /// Picks a random chord from the 2-dimensional list of chords.
     fn pick_chord(&mut self) -> Result<Chord, HttpError> {
         let mut i = 0;
         let mut note = self.math_magician.pick_note();
@@ -293,6 +316,12 @@ impl Music {
                 return Err("Error M94: notes_of_chords not populated".into());
             }
         }
+    }
+
+    /// Picks a random chord from the `all_chords` 1-dimensional list of chords.
+    fn pick_chord_1d(&mut self) -> Result<Chord, HttpError> {
+        let chord_index = self.math_magician.big_decision(0, (self.all_chords.len() - 1) as u16);
+        Ok(self.all_chords[chord_index as usize].to_owned())
     }
 
     /**

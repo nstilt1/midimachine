@@ -135,9 +135,10 @@ function getArrayU8FromWasm0(ptr, len) {
  * @param {string} key
  * @param {Array<any>} chord_selection
  * @param {string} chord_type_group
+ * @param {string} chord_picking_method
  * @returns {Uint8Array}
  */
-export function generate_midi(file_content, generation_mode, should_use_same_chords, num_chords, key, chord_selection, chord_type_group) {
+export function generate_midi(file_content, generation_mode, should_use_same_chords, num_chords, key, chord_selection, chord_type_group, chord_picking_method) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passArray8ToWasm0(file_content, wasm.__wbindgen_malloc);
@@ -148,7 +149,9 @@ export function generate_midi(file_content, generation_mode, should_use_same_cho
         const len2 = WASM_VECTOR_LEN;
         const ptr3 = passStringToWasm0(chord_type_group, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len3 = WASM_VECTOR_LEN;
-        wasm.generate_midi(retptr, ptr0, len0, ptr1, len1, should_use_same_chords, num_chords, ptr2, len2, addHeapObject(chord_selection), ptr3, len3);
+        const ptr4 = passStringToWasm0(chord_picking_method, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len4 = WASM_VECTOR_LEN;
+        wasm.generate_midi(retptr, ptr0, len0, ptr1, len1, should_use_same_chords, num_chords, ptr2, len2, addHeapObject(chord_selection), ptr3, len3, ptr4, len4);
         var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
         var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
         var r2 = getDataViewMemory0().getInt32(retptr + 4 * 2, true);
@@ -156,9 +159,9 @@ export function generate_midi(file_content, generation_mode, should_use_same_cho
         if (r3) {
             throw takeObject(r2);
         }
-        var v5 = getArrayU8FromWasm0(r0, r1).slice();
+        var v6 = getArrayU8FromWasm0(r0, r1).slice();
         wasm.__wbindgen_free(r0, r1 * 1, 1);
-        return v5;
+        return v6;
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
