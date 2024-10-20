@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use midly::TrackEvent;
 use sha2::Sha256;
 
-use crate::my_modules::error::HttpError;
+use super::error::MusicError;
 
 use super::{chord_type::ChordType, chord::Chord, utils::{MathMagician, add_octaves}, midi::MidiFile};
 
@@ -59,13 +59,14 @@ macro_rules! pick_chord_placement_method {
     ($music_obj:expr, $user_selected_type:expr, $num_chords:expr, $should_use_same_chords:expr, $chord_picking_method:expr, $(($chord_placement_str:expr, $placement_method:ident)),*) => {
         if $should_use_same_chords {
             let mut chords = vec![Chord::default(); $num_chords];
+
             if $chord_picking_method == "original" {
                 for chord in chords.iter_mut() {
                     *chord = $music_obj.pick_chord()?;
                 }
             } else if $chord_picking_method == "1D" {
                 for chord in chords.iter_mut() {
-                    *chord = $music_obj.pick_chord_1d()?;
+                    *chord = $music_obj.pick_chord_1d();
                 }
             }
 
@@ -90,7 +91,7 @@ macro_rules! pick_chord_placement_method {
                             }
                         } else if $chord_picking_method == "1D" {
                             for i in 0..$num_chords {
-                                let chord = $music_obj.pick_chord_1d()?;
+                                let chord = $music_obj.pick_chord_1d();
                                 $music_obj.$placement_method(&chord, 4, (i as u32 * 4).into());
                             }
                         }
@@ -133,7 +134,7 @@ impl Music {
         chosen_key: &str, 
         chord_selections: &HashSet<String>, 
         chord_type_group: &str,
-    ) -> Result<Music, HttpError> {
+    ) -> Result<Music, MusicError> {
         let mut stash = [0u8; 32];
         stash.copy_from_slice(&hash);
         let mut math_magician = MathMagician::share_hash(stash);
@@ -153,7 +154,7 @@ impl Music {
         }
 
         // default chord type definitions
-        let minor7 = ChordType::new(&[0, 10, 15, 19], &[C, D, F, FSHARP, G, ASHARP], None);
+        let minor7 = ChordType::new(&[0, 10, 15, 19], &[C, D, F, FSHARP, ASHARP], None);
         let major7 = ChordType::new(&[0, 11, 16, 19], &[DSHARP, GSHARP], None);
         let diminished = ChordType::new(&[0, 3, 6], &[DSHARP, FSHARP], None);
         let augmented = ChordType::new(&[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
@@ -257,7 +258,7 @@ impl Music {
     /**
      * Makes some music midily
      */
-    pub fn make_music(&mut self, num_chords: usize, generation_mode: &str, should_use_same_chords: bool, chord_picking_method: &str) -> Result<Vec<TrackEvent>, HttpError> {
+    pub fn make_music(&mut self, num_chords: usize, generation_mode: &str, should_use_same_chords: bool, chord_picking_method: &str) -> Result<Vec<TrackEvent>, MusicError> {
         let mut last_chords: Vec<Vec<u8>> = Vec::new();
 
         // determine chords before any other RNG calls are made so that the 
@@ -302,13 +303,13 @@ impl Music {
     }
 
     /// Picks a random chord from the 2-dimensional list of chords.
-    fn pick_chord(&mut self) -> Result<Chord, HttpError> {
+    fn pick_chord(&mut self) -> Result<Chord, MusicError> {
         let mut i = 0;
         let mut note = self.math_magician.pick_note();
         loop {
             let chord_list = self.notes_of_chords[note as usize].to_owned();
             if chord_list.len() != 0 {
-                return Ok(chord_list[self.math_magician.big_decision(0..chord_list.len()) as usize].to_owned());
+                return Ok(chord_list[self.math_magician.big_decision(0, (chord_list.len() - 1) as u16) as usize].to_owned());
             }
             i += 1;
             note = (note + 1) % 12;
@@ -319,9 +320,13 @@ impl Music {
     }
 
     /// Picks a random chord from the `all_chords` 1-dimensional list of chords.
-    fn pick_chord_1d(&mut self) -> Result<Chord, HttpError> {
-        let chord_index = self.math_magician.big_decision(0..self.all_chords.len());
-        Ok(self.all_chords[chord_index as usize].to_owned())
+    fn pick_chord_1d(&mut self) -> Chord {
+        if self.all_chords.len() == 0 {
+            return Chord::default();
+        }
+        let chord_index = self.math_magician.big_decision(0, (self.all_chords.len() - 1) as u16);
+        
+        self.all_chords[chord_index as usize].to_owned()
     }
 
     /**
@@ -351,7 +356,7 @@ impl Music {
                             max_length = 6 - note_lengths.iter().position(|&r| r == total_time).unwrap() as i32;
                         }
                     }
-                    let i = self.math_magician.big_decision(0..=max_length);
+                    let i = self.math_magician.big_decision(0, max_length as u16);
                     total_time += note_lengths[i as usize];
                     self.midi_file.add_note_beats(t_note, initial_time as f64 + total_time, total_time, 80);
 
@@ -372,7 +377,7 @@ impl Music {
         }
         let optional_notes = chord.get_optional_notes();
         for note in optional_notes.iter() {
-            if self.math_magician.big_decision(0..=100) > 69 {
+            if self.math_magician.big_decision(0, 100) > 69 {
                 let t_note = (note + 12 * octave + self.key as i16) as u8;
                 self.midi_file.add_note_beats(t_note, initial_time as f64, note_length, 80);
             }
@@ -462,14 +467,14 @@ impl Music {
                     max_index = note_lengths.len()-1;
                 }
 
-                let i = self.math_magician.big_decision(0..=max_index);
+                let i = self.math_magician.big_decision(0, max_index as u16);
                 let duration = note_lengths[i as usize];
 
                 self.midi_file.add_note_beats(
                     t_note + self.key as u8, 
                     initial_time as f64 + total_time, 
                     duration,
-                    self.math_magician.big_decision(70..=90) as u8
+                    self.math_magician.big_decision(70, 90) as u8
                 );
                 total_time += duration;
             }
@@ -502,14 +507,14 @@ impl Music {
                     max_index = note_lengths.len()-1;
                 }
 
-                let i = self.math_magician.big_decision(0..=max_length as u16);
+                let i = self.math_magician.big_decision(0, max_length as u16);
                 let duration = note_lengths[i as usize];
 
                 self.midi_file.add_note_beats(
                     note + self.key as u8, 
                     initial_time as f64 + total_time, 
                     duration,
-                    self.math_magician.big_decision(70..=90) as u8
+                    self.math_magician.big_decision(70, 90) as u8
                 );
                 total_time += duration;
             }
@@ -523,9 +528,9 @@ impl Music {
         let intervals = chord.chord_type.note_intervals.to_owned();
         let octave: i16;
         if intervals[0] + chord.root < 6 {
-            octave = (self.math_magician.big_decision(4..=5) * 12) as i16;
+            octave = (self.math_magician.big_decision(4, 5) * 12) as i16;
         }else{
-            octave = (self.math_magician.big_decision(3..=4) * 12) as i16;
+            octave = (self.math_magician.big_decision(3, 4) * 12) as i16;
         }
         for n in 0..intervals.len() {
             let i = intervals[n];
@@ -563,13 +568,13 @@ mod tests {
 
     #[test]
     fn key_parsing() {
-        let m = init_music!("Cminor");
+        let m = init_music!("Cmin");
         assert_eq!(m.key, 0);
-        let m = init_music!("Cmajor");
+        let m = init_music!("Cmaj");
         assert_eq!(m.key, 3);
-        let m = init_music!("Dminor");
+        let m = init_music!("Dmin");
         assert_eq!(m.key, 2);
-        let m = init_music!("Dmajor");
+        let m = init_music!("Dmaj");
         assert_eq!(m.key, 5);
     }
 }

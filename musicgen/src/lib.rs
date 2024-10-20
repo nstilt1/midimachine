@@ -2,16 +2,15 @@ use std::collections::HashSet;
 
 use js_sys::Array;
 use midly::Smf;
-use music_modules_v2::Music;
-use my_modules::error::HttpError;
+use music_modules_v2::{error::MusicError, Music};
 use wasm_bindgen::prelude::*;
 use sha2::{Digest, Sha256};
 
 mod music_modules_v2;
-mod my_modules;
 
+#[derive(Debug)]
 pub enum Error {
-    HttpError(HttpError),
+    MusicError(MusicError),
     MidlyError(midly::Error),
     StrError(String),
 }
@@ -22,9 +21,9 @@ impl Into<JsValue> for Error {
     }
 }
 
-impl From<HttpError> for Error {
-    fn from(value: HttpError) -> Self {
-        Self::HttpError(value)
+impl From<MusicError> for Error {
+    fn from(value: MusicError) -> Self {
+        Self::MusicError(value)
     }
 }
 
@@ -41,6 +40,7 @@ impl From<&str> for Error {
 }
 
 #[wasm_bindgen]
+#[cfg(target_arch="wasm32")]
 pub fn generate_midi(
     file_content: &[u8], 
     generation_mode: &str, 
@@ -59,6 +59,37 @@ pub fn generate_midi(
     // smoke the hash
     let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group)?;
     let track = musician.make_music(num_chords, generation_mode, should_use_same_chords, chord_picking_method)?;
+
+    let smf = Smf {
+        header: midly::Header { format: midly::Format::SingleTrack, timing: midly::Timing::Metrical(96.into()) },
+        tracks: vec![track]
+    };
+
+    let mut output = vec![];
+
+    smf.write(&mut output)?;
+
+    Ok(output)
+}
+
+/// Rust variant for testing.
+#[cfg(not(target_arch="wasm32"))]
+pub fn generate_midi(
+    file_content: &[u8], 
+    generation_mode: &str, 
+    should_use_same_chords: bool, 
+    num_chords: usize, 
+    key: &str,
+    _chord_selection: &str,
+    chord_type_group: &str,
+    chord_picking_method: &str
+) -> Result<Vec<u8>, Error> {
+    let hash = Sha256::digest(file_content);
+    
+    let chord_selection_hashset: HashSet<String> = HashSet::new();
+    // smoke the hash
+    let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group).unwrap();
+    let track = musician.make_music(num_chords, generation_mode, should_use_same_chords, chord_picking_method).unwrap();
 
     let smf = Smf {
         header: midly::Header { format: midly::Format::SingleTrack, timing: midly::Timing::Metrical(96.into()) },

@@ -21,21 +21,20 @@ pub struct MathMagician {
 }
 
 impl MathMagician {
-    /**
-     * Shares hash with the math magician. The math magician's calculations will be influenced by the hash.
-     */
+    /// Shares hash with the math magician. The math magician's calculations 
+    /// will be influenced by the hash.
     pub fn share_hash(hash: [u8; 32]) -> Self {
         return MathMagician { noggin: StdRng::from_seed(hash.try_into().unwrap_or([0; 32])) };
     }
-    /**
-     * Math magician cleverly picks a number between min and max, inclusive
-     */
-    pub fn big_decision<T, R>(&mut self, r: R) -> T 
-    where 
-        T: SampleUniform,
-        R: SampleRange<T>
+    /// Math magician cleverly picks a number between min and max, inclusive.
+    /// 
+    /// I know that it is possible to use generics to make this function an 
+    /// alias of `gen_range` where `0..=11` could be a valid input. However, 
+    /// changing this would be a breaking change and would cause all outputs to 
+    /// be different.
+    pub fn big_decision(&mut self, min: u16, max: u16) -> u16
     {
-        return self.noggin.gen_range(r);
+        return self.noggin.gen_range(min..=max);
     }
     /**
      * Math magician picks a note between 0 and 11, inclusive
