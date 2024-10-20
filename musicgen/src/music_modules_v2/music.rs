@@ -502,7 +502,7 @@ impl Music {
                     max_index = note_lengths.len()-1;
                 }
 
-                let i = self.math_magician.big_decision(0..max_length as u16);
+                let i = self.math_magician.big_decision(0..=max_length as u16);
                 let duration = note_lengths[i as usize];
 
                 self.midi_file.add_note_beats(
