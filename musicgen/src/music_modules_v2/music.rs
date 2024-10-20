@@ -484,9 +484,6 @@ impl Music {
         //let notes = self.get_modified_notes(chord);
         
         for note in notes {
-            
-            
-            
             let mut total_time = 0.0;
 
             loop {
