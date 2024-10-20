@@ -153,25 +153,24 @@ impl Music {
         }
 
         // default chord type definitions
-        let minor7 = ChordType::new(&[0, 10, 15, 19], &[C, D, F, FSHARP, G, ASHARP], None);
-        let major7 = ChordType::new(&[0, 11, 16, 19], &[DSHARP, GSHARP], None);
-        let diminished = ChordType::new(&[0, 3, 6], &[DSHARP, FSHARP], None);
-        let augmented = ChordType::new(&[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
+        let minor7 = ChordType::new(&[0, 10, 15, 19], &[0, 2, 5, 6, 10], None);
+        let major7 = ChordType::new(&[0, 11, 16, 19], &[3, 8], None);
+        let diminished = ChordType::new(&[0, 3, 6], &[3, 6], None);
+        let augmented = ChordType::new(&[0,4,8], &[2,6,10], Some(&[12]));
         //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
-        let major6 = ChordType::new(&[0, 9, 16, 19], &[DSHARP, GSHARP, ASHARP], Some(&[23]));
+        let major6 = ChordType::new(&[0, 9, 16, 19], &[3, 8, 10], Some(&[23]));
 
-        let minor6 = ChordType::new(&[0, 9, 15, 19], &[C, D, F, G], None);
-        let major9 = ChordType::new(&[0, 4, 10, 14], &[C, F, G], None);
-        let major7sharp9 = ChordType::new(&[0, 4, 10, 15], &[C, D, G, A], None);
-        let major7flat5sharp9 = ChordType::new(&[0, 4, 10, 15, 18], &[C, A], None);
-        let major9flat5 = ChordType::new(&[0, 4, 10, 15, 17], &[C, A], None);
-        let major7flat9 = ChordType::new(&[0, 4, 10, 13], &[C, D], None);
+        let minor6 = ChordType::new(&[0, 9, 15, 19], &[0, 2, 5, 7], None);
+        let major9 = ChordType::new(&[0, 4, 10, 14], &[0, 5, 7], None);
+        let major7sharp9 = ChordType::new(&[0, 4, 10, 15], &[0, 2, 7, 9], None);
+        let major7flat5sharp9 = ChordType::new(&[0, 4, 10, 15, 18], &[0, 9], None);
+        let major9flat5 = ChordType::new(&[0, 4, 10, 15, 17], &[0, 9], None);
+        let major7flat9 = ChordType::new(&[0, 4, 10, 13], &[0, 2], None);
 
         // extra chord types
-        let major = ChordType::new(&[0, 4, 7], &[DSHARP, GSHARP, ASHARP], None);
-        let minor = ChordType::new(&[0, 3, 7], &[C, D, F, G], None);
-
-        let minor9 = ChordType::new(&[0, 3, 7, 10, 14], &[G], None);
+        let major = ChordType::new(&[0, 4, 7], &[3, 8, 10], None);
+        let minor = ChordType::new(&[0, 3, 7], &[0, 2, 5, 7], None);
+        let minor9 = ChordType::new(&[0, 3, 7, 10, 14], &[7], None);
 
 
         let major13 = ChordType::new(&[0, 5, 10, 21, 26, 31], &[C], Some(&[0, 5]));
