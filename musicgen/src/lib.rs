@@ -1,10 +1,10 @@
 use std::collections::HashSet;
 
-use js_sys::Array;
-use midly::Smf;
-use music_modules_v2::{error::MusicError, Music};
-use wasm_bindgen::prelude::*;
-use sha2::{Digest, Sha256};
+pub use js_sys::Array;
+pub use midly::Smf;
+pub use music_modules_v2::{error::MusicError, Music};
+pub use wasm_bindgen::prelude::*;
+pub use sha2::{Digest, Sha256};
 
 mod music_modules_v2;
 
