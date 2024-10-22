@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 
+#[cfg(target_arch = "wasm32")]
 use js_sys::Array;
 use midly::Smf;
 use music_modules_v2::{error::MusicError, Music};

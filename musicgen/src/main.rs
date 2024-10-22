@@ -26,6 +26,7 @@ fn write_midi_file(filename: &str, content: &[u8]) -> std::io::Result<()> {
     Ok(())
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn main() -> Result<(), std::io::Error> {
     let midi = generate_midi(
         b"a", 
