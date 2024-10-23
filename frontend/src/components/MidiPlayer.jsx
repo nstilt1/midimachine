@@ -60,7 +60,7 @@ const MidiPlayerComponent = ({ midiFileUrl }) => {
             type="piano-roll"
             id="mainVisualizer"
             //src={midiFileUrl}
-            style={{ width: '600px', height: '200px', border: '1px solid black' }}
+            style={{ width: '600px', border: '1px solid black' }}
           ></midi-visualizer>
 
           {/* MIDI Download Button */}

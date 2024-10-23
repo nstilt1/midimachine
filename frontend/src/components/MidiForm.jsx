@@ -11,7 +11,7 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 
 const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [textInput, setTextInput] = useLocalStorage("textInput", '');
-  const [selectedOption, setSelectedOption] = useLocalStorage("selectedOption", 'melody');
+  const [mode, setMode] = useLocalStorage("mode", "melody");
   const [useSameChords, setUseSameChords] = useLocalStorage("useSameChords", false);
   const [midiFile, setMidiFile] = useState(null);
   const [numChords, setNumChords] = useLocalStorage("numChords", 20);
@@ -57,10 +57,6 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
       alert("Please provide an input.");
       return;
     }
-    if(!selectedOption) {
-      alert("Please select an option.");
-      return;
-    }
 
     try {
         let fileBinary;
@@ -85,7 +81,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
       //console.log("key: " + key);
       const midiBinary = wasmModule.generate_midi(
         combinedBinary, 
-        selectedOption, 
+        mode, 
         useSameChords, 
         numChords, key, 
         customChords, 
@@ -174,7 +170,15 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const chordPickingMethods = [
     { label: "Original", value: "original" },
     { label: "1D", value: "1D" }
-  ]
+  ];
+
+  const modes = [
+    { label: "Melody", value: "melody" },
+    { label: "Chords", value: "chords" },
+    { label: "Melody v2", value: "melody v2" },
+    { label: "Melody v3", value: "melody v3" },
+    { label: "Melody v4", value: "melody v4" }
+  ];
 
   return (
     <div>
@@ -182,22 +186,12 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
         <div>
         {showExtraControls && <div><label>Select an Option:</label>
           <div>
-            <input
-              type="radio"
-              value="melody"
-              checked={selectedOption === 'melody'}
-              onChange={handleOptionChange}
-              required
+            <Selector 
+              options={modes}
+              selectedOption={mode}
+              onChange={setMode}
+              label="Choose a mode:"
             />
-            Melody
-            <input
-              type="radio"
-              value="chords"
-              checked={selectedOption === 'chords'}
-              onChange={handleOptionChange}
-              required
-            />
-            Chords
             <br/>
             <input 
               type="checkbox"
