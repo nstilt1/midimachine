@@ -272,6 +272,9 @@ impl Music {
             chord_picking_method,
             ("melody", original_place),
             ("chords", place_chord_regular)
+            // ("melody v2", place_chord_bug_combo_1),
+            // ("melody v3", place_chord_bug_v2),
+            // ("melody v4", place_chord_bug_v3)
         );
 
         /*
@@ -388,11 +391,10 @@ impl Music {
     pub fn place_chord_bug_combo_1(
         &mut self,
         chord: &Chord, 
-        initial_time: u32, 
-        is_high_pos: bool
+        octave: i16,
+        initial_time: u32
     ) {
         let notes = chord.get_notes();
-        let octave = 4;
         let mut total_time: f64 = 0.0;
         let note_lengths: Vec<f64> = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
         loop {
@@ -429,7 +431,10 @@ impl Music {
     }
 
     pub fn place_chord_bug_v2(
-        &mut self, chord: &Chord, initial_time: u32, is_high_pos: bool
+        &mut self, 
+        chord: &Chord, 
+        _octave: i16,
+        initial_time: u32, 
     ) {
         //let octave = self.math_magician.pick_note() % 2 + 4;
         let note_lengths = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
@@ -482,13 +487,13 @@ impl Music {
     }
 
     pub fn place_chord_bug_v3(
-        &mut self, notes: &Vec<u8>, initial_time: u32
+        &mut self, chord: &Chord, octave: i16, initial_time: u32
     ) {
         let note_lengths = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
         
         //let notes = self.get_modified_notes(chord);
         
-        for note in notes {
+        for note in chord.get_notes() {
             let mut total_time = 0.0;
 
             loop {
@@ -511,7 +516,7 @@ impl Music {
                 let duration = note_lengths[i as usize];
 
                 self.midi_file.add_note_beats(
-                    note + self.key as u8, 
+                    note as u8 + self.key as u8 + (octave as u8 * 12), 
                     initial_time as f64 + total_time, 
                     duration,
                     self.math_magician.big_decision(70, 90) as u8
