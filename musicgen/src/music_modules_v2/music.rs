@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashSet, VecDeque};
 
 use midly::TrackEvent;
 use sha2::Sha256;
@@ -41,6 +41,25 @@ pub struct Music {
     all_chords: Vec<Chord>
 }
 
+macro_rules! pick_unique_chord {
+    (
+        $music_obj:expr, 
+        $chord_picking_method:ident, 
+        $previous_n_chords:expr,
+        $chord:expr,
+    ) => {
+        if $previous_n_chords.len() > 0 {
+            while $previous_n_chords.contains(&chord) {
+                *chord = $music_obj.$chord_picking_method()?;
+            }
+            if $previous_n_chords.len() == $previous_n_chords.capacity() {
+                $previous_n_chords.pop_front();
+            }
+            $previous_n_chords.push_back($chord.clone());
+        }
+    };
+}
+
 /// This macro picks chords to play and places them in the track.
 /// 
 /// There are two ways that chords can be picked:
@@ -56,13 +75,31 @@ pub struct Music {
 /// least one extra comparison. And potentially more than one if more output 
 /// types are added later.
 macro_rules! pick_chord_placement_method {
-    ($music_obj:expr, $user_selected_type:expr, $num_chords:expr, $should_use_same_chords:expr, $chord_picking_method:expr, $(($chord_placement_str:expr, $placement_method:ident)),*) => {
+    (
+        $music_obj:expr, 
+        $user_selected_type:expr, 
+        $num_chords:expr, 
+        $should_use_same_chords:expr, 
+        $chord_picking_method:expr, 
+        $minimum_number_of_unique_chords:expr,
+        $(($chord_placement_str:expr, $placement_method:ident)),*
+    ) => {
+        let mut previous_n_chords: VecDeque<Chord> = VecDeque::with_capacity($minimum_number_of_unique_chords as usize);
         if $should_use_same_chords {
             let mut chords = vec![Chord::default(); $num_chords];
 
             if $chord_picking_method == "original" {
                 for chord in chords.iter_mut() {
                     *chord = $music_obj.pick_chord()?;
+                    if previous_n_chords.len() > 0 {
+                        while previous_n_chords.contains(&chord) {
+                            *chord = $music_obj.pick_chord()?;
+                        }
+                        if previous_n_chords.len() == previous_n_chords.capacity() {
+                            previous_n_chords.pop_front();
+                        }
+                        previous_n_chords.push_back(chord.clone());
+                    }
                 }
             } else if $chord_picking_method == "1D" {
                 for chord in chords.iter_mut() {
@@ -258,9 +295,14 @@ impl Music {
     /**
      * Makes some music midily
      */
-    pub fn make_music(&mut self, num_chords: usize, generation_mode: &str, should_use_same_chords: bool, chord_picking_method: &str) -> Result<Vec<TrackEvent>, MusicError> {
-        let mut last_chords: Vec<Vec<u8>> = Vec::new();
-
+    pub fn make_music(
+        &mut self, 
+        num_chords: usize, 
+        generation_mode: &str, 
+        should_use_same_chords: bool, 
+        chord_picking_method: &str, 
+        minimum_number_of_unique_chords: u32,
+    ) -> Result<Vec<TrackEvent>, MusicError> {
         // determine chords before any other RNG calls are made so that the 
         // same chords are used for all output types
 
@@ -270,8 +312,11 @@ impl Music {
             num_chords,
             should_use_same_chords,
             chord_picking_method,
+            minimum_number_of_unique_chords,
             ("melody", original_place),
-            ("chords", place_chord_regular)
+            ("chords", place_chord_regular),
+            ("melody v2", place_chord_bug_v2),
+            ("melody v3", place_chord_bug_v3)
         );
 
         /*
@@ -384,52 +429,11 @@ impl Music {
         }
     }
 
-
-    pub fn place_chord_bug_combo_1(
-        &mut self,
-        chord: &Chord, 
-        initial_time: u32, 
-        is_high_pos: bool
-    ) {
-        let notes = chord.get_notes();
-        let octave = 4;
-        let mut total_time: f64 = 0.0;
-        let note_lengths: Vec<f64> = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
-        loop {
-            for note in notes.iter() {
-                if total_time < 4.0 {
-                    let max_index: usize;
-                    if total_time != 0.0 {
-                        let max_value = 4 as f64 - total_time;
-
-                        max_index = (max_value * 2 as f64 - 1 as f64).round() as usize;
-                    }else{
-                        max_index = note_lengths.len() - 1;
-                    }
-
-                    
-                    let duration_index = 7;
-                    //let duration_index = self.math_magician.big_decision(0, max_index as u16);
-                    let duration = note_lengths[duration_index as usize];
-                    
-                    total_time += duration;
-
-                    self.midi_file.add_note_beats(
-                        add_octaves(*note, octave), 
-                        initial_time as f64 + total_time, 
-                        duration, 
-                        80
-                    );
-                }
-            }
-            if total_time >= 4.0 {
-                break;
-            }
-        }
-    }
-
     pub fn place_chord_bug_v2(
-        &mut self, chord: &Chord, initial_time: u32, is_high_pos: bool
+        &mut self, 
+        chord: &Chord,
+        _octave: i16, 
+        initial_time: u32
     ) {
         //let octave = self.math_magician.pick_note() % 2 + 4;
         let note_lengths = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
@@ -482,13 +486,16 @@ impl Music {
     }
 
     pub fn place_chord_bug_v3(
-        &mut self, notes: &Vec<u8>, initial_time: u32
+        &mut self, 
+        chord: &Chord, 
+        octave: i16,
+        initial_time: u32
     ) {
         let note_lengths = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
         
         //let notes = self.get_modified_notes(chord);
         
-        for note in notes {
+        for note in chord.get_notes() {
             let mut total_time = 0.0;
 
             loop {
@@ -511,7 +518,7 @@ impl Music {
                 let duration = note_lengths[i as usize];
 
                 self.midi_file.add_note_beats(
-                    note + self.key as u8, 
+                    note as u8 + self.key as u8 + (octave * 12) as u8, 
                     initial_time as f64 + total_time, 
                     duration,
                     self.math_magician.big_decision(70, 90) as u8

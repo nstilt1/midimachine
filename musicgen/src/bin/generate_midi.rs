@@ -1,11 +1,6 @@
-use std::{collections::HashSet, fs::{self, OpenOptions}, io::Write, path::Path};
+use std::{fs::{self, OpenOptions}, io::Write, path::Path};
 
-use midly::Smf;
-use music_modules_v2::Music;
-use musicgen::{generate_midi, Error};
-use sha2::{Digest, Sha256};
-
-mod music_modules_v2;
+use musicgen::generate_midi;
 
 fn write_midi_file(filename: &str, content: &[u8]) -> std::io::Result<()> {
     let dir = Path::new("./tests/blobs/");

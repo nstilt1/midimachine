@@ -20,6 +20,12 @@ impl Default for Chord {
     }
 }
 
+impl PartialEq for Chord {
+    fn eq(&self, other: &Self) -> bool {
+        self.root.eq(&other.root) && self.chord_type.eq(&other.chord_type)
+    }
+}
+
 impl Chord {
     pub fn new(root_index: u8, chord_type: &ChordType) -> Self {
         Chord {
