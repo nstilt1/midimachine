@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import MidiForm from './MidiForm';
 
-const MidiApp = ({ showExtraControls }) => {
+const MidiApp = ({ showExtraControls, setShowExtraControls }) => {
   const [wasmModule, setWasmModule] = useState(null);
 
   useEffect(() => {
@@ -27,6 +27,7 @@ const MidiApp = ({ showExtraControls }) => {
       {wasmModule ? <MidiForm
         wasmModule={wasmModule}
         showExtraControls={showExtraControls}
+        setShowExtraControls={setShowExtraControls}
       /> : <p>Loading...</p>}
     </div>
   );

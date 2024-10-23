@@ -20,7 +20,10 @@ export default function Home() {
           priority
           onClick={() => setClickedLogo(!clickedLogo)}
         />
-        <MidiApp showExtraControls={clickedLogo}></MidiApp>
+        <MidiApp 
+          showExtraControls={clickedLogo}
+          setShowExtraControls={setClickedLogo}
+        ></MidiApp>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         <a

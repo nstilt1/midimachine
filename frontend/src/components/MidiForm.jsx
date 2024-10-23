@@ -8,8 +8,9 @@ import Selector from "./Selector";
 import NumberInput from "./NumberInput";
 import MultiSelect from "./MultiSelector";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { Button } from "@/components/ui/button";
 
-const MidiForm = ({ wasmModule, showExtraControls }) => {
+const MidiForm = ({ wasmModule, showExtraControls, setShowExtraControls }) => {
   const [textInput, setTextInput] = useLocalStorage("textInput", '');
   const [mode, setMode] = useLocalStorage("mode", "melody");
   const [useSameChords, setUseSameChords] = useLocalStorage("useSameChords", false);
@@ -19,9 +20,25 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [vibe, setVibe] = useLocalStorage("vibe", 'default');
   const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
   const [customChords, setCustomChords] = useLocalStorage("customChords", []);
-  const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original')
+  const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original');
 
   const fileInputRef = useRef(null);
+
+  const resetInputs = (event) => {
+    event.preventDefault();
+
+    console.log("Resetting parameters");
+    setTextInput('');
+    setMode('melody');
+    setShowExtraControls(false);
+    setUseSameChords(false);
+    setMidiFile(null);
+    setNumChords(20);
+    setKey('random');
+    setVibe('default');
+    setChordGroup('default');
+    setChordPickingMethod('original');
+  }
 
   const handleTextChange = (event) => {
     setTextInput(event.target.value);
@@ -253,9 +270,12 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
         <div>
       {/* Using the midi-player custom element for MIDI playback */}
       {midiFile && (
+        <div>
         <MidiPlayer
           midiFileUrl={midiFile}
         ></MidiPlayer>
+        <Button onClick={resetInputs}>Reset Parameters</Button>
+        </div>
       )}
         </div>
       )}
