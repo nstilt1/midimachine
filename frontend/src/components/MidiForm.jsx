@@ -19,7 +19,8 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [vibe, setVibe] = useLocalStorage("vibe", 'default');
   const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
   const [customChords, setCustomChords] = useLocalStorage("customChords", []);
-  const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original')
+  const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original');
+  const [numUniqueChords, setNumUniqueChords] = useLocalStorage("numUniqueChords", 0);
 
   const fileInputRef = useRef(null);
 
@@ -47,6 +48,12 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     // ensure the number stored in `numChords` is greater than 0
     if (value > 0) {
       setNumChords(Math.round(value));
+    }
+  }
+
+  const handleNumUniqueChordsChange = (value) => {
+    if (value >= 0) {
+      setNumUniqueChords(Math.round(value));
     }
   }
 
@@ -86,7 +93,8 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
         numChords, key, 
         customChords, 
         chordGroup,
-        chord_picking_method
+        chord_picking_method,
+        numUniqueChords
       );
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
@@ -176,8 +184,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     { label: "Melody", value: "melody" },
     { label: "Chords", value: "chords" },
     { label: "Melody v2", value: "melody v2" },
-    { label: "Melody v3", value: "melody v3" },
-    { label: "Melody v4", value: "melody v4" }
+    { label: "Melody v3", value: "melody v3" }
   ];
 
   return (
@@ -206,7 +213,12 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
               id="numChords"
               labelText="# of chords:"
             />
-            Num Chords
+            <NumberInput
+              value={numUniqueChords}
+              onChange={handleNumUniqueChordsChange}
+              id="numUniqueChords"
+              labelText="# unique chords:"
+            />
             <Selector 
               options={keys} 
               selectedOption={key}

@@ -41,16 +41,22 @@ pub struct Music {
     all_chords: Vec<Chord>
 }
 
-macro_rules! pick_unique_chord {
+macro_rules! enforce_unique_chord {
     (
         $music_obj:expr, 
         $chord_picking_method:ident, 
         $previous_n_chords:expr,
-        $chord:expr,
+        $chord:expr
     ) => {
-        if $previous_n_chords.len() > 0 {
-            while $previous_n_chords.contains(&chord) {
-                *chord = $music_obj.$chord_picking_method()?;
+        if $previous_n_chords.capacity() > 0 {
+            let mut i = 0;
+            while $previous_n_chords.contains(&$chord) {
+                $chord = $music_obj.$chord_picking_method();
+                i += 1;
+                if i > 420 {
+                    // potential infinite loop
+                    break;
+                }
             }
             if $previous_n_chords.len() == $previous_n_chords.capacity() {
                 $previous_n_chords.pop_front();
@@ -90,20 +96,13 @@ macro_rules! pick_chord_placement_method {
 
             if $chord_picking_method == "original" {
                 for chord in chords.iter_mut() {
-                    *chord = $music_obj.pick_chord()?;
-                    if previous_n_chords.len() > 0 {
-                        while previous_n_chords.contains(&chord) {
-                            *chord = $music_obj.pick_chord()?;
-                        }
-                        if previous_n_chords.len() == previous_n_chords.capacity() {
-                            previous_n_chords.pop_front();
-                        }
-                        previous_n_chords.push_back(chord.clone());
-                    }
+                    *chord = $music_obj.pick_chord();
+                    enforce_unique_chord!($music_obj, pick_chord, previous_n_chords, *chord);
                 }
             } else if $chord_picking_method == "1D" {
                 for chord in chords.iter_mut() {
                     *chord = $music_obj.pick_chord_1d();
+                    enforce_unique_chord!($music_obj, pick_chord_1d, previous_n_chords, *chord);
                 }
             }
 
@@ -123,12 +122,14 @@ macro_rules! pick_chord_placement_method {
                     $chord_placement_str => {
                         if $chord_picking_method == "original" {
                             for i in 0..$num_chords {
-                                let chord = $music_obj.pick_chord()?;
+                                let mut chord = $music_obj.pick_chord();
+                                enforce_unique_chord!($music_obj, pick_chord, previous_n_chords, chord);
                                 $music_obj.$placement_method(&chord, 4, (i as u32 * 4).into());
                             }
                         } else if $chord_picking_method == "1D" {
                             for i in 0..$num_chords {
-                                let chord = $music_obj.pick_chord_1d();
+                                let mut chord = $music_obj.pick_chord_1d();
+                                enforce_unique_chord!($music_obj, pick_chord, previous_n_chords, chord);
                                 $music_obj.$placement_method(&chord, 4, (i as u32 * 4).into());
                             }
                         }
@@ -348,18 +349,18 @@ impl Music {
     }
 
     /// Picks a random chord from the 2-dimensional list of chords.
-    fn pick_chord(&mut self) -> Result<Chord, MusicError> {
+    fn pick_chord(&mut self) -> Chord {
         let mut i = 0;
         let mut note = self.math_magician.pick_note();
         loop {
             let chord_list = self.notes_of_chords[note as usize].to_owned();
             if chord_list.len() != 0 {
-                return Ok(chord_list[self.math_magician.big_decision(0, (chord_list.len() - 1) as u16) as usize].to_owned());
+                return chord_list[self.math_magician.big_decision(0, (chord_list.len() - 1) as u16) as usize].to_owned();
             }
             i += 1;
             note = (note + 1) % 12;
-            if i > 12 {
-                return Err("Error M94: notes_of_chords not populated".into());
+            if i > 24 {
+                return Chord::default();
             }
         }
     }

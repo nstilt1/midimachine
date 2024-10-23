@@ -31,7 +31,8 @@ fn main() -> Result<(), std::io::Error> {
         "random", 
         "", 
         "default", 
-        "original"
+        "original",
+        0
     ).unwrap();
 
     write_midi_file("config1.mid", &midi)?;
@@ -44,7 +45,8 @@ fn main() -> Result<(), std::io::Error> {
         "random",
         "",
         "default",
-        "original"
+        "original",
+        0
     ).unwrap();
 
     write_midi_file("config2.mid", &midi)?;
@@ -57,7 +59,8 @@ fn main() -> Result<(), std::io::Error> {
         "random", 
         "", 
         "default", 
-        "original"
+        "original",
+        0
     ).unwrap();
 
     write_midi_file("config3.mid", &midi)?;

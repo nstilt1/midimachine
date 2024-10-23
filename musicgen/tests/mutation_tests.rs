@@ -12,7 +12,8 @@ fn gen_midi(is_melody: bool, use_same_chords: bool) -> Vec<u8> {
         "random",
         "",
         "default",
-        "original"
+        "original",
+        0
     ).unwrap()
 }
 

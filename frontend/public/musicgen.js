@@ -136,9 +136,10 @@ function getArrayU8FromWasm0(ptr, len) {
  * @param {Array<any>} chord_selection
  * @param {string} chord_type_group
  * @param {string} chord_picking_method
+ * @param {number} min_number_of_unique_chords
  * @returns {Uint8Array}
  */
-export function generate_midi(file_content, generation_mode, should_use_same_chords, num_chords, key, chord_selection, chord_type_group, chord_picking_method) {
+export function generate_midi(file_content, generation_mode, should_use_same_chords, num_chords, key, chord_selection, chord_type_group, chord_picking_method, min_number_of_unique_chords) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passArray8ToWasm0(file_content, wasm.__wbindgen_malloc);
@@ -151,7 +152,7 @@ export function generate_midi(file_content, generation_mode, should_use_same_cho
         const len3 = WASM_VECTOR_LEN;
         const ptr4 = passStringToWasm0(chord_picking_method, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len4 = WASM_VECTOR_LEN;
-        wasm.generate_midi(retptr, ptr0, len0, ptr1, len1, should_use_same_chords, num_chords, ptr2, len2, addHeapObject(chord_selection), ptr3, len3, ptr4, len4);
+        wasm.generate_midi(retptr, ptr0, len0, ptr1, len1, should_use_same_chords, num_chords, ptr2, len2, addHeapObject(chord_selection), ptr3, len3, ptr4, len4, min_number_of_unique_chords);
         var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
         var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
         var r2 = getDataViewMemory0().getInt32(retptr + 4 * 2, true);
