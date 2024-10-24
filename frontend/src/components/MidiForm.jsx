@@ -176,7 +176,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   ];
 
   const chordPickingMethods = [
-    { label: "Original", value: "original" },
+    { label: "Original - 2D", value: "original" },
     { label: "1D", value: "1D" }
   ];
 
@@ -199,14 +199,13 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
               onChange={setMode}
               label="Choose a mode:"
             />
-            <br/>
             <input 
               type="checkbox"
               id="useSameChords"
               checked={useSameChords}
               onChange={handleUseSameChordsChange}
             />
-            <label htmlFor="useSameChords">Use same chords for melody and chords?</label>
+            <label htmlFor="useSameChords">Use same chords for all modes?</label>
             <NumberInput
               value={numChords}
               onChange={handleNumChordsChange}

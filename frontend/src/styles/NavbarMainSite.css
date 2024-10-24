@@ -1,0 +1,770 @@
+div.oxy-header-row {
+    background : rgb(52, 58, 64) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgb(52, 58, 64);
+    border : 2px dashed rgb(255, 0, 0);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : block;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : 84px;
+    line-height : 25.6px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : 1903px;
+  }
+  
+  div.oxy-header-container {
+    align-items : stretch;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : 100%;
+    justify-content : flex-start;
+    line-height : 25.6px;
+    margin : 0px auto;
+    max-width : 1120px;
+    outline : rgb(64, 64, 64) none 0px;
+    padding : 0px 20px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  div.oxy-header-left {
+    align-items : center;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    justify-content : flex-start;
+    line-height : 25.6px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  a.ct-link.saas-logo {
+    align-items : center;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(0, 116, 219);
+    box-sizing : border-box;
+    color : rgb(0, 116, 219);
+    cursor : pointer;
+    display : flex;
+    flex-direction : column;
+    flex-flow : column wrap;
+    flex-wrap : wrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : 80px;
+    justify-content : center;
+    line-height : 25.6px;
+    min-height : auto;
+    min-width : auto;
+    opacity : 0.7;
+    outline : rgb(0, 116, 219) none 0px;
+    padding : 10px 0px;
+    text-align : center;
+    text-decoration : none solid rgb(0, 116, 219);
+    transition : 0.2s;
+    transition-duration : 0.2s;
+    width : 175px;
+  }
+  
+  img.ct-image.abc-logo {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(0, 116, 219);
+    box-sizing : border-box;
+    color : rgb(0, 116, 219);
+    cursor : pointer;
+    display : block;
+    filter : hue-rotate(0deg);
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : 60px;
+    line-height : 25.6px;
+    max-width : 100%;
+    min-height : auto;
+    min-width : auto;
+    outline : rgb(0, 116, 219) none 0px;
+    overflow : clip;
+    overflow-clip-margin : content-box;
+    overflow-x : clip;
+    overflow-y : clip;
+    text-align : center;
+    text-decoration : none solid rgb(0, 116, 219);
+    transition : all;
+    width : 100px;
+  }
+  
+  div.oxy-header-center {
+    align-items : center;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex : 1 1 auto;
+    flex-grow : 1;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    justify-content : center;
+    line-height : 25.6px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  div.oxy-header-right {
+    align-items : center;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    justify-content : flex-end;
+    line-height : 25.6px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  div.ct-div-block {
+    align-items : center;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : 58.3906px;
+    line-height : 25.6px;
+    min-height : auto;
+    min-width : auto;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : 692.734px;
+  }
+  
+  nav.oxy-nav-menu.oxy-nav-menu-dropdowns.oxy-nav-menu-dropdown-arrow {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : block;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  div.oxy-menu-toggle {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    cursor : pointer;
+    display : none;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  div.oxy-nav-menu-hamburger-wrap {
+    align-items : center;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    cursor : pointer;
+    display : flex;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : 40px;
+    justify-content : center;
+    line-height : 25.6px;
+    margin : 10px 0px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : 40px;
+  }
+  
+  div.oxy-nav-menu-hamburger {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    cursor : pointer;
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : 32px;
+    justify-content : space-between;
+    line-height : 25.6px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : 40px;
+  }
+  
+  div.oxy-nav-menu-hamburger-line {
+    background : rgba(255, 255, 255, 0.7) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(255, 255, 255, 0.7);
+    border : 0px none rgb(64, 64, 64);
+    border-radius : 2px;
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    cursor : pointer;
+    display : block;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : 6px;
+    line-height : 25.6px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  div.menu-main-menu-signed-in-container {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : block;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  ul.oxy-nav-menu-list {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    outline : rgb(64, 64, 64) none 0px;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  li.menu-item.menu-item-type-post_type.menu-item-object-page.menu-item-2080 {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none none;
+    list-style-type : none;
+    outline : rgb(64, 64, 64) none 0px;
+    position : relative;
+    text-align : left;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  a {
+    align-items : center;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgba(255, 255, 255, 0.7);
+    box-sizing : border-box;
+    color : rgba(255, 255, 255, 0.7);
+    cursor : pointer;
+    display : flex;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none none;
+    list-style-type : none;
+    outline : rgba(255, 255, 255, 0.7) none 0px;
+    padding : 20px;
+    text-align : left;
+    text-decoration : none solid rgba(255, 255, 255, 0.7);
+    transition : background-color ease-in-out, color ease-in-out, border-color ease-in-out;
+    transition-property : background-color, color, border-color;
+    transition-timing-function : ease-in-out;
+    visibility : hidden;
+    white-space : nowrap;
+    width : auto;
+  }
+  
+  li.menu-item.menu-item-type-post_type.menu-item-object-page.menu-item-2078 {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none none;
+    list-style-type : none;
+    outline : rgb(64, 64, 64) none 0px;
+    position : relative;
+    text-align : left;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  li.menu-item.menu-item-type-post_type.menu-item-object-page.menu-item-2079 {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none none;
+    list-style-type : none;
+    outline : rgb(64, 64, 64) none 0px;
+    position : relative;
+    text-align : left;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  li.menu-item.menu-item-type-post_type.menu-item-object-page.menu-item-2174 {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none none;
+    list-style-type : none;
+    outline : rgb(64, 64, 64) none 0px;
+    position : relative;
+    text-align : left;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  li.menu-item.menu-item-type-tml_action.menu-item-object-dashboard.menu-item-has-children.menu-item-2092 {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none none;
+    list-style-type : none;
+    outline : rgb(64, 64, 64) none 0px;
+    position : relative;
+    text-align : left;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    width : auto;
+  }
+  
+  ul.sub-menu {
+    background : rgb(52, 58, 64) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgb(52, 58, 64);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none circle;
+    list-style-type : circle;
+    opacity : 0;
+    outline : rgb(64, 64, 64) none 0px;
+    position : absolute;
+    text-align : left;
+    text-decoration : none solid rgb(64, 64, 64);
+    top : 100%;
+    transition : visibility ease-in-out, opacity ease-in-out;
+    transition-property : visibility, opacity;
+    transition-timing-function : ease-in-out;
+    visibility : hidden;
+    white-space : nowrap;
+    width : auto;
+    z-index : 2147483641;
+  }
+  
+  li.menu-item.menu-item-type-custom.menu-item-object-custom.menu-item-2094 {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none none;
+    list-style-type : none;
+    outline : rgb(64, 64, 64) none 0px;
+    position : relative;
+    text-align : left;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    visibility : hidden;
+    white-space : nowrap;
+    width : auto;
+  }
+  
+  li.menu-item.menu-item-type-custom.menu-item-object-custom.menu-item-2095 {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none none;
+    list-style-type : none;
+    outline : rgb(64, 64, 64) none 0px;
+    position : relative;
+    text-align : left;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    visibility : hidden;
+    white-space : nowrap;
+    width : auto;
+  }
+  
+  li.menu-item.menu-item-type-custom.menu-item-object-custom.menu-item-2175 {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none none;
+    list-style-type : none;
+    outline : rgb(64, 64, 64) none 0px;
+    position : relative;
+    text-align : left;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    visibility : hidden;
+    white-space : nowrap;
+    width : auto;
+  }
+  
+  li.menu-item.menu-item-type-tml_action.menu-item-object-logout.menu-item-2093 {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(64, 64, 64);
+    box-sizing : border-box;
+    color : rgb(64, 64, 64);
+    display : flex;
+    flex-direction : column;
+    flex-flow : column nowrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    line-height : 25.6px;
+    list-style : outside none none;
+    list-style-type : none;
+    outline : rgb(64, 64, 64) none 0px;
+    position : relative;
+    text-align : left;
+    text-decoration : none solid rgb(64, 64, 64);
+    transition : all;
+    visibility : hidden;
+    white-space : nowrap;
+    width : auto;
+  }
+  
+  a.ct-link-text {
+    background : rgb(72, 194, 251) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgb(72, 194, 251);
+    border : 0px none rgb(255, 255, 255);
+    border-radius : 100px;
+    box-sizing : border-box;
+    color : rgb(255, 255, 255);
+    cursor : pointer;
+    display : block;
+    font-family : "Open Sans";
+    font-size : 14px;
+    font-weight : 700;
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : 39.3906px;
+    letter-spacing : 1px;
+    line-height : 15.4px;
+    min-height : auto;
+    min-width : auto;
+    outline : rgb(255, 255, 255) none 0px;
+    padding : 12px 48px;
+    text-align : center;
+    text-decoration : none solid rgb(255, 255, 255);
+    text-transform : uppercase;
+    transition : all;
+    width : 192.297px;
+  }
+  
+  a.ct-link.atomic-logo {
+    align-items : center;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(0, 116, 219);
+    box-sizing : border-box;
+    color : rgb(0, 116, 219);
+    cursor : pointer;
+    display : flex;
+    flex-direction : column;
+    flex-flow : column wrap;
+    flex-wrap : wrap;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : auto;
+    justify-content : center;
+    line-height : 25.6px;
+    opacity : 0.8;
+    outline : rgb(0, 116, 219) none 0px;
+    text-align : center;
+    text-decoration : none solid rgb(0, 116, 219);
+    transition : 0.5s;
+    transition-duration : 0.5s;
+    width : auto;
+  }
+  
+  img.ct-image {
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+    background-color : rgba(0, 0, 0, 0);
+    border : 0px none rgb(0, 116, 219);
+    box-sizing : border-box;
+    color : rgb(0, 116, 219);
+    cursor : pointer;
+    display : block;
+    font-family : "Open Sans";
+    grid-area : auto;
+    grid-column : auto;
+    grid-gap : normal;
+    grid-row : auto;
+    grid-template : none;
+    height : 60px;
+    line-height : 25.6px;
+    max-width : 100%;
+    outline : rgb(0, 116, 219) none 0px;
+    overflow : clip;
+    overflow-clip-margin : content-box;
+    overflow-x : clip;
+    overflow-y : clip;
+    text-align : center;
+    text-decoration : none solid rgb(0, 116, 219);
+    transition : all;
+    width : auto;
+  }
+  
+  
