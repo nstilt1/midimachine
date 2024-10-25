@@ -33,16 +33,7 @@ const Navbar = ( { whenClickedLogo } ) => {
                                 <a href="https://alteredbrainchemistry.com/shop/">Shop</a>
                             </li>
                             <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2078"><a href="https://alteredbrainchemistry.com/my-cart/">My Cart</a></li>
-                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2079"><a href="https://alteredbrainchemistry.com/checkout/">Checkout</a></li>
                             <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2174"><a href="https://alteredbrainchemistry.com/blog/">Blog</a></li>
-                            <li class="menu-item menu-item-type-tml_action menu-item-object-dashboard menu-item-has-children menu-item-2092"><a href="https://alteredbrainchemistry.com/dashboard/">Dashboard</a>
-                            <ul class="sub-menu">
-                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2094"><a href="/dashboard/orders/">Orders</a></li>
-                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2095"><a href="/dashboard/downloads/">Downloads</a></li>
-                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2175"><a href="/dashboard/user-licenses">Licenses</a></li>
-                            <li class="menu-item menu-item-type-tml_action menu-item-object-logout menu-item-2093"><a href="https://alteredbrainchemistry.com/logout/?_wpnonce=d72631f170">Log Out</a></li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
         </nav>

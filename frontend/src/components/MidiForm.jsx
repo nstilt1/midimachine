@@ -191,7 +191,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-        {showExtraControls && <div><label>Select an Option:</label>
+        {showExtraControls && <div>
           <div>
             <Selector 
               options={modes}

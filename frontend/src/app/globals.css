@@ -25,3 +25,7 @@ body {
     text-wrap: balance;
   }
 }
+
+.blend {
+  color: transparent;
+}
