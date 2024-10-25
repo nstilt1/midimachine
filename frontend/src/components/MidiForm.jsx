@@ -266,6 +266,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
       {midiFile && (
         <MidiPlayer
           midiFileUrl={midiFile}
+          textInput={textInput}
         ></MidiPlayer>
       )}
         </div>
