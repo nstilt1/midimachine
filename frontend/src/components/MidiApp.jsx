@@ -23,7 +23,7 @@ const MidiApp = ({ showExtraControls }) => {
 
   return (
     <div>
-      <h1><span class="blend">"</span>AI<span class="blend">"</span> MIDI File Generator</h1>
+      <h1><span class="blend">&quot;</span>AI<span class="blend">&quot;</span> MIDI File Generator</h1>
       {wasmModule ? <MidiForm
         wasmModule={wasmModule}
         showExtraControls={showExtraControls}

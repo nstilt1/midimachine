@@ -4004,10 +4004,6 @@ noscript :is(ul,li,a,#incspec) {
     background-color:#ffffff;
     }
     
-    .oxy-pro-menu .oxy-pro-menu-off-canvas-container, .oxy-pro-menu .oxy-pro-menu-open-container{
-    background-image:url();
-    }
-    
     .oxy-pro-menu .oxy-pro-menu-off-canvas-container .oxy-pro-menu-list .menu-item-has-children > a svg, .oxy-pro-menu .oxy-pro-menu-open-container .oxy-pro-menu-list .menu-item-has-children > a svg{
     font-size:24px;
     }
