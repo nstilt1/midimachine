@@ -30,3 +30,9 @@ impl Default for ChordType {
         }
     }
 }
+
+impl PartialEq for ChordType {
+    fn eq(&self, other: &Self) -> bool {
+        self.note_intervals.eq(&other.note_intervals) && self.roots.eq(&other.roots)
+    }
+}

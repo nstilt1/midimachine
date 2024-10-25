@@ -11,7 +11,7 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 
 const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [textInput, setTextInput] = useLocalStorage("textInput", '');
-  const [selectedOption, setSelectedOption] = useLocalStorage("selectedOption", 'melody');
+  const [mode, setMode] = useLocalStorage("mode", "melody");
   const [useSameChords, setUseSameChords] = useLocalStorage("useSameChords", false);
   const [midiFile, setMidiFile] = useState(null);
   const [numChords, setNumChords] = useLocalStorage("numChords", 20);
@@ -19,7 +19,8 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [vibe, setVibe] = useLocalStorage("vibe", 'default');
   const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
   const [customChords, setCustomChords] = useLocalStorage("customChords", []);
-  const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original')
+  const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original');
+  const [numUniqueChords, setNumUniqueChords] = useLocalStorage("numUniqueChords", 0);
 
   const fileInputRef = useRef(null);
 
@@ -50,15 +51,17 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     }
   }
 
+  const handleNumUniqueChordsChange = (value) => {
+    if (value >= 0) {
+      setNumUniqueChords(Math.round(value));
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if(fileInputRef.current.files.length == 0 && !textInput) {
       alert("Please provide an input.");
-      return;
-    }
-    if(!selectedOption) {
-      alert("Please select an option.");
       return;
     }
 
@@ -85,12 +88,13 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
       //console.log("key: " + key);
       const midiBinary = wasmModule.generate_midi(
         combinedBinary, 
-        selectedOption, 
+        mode, 
         useSameChords, 
         numChords, key, 
         customChords, 
         chordGroup,
-        chord_picking_method
+        chord_picking_method,
+        numUniqueChords
       );
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
@@ -172,47 +176,48 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   ];
 
   const chordPickingMethods = [
-    { label: "Original", value: "original" },
+    { label: "Original - 2D", value: "original" },
     { label: "1D", value: "1D" }
-  ]
+  ];
+
+  const modes = [
+    { label: "Melody", value: "melody" },
+    { label: "Chords", value: "chords" },
+    { label: "Melody v2", value: "melody v2" },
+    { label: "Melody v3", value: "melody v3" }
+  ];
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-        {showExtraControls && <div><label>Select an Option:</label>
+        {showExtraControls && <div>
           <div>
-            <input
-              type="radio"
-              value="melody"
-              checked={selectedOption === 'melody'}
-              onChange={handleOptionChange}
-              required
+            <Selector 
+              options={modes}
+              selectedOption={mode}
+              onChange={setMode}
+              label="Choose a mode:"
             />
-            Melody
-            <input
-              type="radio"
-              value="chords"
-              checked={selectedOption === 'chords'}
-              onChange={handleOptionChange}
-              required
-            />
-            Chords
-            <br/>
             <input 
               type="checkbox"
               id="useSameChords"
               checked={useSameChords}
               onChange={handleUseSameChordsChange}
             />
-            <label htmlFor="useSameChords">Use same chords for melody and chords?</label>
+            <label htmlFor="useSameChords">Use same chords for all modes?</label>
             <NumberInput
               value={numChords}
               onChange={handleNumChordsChange}
               id="numChords"
               labelText="# of chords:"
             />
-            Num Chords
+            <NumberInput
+              value={numUniqueChords}
+              onChange={handleNumUniqueChordsChange}
+              id="numUniqueChords"
+              labelText="# unique chords:"
+            />
             <Selector 
               options={keys} 
               selectedOption={key}
