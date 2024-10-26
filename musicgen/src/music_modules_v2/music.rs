@@ -5,6 +5,7 @@ use sha2::Sha256;
 
 use super::error::MusicError;
 
+use super::utils::get_max_note_length_index;
 use super::{chord_type::ChordType, chord::Chord, utils::{MathMagician, add_octaves}, midi::MidiFile};
 
 macro_rules! define_consts {
@@ -317,7 +318,8 @@ impl Music {
             ("melody", original_place),
             ("chords", place_chord_regular),
             ("melody v2", place_chord_bug_v2),
-            ("melody v3", place_chord_bug_v3)
+            ("melody v3", place_chord_bug_v3),
+            ("intended", place_variable_len_fixed)
         );
 
         /*
@@ -380,27 +382,18 @@ impl Music {
      */
     pub fn original_place(&mut self, chord: &Chord, octave: i16, initial_time: u32) {
         let notes = chord.get_notes();
-        let note_lengths = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
-        //println!("Beggining for loop");
+        let note_lengths = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
         for note in notes.iter() {
             let t_note = (note + 12 * octave + self.key as i16) as u8;
             
             let mut total_time = 0.0;
-            //println!("Beggining inner loop");
             loop {
-                let mut max_length: i32;
-                //println!("Beggining inner inner if statement");
                 if total_time < 4.0 {
+                    let max_length: i32;
                     if total_time == 0.0 {
-                        max_length = 4;
+                        max_length = 4; // this is technically a bug; it's supposed to be 7
                     }else{
-                        max_length = -1;
-                        //println!("Beginning inner inner while loop");
-                        while max_length < 0 {
-                            // the following line is equivalent to 
-                            // max_length = 6 - noteLengths.index(totalTime)
-                            max_length = 6 - note_lengths.iter().position(|&r| r == total_time).unwrap() as i32;
-                        }
+                        max_length = get_max_note_length_index(total_time);
                     }
                     let i = self.math_magician.big_decision(0, max_length as u16);
                     total_time += note_lengths[i as usize];
@@ -409,6 +402,35 @@ impl Music {
                 }else{
                     break;
                 }
+            }
+        }
+    }
+
+    /// Fixed version of original place.
+    /// 
+    /// The 
+    fn place_variable_len_fixed(&mut self, chord: &Chord, octave: i16, initial_time: u32) {
+        let notes = chord.get_notes();
+        let note_lengths = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
+
+        let mut total_time = 0.0;
+        loop {
+            if total_time < 4.0 {
+                // pick note lengths such that Sum(chosenNoteLengths) = 4.0
+                let max_length: i32;
+                max_length = get_max_note_length_index(total_time);
+                let i = self.math_magician.big_decision(0, max_length as u16);
+                let note_length = note_lengths[i as usize];
+
+                // apply note length to all notes
+                for note in notes.iter() {
+                    let t_note = (note + 12 * octave + self.key as i16) as u8;
+                    self.midi_file.add_note_beats(t_note, initial_time as f64 + total_time, note_length, 80);
+                }
+
+                total_time += note_length;
+            } else {
+                break;
             }
         }
     }

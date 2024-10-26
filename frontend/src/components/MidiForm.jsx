@@ -184,7 +184,8 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     { label: "Melody", value: "melody" },
     { label: "Chords", value: "chords" },
     { label: "Melody v2", value: "melody v2" },
-    { label: "Melody v3", value: "melody v3" }
+    { label: "Melody v3", value: "melody v3" },
+    { label: "Intended Placement", value: "intended" }
   ];
 
   return (

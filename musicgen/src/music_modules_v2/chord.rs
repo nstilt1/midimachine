@@ -73,7 +73,7 @@ impl Chord {
         let octave = 4;// + octave_addition;
         let start_ticks = beats(start_beats);
         let mut total_time: f64 = 0.0;
-        let note_lengths: Vec<f64> = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
+        let note_lengths = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
         loop {
             let mut max_index: usize;
             if total_time >= 3.9 {
@@ -104,8 +104,8 @@ impl Chord {
             }
             
             // randomize length of chord
-            //let note_length_beats = note_lengths[rng.gen_range(0..=max_index)];
-            let note_length_beats = 4.0;
+            let note_length_beats = note_lengths[rng.gen_range(0..=max_index)];
+            //let note_length_beats = 4.0;
 
             // uncomment the next line to remove rhythm
 
