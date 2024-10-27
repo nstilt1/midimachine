@@ -6,7 +6,9 @@ use sha2::Sha256;
 use super::error::MusicError;
 
 use super::utils::get_max_note_length_index;
-use super::{chord_type::ChordType, chord::Chord, utils::{MathMagician, add_octaves}, midi::MidiFile};
+use super::{chord_type::ChordType, chord::Chord, utils::MathMagician, midi::MidiFile};
+
+const NOTE_LENGTHS: [f64; 8] = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
 
 macro_rules! define_consts {
     ($(($const_name:ident, $value:literal)),*) => {
@@ -36,7 +38,7 @@ define_consts!(
 pub struct Music {
     math_magician: MathMagician,
     midi_file: MidiFile,
-    key: u16,
+    key: i16,
     _chord_types: Vec<ChordType>,
     notes_of_chords: Vec<Vec<Chord>>,
     all_chords: Vec<Chord>
@@ -186,7 +188,7 @@ impl Music {
                 let len = k.len();
                 if chosen_key[..len] == **k {
                     let is_major = chosen_key[len..] == *"maj";
-                    key = (i as u16 + is_major as u16 * 3) % 12;
+                    key = (i as i16 + is_major as i16 * 3) % 12;
                     break;
                 }
             }
@@ -315,7 +317,7 @@ impl Music {
             should_use_same_chords,
             chord_picking_method,
             minimum_number_of_unique_chords,
-            ("melody", original_place),
+            ("melody", original_placement_algorithm),
             ("chords", place_chord_regular),
             ("melody v2", place_chord_bug_v2),
             ("melody v3", place_chord_bug_v3),
@@ -376,65 +378,63 @@ impl Music {
         
         self.all_chords[chord_index as usize].to_owned()
     }
-
-    /**
-     * The original implementation of `def place(self, octave, initTime, isHighPos = True)
-     */
-    pub fn original_place(&mut self, chord: &Chord, octave: i16, initial_time: u32) {
-        let notes = chord.get_notes();
-        let note_lengths = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
-        for note in notes.iter() {
-            let t_note = (note + 12 * octave + self.key as i16) as u8;
+    
+    /// The original implementation of `def place(self, octave, initTime, isHighPos = True)
+    /// 
+    /// "melody" mode
+    pub fn original_placement_algorithm(&mut self, chord: &Chord, octave: i16, initial_time: u32) {
+        for note in chord.get_notes().iter() {
+            let note_to_play = (note + 12 * octave + self.key as i16) as u8;
             
+            // pick note lengths such that total_time reaches 4.0
             let mut total_time = 0.0;
-            loop {
-                if total_time < 4.0 {
-                    let max_length: i32;
-                    if total_time == 0.0 {
-                        max_length = 4; // this is technically a bug; it's supposed to be 7
-                    }else{
-                        max_length = get_max_note_length_index(total_time);
-                    }
-                    let i = self.math_magician.big_decision(0, max_length as u16);
-                    total_time += note_lengths[i as usize];
-                    self.midi_file.add_note_beats(t_note, initial_time as f64 + total_time, total_time, 80);
-
+            while total_time < 4.0 {
+                // pick a random note length that is between [0.5, 4.0 - total_time]
+                let max_index: u16;
+                if total_time == 0.0 {
+                    max_index = 4; // this is technically a bug; it's supposed to be 7
                 }else{
-                    break;
+                    max_index = get_max_note_length_index(total_time);
                 }
+                let i = self.math_magician.big_decision(0, max_index);
+                total_time += NOTE_LENGTHS[i as usize];
+                self.midi_file.add_note_beats(
+                    note_to_play, 
+                    initial_time as f64 + total_time,
+                    total_time, 
+                    80
+                );
             }
         }
     }
 
-    /// Fixed version of original place.
+    /// Fixed version of original placement algorithm.
     /// 
-    /// The 
+    /// "intended" generation mode
     fn place_variable_len_fixed(&mut self, chord: &Chord, octave: i16, initial_time: u32) {
         let notes = chord.get_notes();
-        let note_lengths = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
 
+        // pick note lengths such that total_time reaches 4.0
         let mut total_time = 0.0;
-        loop {
-            if total_time < 4.0 {
-                // pick note lengths such that Sum(chosenNoteLengths) = 4.0
-                let max_length: i32;
-                max_length = get_max_note_length_index(total_time);
-                let i = self.math_magician.big_decision(0, max_length as u16);
-                let note_length = note_lengths[i as usize];
+        while total_time < 4.0 {
+            // pick a random note length that is between [0.5, 4.0 - total_time]
+            let max_index = get_max_note_length_index(total_time);
+            let chosen_index = self.math_magician.big_decision(0, max_index);
+            let note_length = NOTE_LENGTHS[chosen_index as usize];
 
-                // apply note length to all notes
-                for note in notes.iter() {
-                    let t_note = (note + 12 * octave + self.key as i16) as u8;
-                    self.midi_file.add_note_beats(t_note, initial_time as f64 + total_time, note_length, 80);
-                }
-
-                total_time += note_length;
-            } else {
-                break;
+            // apply note length to all notes
+            for note in notes.iter() {
+                let note_to_play = (note + 12 * octave + self.key as i16) as u8;
+                self.midi_file.add_note_beats(note_to_play, initial_time as f64 + total_time, note_length, 80);
             }
+
+            total_time += note_length;
         }
     }
 
+    /// Places chords in a regular manner.
+    /// 
+    /// "chords" generation mode
     pub fn place_chord_regular(&mut self, chord: &Chord, octave: i16, initial_time: u32) {
         let notes = chord.get_notes();
         let note_length = 4.0;
@@ -444,6 +444,7 @@ impl Music {
             self.midi_file.add_note_beats(t_note, initial_time as f64, note_length, 80);
         }
         let optional_notes = chord.get_optional_notes();
+        // optionally play optional notes
         for note in optional_notes.iter() {
             if self.math_magician.big_decision(0, 100) > 69 {
                 let t_note = (note + 12 * octave + self.key as i16) as u8;
@@ -452,6 +453,9 @@ impl Music {
         }
     }
 
+    /// Another buggy chord placement algorithm.
+    /// 
+    /// "melody v2"
     pub fn place_chord_bug_v2(
         &mut self, 
         chord: &Chord,
@@ -459,12 +463,11 @@ impl Music {
         initial_time: u32
     ) {
         //let octave = self.math_magician.pick_note() % 2 + 4;
-        let note_lengths = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
         let mut note_index = 0;
         let notes = chord.get_notes();
-        let octave: u16;
+        let octave: i16;
         if notes[0] < 6 {
-            octave = self.math_magician.pick_note() %2 + 4;
+            octave = self.math_magician.pick_note() % 2 + 4;
         }else{
             octave = self.math_magician.pick_note() % 2 + 3;
         }
@@ -482,20 +485,11 @@ impl Music {
                 if total_time >= 4.0 {
                     break;
                 }
-                let mut max_length = 4.0;
-                let max_index: usize;
-                if total_time != 0.0 {
-                    let max_value = 4 as f64 - total_time;
 
-                    max_index = (max_value * 2 as f64 - 1 as f64).round() as usize;
-                    
-                    
-                }else{
-                    max_index = note_lengths.len()-1;
-                }
+                let max_index = get_max_note_length_index(total_time);
 
-                let i = self.math_magician.big_decision(0, max_index as u16);
-                let duration = note_lengths[i as usize];
+                let chosen_index = self.math_magician.big_decision(0, max_index as u16);
+                let duration = NOTE_LENGTHS[chosen_index as usize];
 
                 self.midi_file.add_note_beats(
                     t_note + self.key as u8, 
@@ -508,14 +502,15 @@ impl Music {
         }
     }
 
+    /// Another buggy chord placement algorithm.
+    /// 
+    /// "melody v3"
     pub fn place_chord_bug_v3(
         &mut self, 
         chord: &Chord, 
         octave: i16,
         initial_time: u32
-    ) {
-        let note_lengths = vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
-        
+    ) { 
         //let notes = self.get_modified_notes(chord);
         
         for note in chord.get_notes() {
@@ -525,20 +520,11 @@ impl Music {
                 if total_time >= 4.0 {
                     break;
                 }
-                let mut max_length = 4.0;
-                let max_index: usize;
-                if total_time != 0.0 {
-                    let max_value = 4 as f64 - total_time;
 
-                    max_index = (max_value * 2 as f64 - 1 as f64).round() as usize;
-                    
-                    
-                }else{
-                    max_index = note_lengths.len()-1;
-                }
+                let max_index = get_max_note_length_index(total_time);
 
-                let i = self.math_magician.big_decision(0, max_length as u16);
-                let duration = note_lengths[i as usize];
+                let chosen_index = self.math_magician.big_decision(0, max_index as u16);
+                let duration = NOTE_LENGTHS[chosen_index as usize];
 
                 self.midi_file.add_note_beats(
                     note as u8 + self.key as u8 + (octave * 12) as u8, 
@@ -549,40 +535,6 @@ impl Music {
                 total_time += duration;
             }
         }
-    }
-
-    
-
-    pub fn get_modified_notes(&mut self, chord: &Chord) -> Vec<u8> {
-        let mut result: Vec<u8> = Vec::new();
-        let intervals = chord.chord_type.note_intervals.to_owned();
-        let octave: i16;
-        if intervals[0] + chord.root < 6 {
-            octave = (self.math_magician.big_decision(4, 5) * 12) as i16;
-        }else{
-            octave = (self.math_magician.big_decision(3, 4) * 12) as i16;
-        }
-        for n in 0..intervals.len() {
-            let i = intervals[n];
-            let n2 = (i + chord.root) as i16;
-            let magic_number = self.math_magician.pick_note();
-            let octave_shift: i16;
-            if i < 6 {
-                if magic_number < 3 {
-                    octave_shift = 12;
-                }else{
-                    octave_shift = 0;
-                }
-            }else{
-                if magic_number < 3 {
-                    octave_shift = -12;
-                }else{
-                    octave_shift = 0;
-                }
-            }
-            result.push((octave_shift + n2 + octave) as u8);
-        }
-        return result;
     }
 }
 

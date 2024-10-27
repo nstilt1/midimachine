@@ -40,7 +40,7 @@ impl MathMagician {
     /**
      * Math magician picks a note between 0 and 11, inclusive
      */
-    pub fn pick_note(&mut self) -> u16 {
+    pub fn pick_note(&mut self) -> i16 {
         return self.noggin.gen_range(0..=11);
     }
 }
@@ -68,7 +68,7 @@ pub fn time_ms() -> u128 {
 /// 
 /// i = 2 * note_lengths(i) - 1
 /// ```
-pub fn get_max_note_length_index(total_time: f64) -> i32 {
+pub fn get_max_note_length_index(total_time: f64) -> u16 {
     let max_value = 4f64 - total_time;
-    return (max_value * 2f64 - 1f64) as i32;
+    return (max_value * 2f64 - 1f64) as u16;
 }
