@@ -1,8 +1,12 @@
-use std::{fs::{self, OpenOptions}, io::Write, path::Path};
+//! This binary is used for populating the `/tests/blobs` folder with various
+//! outputs so that breaking changes can be detected by running `cargo test`.
 
-use musicgen::generate_midi;
+use musicgen::test_utils::{FILENAMES, GENERATION_MODES, generate_midi_files};
 
+/// Writes a midi file to the ./tests/blobs/ folder.
 fn write_midi_file(filename: &str, content: &[u8]) -> std::io::Result<()> {
+    use std::{fs::{self, OpenOptions}, io::Write, path::Path};
+
     let dir = Path::new("./tests/blobs/");
     let path = dir.join(filename);
 
@@ -21,48 +25,19 @@ fn write_midi_file(filename: &str, content: &[u8]) -> std::io::Result<()> {
     Ok(())
 }
 
+/// Writes a bunch of midi files to test the output against.
+fn write_midi_files() {
+    for (generation_mode, filename) in GENERATION_MODES.iter().zip(FILENAMES) {
+        let (midi_files, suffixes) = generate_midi_files(&generation_mode);
+        
+        for (midi_file, suffix) in midi_files.iter().zip(suffixes) {
+            write_midi_file(&format!("{}{}.mid", filename, suffix), &midi_file).unwrap();
+        }
+    }
+}
+
 #[cfg(not(target_arch = "wasm32"))]
 fn main() -> Result<(), std::io::Error> {
-    let midi = generate_midi(
-        b"a", 
-        "melody", 
-        false, 
-        100, 
-        "random", 
-        "", 
-        "default", 
-        "original",
-        0
-    ).unwrap();
-
-    write_midi_file("config1.mid", &midi)?;
-    
-    let midi = generate_midi(
-        b"a",
-        "melody",
-        true,
-        100,
-        "random",
-        "",
-        "default",
-        "original",
-        0
-    ).unwrap();
-
-    write_midi_file("config2.mid", &midi)?;
-
-    let midi = generate_midi(
-        b"a", 
-        "chords", 
-        false, 
-        100, 
-        "random", 
-        "", 
-        "default", 
-        "original",
-        0
-    ).unwrap();
-
-    write_midi_file("config3.mid", &midi)?;
+    write_midi_files();
     Ok(())
 }

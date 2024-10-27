@@ -1,36 +1,16 @@
 extern crate musicgen;
 use std::fs;
 
-use musicgen::generate_midi;
-
-fn gen_midi(is_melody: bool, use_same_chords: bool) -> Vec<u8> {
-    generate_midi(
-        b"a",
-        if is_melody { "melody" } else { "chords" },
-        use_same_chords,
-        100,
-        "random",
-        "",
-        "default",
-        "original",
-        0
-    ).unwrap()
-}
+use musicgen::test_utils::{generate_midi_files, FILENAMES, GENERATION_MODES};
 
 #[test]
-fn melody_mutations() {
-    let generated = gen_midi(true, false);
-    let master_content = fs::read("./tests/blobs/config1.mid").unwrap();
-    assert!(generated.eq(&master_content));
+fn generation_mode_mutations() {
+    for (generation_mode, filename) in GENERATION_MODES.iter().zip(FILENAMES) {
+        let (midi_files, suffixes) = generate_midi_files(&generation_mode);
 
-    let generated_same_chords = gen_midi(true, true);
-    let master_content = fs::read("./tests/blobs/config2.mid").unwrap();
-    assert!(generated_same_chords.eq(&master_content));
-}
-
-#[test]
-fn chords_mutations() {
-    let generated = gen_midi(false, false);
-    let master_content = fs::read("./tests/blobs/config3.mid").unwrap();
-    assert!(generated.eq(&master_content));
+        for (midi_file, suffix) in midi_files.iter().zip(suffixes) {
+            let master_file = fs::read(format!("./tests/blobs/{}{}.mid", filename, suffix)).unwrap();
+            assert!(midi_file.eq(&master_file), "`{}{}.mid` suffered a breaking change.", filename, suffix);
+        }
+    }
 }
