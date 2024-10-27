@@ -81,8 +81,8 @@ macro_rules! enforce_unique_chord {
 /// 
 /// This could have been written prettier by checking the user's input inside 
 /// the for-loops, but then every iteration of the for-loop would have at 
-/// least one extra comparison. And potentially more than one if more output 
-/// types are added later.
+/// least one extra comparison. And potentially more than one if more modes are 
+/// added later.
 macro_rules! pick_chord_placement_method {
     (
         $music_obj:expr, 
@@ -307,9 +307,6 @@ impl Music {
         chord_picking_method: &str, 
         minimum_number_of_unique_chords: u32,
     ) -> Result<Vec<TrackEvent>, MusicError> {
-        // determine chords before any other RNG calls are made so that the 
-        // same chords are used for all output types
-
         pick_chord_placement_method!(
             self,
             generation_mode, 
@@ -324,32 +321,7 @@ impl Music {
             ("intended", place_variable_len_fixed)
         );
 
-        /*
-        while j < 4 {
-            i = 0;
-            while i < 8 {
-                let chord = self.pick_chord()?;
-                //let octave = self.math_magician.big_decision(0, 1);
-                //chord.place_fixed_variable_len(&mut track, octave as u8, (i) as f32, Some(true));
-                //self.place_chord_bug_v3(&chord, i.into());
-                last_chords.push(self.get_modified_notes(&chord));
-                i += 1;
-            }
-            i = 0;
-            while i < 8 {
-                self.place_chord_bug_v3(&last_chords[i], j as u32*32 + i as u32 * 4);
-                i += 1;
-            }
-            last_chords = Vec::new();
-            j += 1;
-        }
-        */
-
-        
-
         return Ok(self.midi_file.finalize());
-
-        
     }
 
     /// Picks a random chord from the 2-dimensional list of chords.
