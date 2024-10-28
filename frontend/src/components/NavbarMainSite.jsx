@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import '../styles/NavbarMainSite.css';
+import '../styles/MainSiteStyles.css';
 
 const Navbar = ( { whenClickedLogo } ) => {
   return (
@@ -9,7 +9,7 @@ const Navbar = ( { whenClickedLogo } ) => {
         <div className="oxy-header-container">
             <div id="_header_left-129-29" className='oxy-header-left'>
                 <a id="link-130-29" className='ct-link saas-logo' target="_self">
-                    <Image id="image-131-29" className='ct-image abc-logo' src="/abc_logo_5_c2.png" alt="Logo" width={80} height={80} onClick={whenClickedLogo} />
+                    <Image id="image-131-29" className='ct-image abc-logo' src="/abc_logo_5_c2.png" alt="Logo" height={80} width={100} onClick={whenClickedLogo} />
                 </a>
             </div>
             <div id="_header_center-132-29" className='oxy-header-center'>
