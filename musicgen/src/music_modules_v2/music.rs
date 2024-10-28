@@ -368,8 +368,8 @@ impl Music {
                 }else{
                     max_index = get_max_note_length_index(total_time);
                 }
-                let i = self.math_magician.big_decision(0, max_index);
-                total_time += NOTE_LENGTHS[i as usize];
+                let chosen_index = self.math_magician.big_decision(0, max_index);
+                total_time += NOTE_LENGTHS[chosen_index as usize];
                 self.midi_file.add_note_beats(
                     note_to_play, 
                     initial_time as f64 + total_time,
@@ -397,7 +397,12 @@ impl Music {
             // apply note length to all notes
             for note in notes.iter() {
                 let note_to_play = (note + 12 * octave + self.key as i16) as u8;
-                self.midi_file.add_note_beats(note_to_play, initial_time as f64 + total_time, note_length, 80);
+                self.midi_file.add_note_beats(
+                    note_to_play, 
+                    initial_time as f64 + total_time, 
+                    note_length, 
+                    80
+                );
             }
 
             total_time += note_length;
