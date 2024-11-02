@@ -15,21 +15,19 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [useSameChords, setUseSameChords] = useLocalStorage("useSameChords", false);
   const [midiFile, setMidiFile] = useState(null);
   const [numChords, setNumChords] = useLocalStorage("numChords", 20);
+  const [sanitizedNumChords, setSanitizedNumChords] = useLocalStorage("sanitizedNumChords", 20);
   const [key, setKey] = useLocalStorage("key", 'random');
   const [vibe, setVibe] = useLocalStorage("vibe", 'default');
   const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
   const [customChords, setCustomChords] = useLocalStorage("customChords", []);
   const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original');
   const [numUniqueChords, setNumUniqueChords] = useLocalStorage("numUniqueChords", 0);
+  const [sanitizedNumUniqueChords, setSanitizedNumUniqueChords] = useLocalStorage("sanitizedNumUniqueChords", 0);
 
   const fileInputRef = useRef(null);
 
   const handleTextChange = (event) => {
     setTextInput(event.target.value);
-  }
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
   }
 
   const handleUseSameChordsChange = (event) => {
@@ -46,14 +44,16 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
 
   const handleNumChordsChange = (value) => {
     // ensure the number stored in `numChords` is greater than 0
+    setNumChords(value);
     if (value > 0) {
-      setNumChords(Math.round(value));
+      setSanitizedNumChords(Math.round(value));
     }
   }
 
   const handleNumUniqueChordsChange = (value) => {
+    setNumUniqueChords(value);
     if (value >= 0) {
-      setNumUniqueChords(Math.round(value));
+      setSanitizedNumUniqueChords(Math.round(value));
     }
   }
 
@@ -90,11 +90,12 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
         combinedBinary, 
         mode, 
         useSameChords, 
-        numChords, key, 
+        sanitizedNumChords, 
+        key, 
         customChords, 
         chordGroup,
         chord_picking_method,
-        numUniqueChords
+        sanitizedNumUniqueChords
       );
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
@@ -257,6 +258,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
             onSubmit={handleSubmit} 
             onTextChange={handleTextChange}
             fileInputRef={fileInputRef}
+            textInput={textInput}
           />
         </div>
       </form>
