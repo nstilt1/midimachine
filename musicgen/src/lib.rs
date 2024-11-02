@@ -144,9 +144,34 @@ pub mod test_utils {
 
 #[cfg(test)]
 mod tests {
-    use rand::{rngs::StdRng, SeedableRng};
+    use rand::{rngs::StdRng, RngCore, SeedableRng};
 
     use super::*;
+
+    fn hash(data: &[u8]) -> [u8; 32] {
+        let hash = Sha256::digest(data);
+        let mut bytes = [0u8; 32];
+        bytes.copy_from_slice(&hash);
+        bytes
+    }
+
+    #[test]
+    fn hashing_demo() {
+        let file_input = "some file's contents";
+        let text_input = "write a chord progression about being lost at voodoo";
+        let vibe_input = "4";
+
+        let concatenated = format!("{}{}{}", file_input, text_input, vibe_input);
+
+        // use an RNG to make decisions
+        let mut rng = StdRng::from_seed(hash(concatenated.as_bytes()));
+
+        // the output stream will always be the same for a given seed
+        assert_eq!(rng.next_u32(), 430701571);
+        assert_eq!(rng.next_u32(), 4153666748);
+        assert_eq!(rng.next_u32(), 3817228526);
+        assert_eq!(rng.next_u32(), 59595166);
+    }
 
     #[test]
     fn initializing_rng() {
