@@ -416,16 +416,16 @@ impl Music {
         let notes = chord.get_notes();
         let note_length = 4.0;
         for note in notes.iter() {
-            let t_note = (note + 12 * octave + self.key as i16) as u8;
+            let note_to_play = (note + 12 * octave + self.key as i16) as u8;
 
-            self.midi_file.add_note_beats(t_note, initial_time as f64, note_length, 80);
+            self.midi_file.add_note_beats(note_to_play, initial_time as f64, note_length, 80);
         }
         let optional_notes = chord.get_optional_notes();
         // optionally play optional notes
         for note in optional_notes.iter() {
             if self.math_magician.big_decision(0, 100) > 69 {
-                let t_note = (note + 12 * octave + self.key as i16) as u8;
-                self.midi_file.add_note_beats(t_note, initial_time as f64, note_length, 80);
+                let note_to_play = (note + 12 * octave + self.key as i16) as u8;
+                self.midi_file.add_note_beats(note_to_play, initial_time as f64, note_length, 80);
             }
         }
     }
@@ -455,7 +455,7 @@ impl Music {
                 -12
             }else{0};
             note_index += 1;
-            let t_note = (12 * octave as i8 + oct_shift) as u8 + note as u8;
+            let note_to_play = (12 * octave as i8 + oct_shift) as u8 + note as u8;
             let mut total_time = 0.0;
 
             loop {
@@ -469,7 +469,7 @@ impl Music {
                 let duration = NOTE_LENGTHS[chosen_index as usize];
 
                 self.midi_file.add_note_beats(
-                    t_note + self.key as u8, 
+                    note_to_play + self.key as u8, 
                     initial_time as f64 + total_time, 
                     duration,
                     self.math_magician.big_decision(70, 90) as u8
