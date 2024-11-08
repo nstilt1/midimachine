@@ -1,3 +1,5 @@
+use std::hash::Hash;
+
 
 #[derive(Clone, Debug)]
 pub struct ChordType {
@@ -34,5 +36,13 @@ impl Default for ChordType {
 impl PartialEq for ChordType {
     fn eq(&self, other: &Self) -> bool {
         self.note_intervals.eq(&other.note_intervals) && self.roots.eq(&other.roots)
+    }
+}
+
+impl Hash for ChordType {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.note_intervals.hash(state);
+        self.optional_notes.hash(state);
+        self.roots.hash(state);
     }
 }

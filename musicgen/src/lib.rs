@@ -52,6 +52,7 @@ pub fn generate_midi(
     chord_type_group: &str,
     chord_picking_method: &str,
     min_number_of_unique_chords: u32,
+    scale: &str,
 ) -> Result<Vec<u8>, Error> {
     let hash = Sha256::digest(file_content);
     
@@ -59,7 +60,7 @@ pub fn generate_midi(
         .map(|js_val| js_val.as_string().unwrap_or_default())
         .collect();
     // smoke the hash
-    let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group)?;
+    let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group, scale)?;
     let track = musician.make_music(num_chords, generation_mode, should_use_same_chords, chord_picking_method, min_number_of_unique_chords)?;
 
     let smf = Smf {
@@ -98,7 +99,7 @@ pub mod test_utils {
         
         let chord_selection_hashset: HashSet<String> = HashSet::new();
         // smoke the hash
-        let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group).unwrap();
+        let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group, "disabled").unwrap();
         let track = musician.make_music(num_chords as usize, generation_mode, should_use_same_chords, chord_picking_method, min_number_of_unique_chords).unwrap();
 
         let smf = Smf {

@@ -169,12 +169,58 @@ const KEYS: [&str; 12] = [
     "B"
 ];
 
+/// Removes chords that have notes outside of the minor natural scale
+/// The base key is C Minor, so we will remove:
+/// * C# - 1
+/// * E  - 4
+/// * F# - 6
+/// * A  - 9
+/// * B - 11
+fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<Chord>, scale: &str) {
+    let all_chords_set: HashSet<Chord> = HashSet::from_iter(all_chords.iter().cloned());
+
+    let good_notes_set: HashSet<usize> = match scale {
+        "disabled" => return,
+        "natural" => HashSet::from([0, 2, 3, 4, 5, 7, 8, 10]),
+        "melodic" => HashSet::from([0, 2, 3, 5, 7, 9, 11]),
+        "harmonic" => HashSet::from([0, 2, 3, 5, 7, 8, 11]),
+        "pentatonic" => HashSet::from([0, 3, 5, 7, 10]),
+        "romanian" => HashSet::from([0, 2, 3, 6, 7, 9, 10]),
+        "hungarian" => HashSet::from([0, 2, 3, 6, 7, 8, 11]),
+        _ => return
+    };
+    let good_notes: Vec<usize> = good_notes_set.iter().cloned().collect();
+    let bad_notes: Vec<usize> = HashSet::from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+        .difference(&good_notes_set)
+        .cloned()
+        .collect();
+
+    let mut bad_chords: HashSet<Chord> = HashSet::new();
+
+
+    for bad_note in bad_notes {
+        for chord in notes_of_chords[bad_note].iter() {
+            bad_chords.insert(chord.clone());
+        }
+        notes_of_chords[bad_note] = Vec::new();
+    }
+
+    for note in good_notes {
+        let chords: HashSet<Chord> = HashSet::from_iter(notes_of_chords[note].iter().cloned());
+        let subtracted: Vec<Chord> = chords.difference(&bad_chords).cloned().collect();
+        notes_of_chords[note] = subtracted;
+    }
+
+    *all_chords = all_chords_set.difference(&bad_chords).cloned().collect();
+}
+
 impl Music {
     pub fn smoke_hash(
         hash: sha2::digest::Output<Sha256>, 
         chosen_key: &str, 
         chord_selections: &HashSet<String>, 
         chord_type_group: &str,
+        scale: &str
     ) -> Result<Music, MusicError> {
         let mut stash = [0u8; 32];
         stash.copy_from_slice(&hash);
@@ -285,6 +331,8 @@ impl Music {
                 }
             }
         }
+
+        prune_chords(&mut notes_of_chords, &mut all_chords, scale);
 
         return Ok(Music {
             math_magician,
@@ -521,7 +569,7 @@ mod tests {
 
     macro_rules! init_music {
         ($chosen_key:expr) => {
-            Music::smoke_hash(Default::default(), $chosen_key, &HashSet::new(), "default").unwrap()
+            Music::smoke_hash(Default::default(), $chosen_key, &HashSet::new(), "default", "disabled").unwrap()
         };
     }
 

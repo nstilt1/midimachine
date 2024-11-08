@@ -23,6 +23,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original');
   const [numUniqueChords, setNumUniqueChords] = useLocalStorage("numUniqueChords", 0);
   const [sanitizedNumUniqueChords, setSanitizedNumUniqueChords] = useLocalStorage("sanitizedNumUniqueChords", 0);
+  const [scale, setScale] = useLocalStorage("scale", "disabled");
 
   const fileInputRef = useRef(null);
 
@@ -95,7 +96,8 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
         customChords, 
         chordGroup,
         chord_picking_method,
-        sanitizedNumUniqueChords
+        sanitizedNumUniqueChords,
+        scale
       );
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
@@ -189,6 +191,16 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     { label: "Intended Placement", value: "intended" }
   ];
 
+  const scales = [
+    { label: "Disable chord pruning", value: "disabled" },
+    { label: "Natural", value: "natural" },
+    { label: "Melodic", value: "melodic" },
+    { label: "Harmonic", value: "harmonic" },
+    { label: "Pentatonic", value: "pentatonic" },
+    { label: "Romanian", value: "romanian" },
+    { label: "Hungarian", value: "hungarian" }
+  ];
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -239,10 +251,17 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
             />}
             <Selector
               options={chordPickingMethods}
-              selectedOptions={chord_picking_method}
+              selectedOption={chord_picking_method}
               onChange={setChordPickingMethod}
               label="Choose a chord picking method:"
             />
+            <Selector 
+              options={scales}
+              selectedOption={scale}
+              onChange={setScale}
+              label="Prune chords to fit this scale:"
+            />
+
             </div>
             
           </div>}

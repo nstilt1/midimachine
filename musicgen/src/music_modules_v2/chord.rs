@@ -1,3 +1,5 @@
+use std::hash::Hash;
+
 use super::chord_type::*;
 
 #[derive(Clone, Debug)]
@@ -20,6 +22,15 @@ impl Default for Chord {
 impl PartialEq for Chord {
     fn eq(&self, other: &Self) -> bool {
         self.root.eq(&other.root) && self.chord_type.eq(&other.chord_type)
+    }
+}
+
+impl Eq for Chord {}
+
+impl Hash for Chord {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.chord_type.hash(state);
+        self.root.hash(state);
     }
 }
 
