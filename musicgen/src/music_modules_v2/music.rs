@@ -189,6 +189,28 @@ fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<Chor
         "hungarian" => HashSet::from([0, 2, 3, 6, 7, 8, 11]),
         _ => return
     };
+
+    // duplicate chords that have optional notes into the array
+    for n in 0..11 {
+        let chords = &mut notes_of_chords[n];
+        for chord in chords.clone().iter() {
+            let optional_notes = chord.get_optional_notes();
+            if !optional_notes.is_empty() {
+                for n in optional_notes.iter() {
+                    let mut new_intervals = chord.chord_type.note_intervals.clone();
+                    new_intervals.append(&mut vec![*n as u8]);
+                    let new_chord_type = ChordType::new(&new_intervals, &[chord.root], None);
+
+                    let new_chord = Chord::new(chord.root, &new_chord_type);
+                    all_chords.push(new_chord.clone());
+                    for note in new_chord.get_notes() {
+                        notes_of_chords[(note % 12) as usize].push(new_chord.clone());
+                    }
+                }
+            }
+        }
+    }
+
     let good_notes: Vec<usize> = good_notes_set.iter().cloned().collect();
     let bad_notes: Vec<usize> = HashSet::from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
         .difference(&good_notes_set)
