@@ -240,59 +240,131 @@ impl Music {
             }
         }
 
-        // default chord type definitions
-        let minor7 = ChordType::new(&[0, 10, 15, 19], &[C, D, F, FSHARP, ASHARP], None);
-        let major7 = ChordType::new(&[0, 11, 16, 19], &[DSHARP, GSHARP], None);
-        let diminished = ChordType::new(&[0, 3, 6], &[DSHARP, FSHARP], None);
-        let augmented = ChordType::new(&[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
-        //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
-        let major6 = ChordType::new(&[0, 9, 16, 19], &[DSHARP, GSHARP, ASHARP], Some(&[23]));
-
-        let minor6 = ChordType::new(&[0, 9, 15, 19], &[C, D, F, G], None);
-        let major9 = ChordType::new(&[0, 4, 10, 14], &[C, F, G], None);
-        let major7sharp9 = ChordType::new(&[0, 4, 10, 15], &[C, D, G, A], None);
-        let major7flat5sharp9 = ChordType::new(&[0, 4, 10, 15, 18], &[C, A], None);
-        let major9flat5 = ChordType::new(&[0, 4, 10, 15, 17], &[C, A], None);
-        let major7flat9 = ChordType::new(&[0, 4, 10, 13], &[C, D], None);
-
-        // extra chord types
-        let major = ChordType::new(&[0, 4, 7], &[DSHARP, GSHARP, ASHARP], None);
-        let minor = ChordType::new(&[0, 3, 7], &[C, D, F, G], None);
-
-        let minor9 = ChordType::new(&[0, 3, 7, 10, 14], &[G], None);
-
-
-        let major13 = ChordType::new(&[0, 5, 10, 21, 26, 31], &[C], Some(&[0, 5]));
-        let dominant9 = ChordType::new(&[0, 4, 9, 14, 18], &[CSHARP], None);
-        
-        let add9 = ChordType::new(&[0, 4, 7, 14], &[DSHARP, ASHARP], None);
-
         let chord_types = match chord_type_group {
-            "default" => vec![
-                minor7,
-                major7,
-                diminished,
-                augmented,
-                major6,
-                minor6,
-                major9,
-                major7sharp9,
-                major7flat5sharp9,
-                major9flat5,
-                major7flat9
-            ],
-            "major and minor" => vec![major, minor],
+            "default" => {
+                // default chord type definitions
+                let minor7 = ChordType::new(&[0, 10, 15, 19], &[C, D, F, FSHARP, ASHARP], None);
+                let major7 = ChordType::new(&[0, 11, 16, 19], &[DSHARP, GSHARP], None);
+                let diminished = ChordType::new(&[0, 3, 6], &[DSHARP, FSHARP], None);
+                let augmented = ChordType::new(&[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
+                //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
+                let major6 = ChordType::new(&[0, 9, 16, 19], &[DSHARP, GSHARP, ASHARP], Some(&[23]));
+
+                let minor6 = ChordType::new(&[0, 9, 15, 19], &[C, D, F, G], None);
+                let major9 = ChordType::new(&[0, 4, 10, 14], &[C, F, G], None);
+                let major7sharp9 = ChordType::new(&[0, 4, 10, 15], &[C, D, G, A], None);
+                let major7flat5sharp9 = ChordType::new(&[0, 4, 10, 15, 18], &[C, A], None);
+                let major9flat5 = ChordType::new(&[0, 4, 10, 15, 17], &[C, A], None);
+                let major7flat9 = ChordType::new(&[0, 4, 10, 13], &[C, D], None);
+                
+                vec![
+                    minor7,
+                    major7,
+                    diminished,
+                    augmented,
+                    major6,
+                    minor6,
+                    major9,
+                    major7sharp9,
+                    major7flat5sharp9,
+                    major9flat5,
+                    major7flat9
+                ]
+            },
+            "major and minor" => {
+                let major = ChordType::new(&[0, 4, 7], &[DSHARP, GSHARP, ASHARP], None);
+                let minor = ChordType::new(&[0, 3, 7], &[C, D, F, G], None);
+                vec![major, minor]
+            },
             "original" => {
                 let minor7_og = ChordType::new(&[0, 3, 6, 10], &[0, 2, 5, 7], None);
                 let augmented_og = ChordType::new(&[0, 4, 8], &[10], Some(&[12]));
                 let major7_og = ChordType::new(&[0, 4, 7, 11], &[3, 8], None);
                 let diminished_og = ChordType::new(&[0, 3, 6], &[3], None);
                 let major6_og = ChordType::new(&[0, 4, 7, 9], &[10], None);
+                let minor9 = ChordType::new(&[0, 3, 7, 10, 14], &[G], None);
 
                 vec![minor7_og, minor9, augmented_og, major7_og, diminished_og, major6_og]
             }
             "custom" => {
+                let minor7 = ChordType::new(&[0, 10, 15, 19], &[C, D, F, FSHARP, ASHARP], None);
+                let major7 = ChordType::new(&[0, 11, 16, 19], &[DSHARP, GSHARP], None);
+                let diminished = ChordType::new(&[0, 3, 6], &[DSHARP, FSHARP], None);
+                let augmented = ChordType::new(&[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
+                //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
+                let major6 = ChordType::new(&[0, 9, 16, 19], &[DSHARP, GSHARP, ASHARP], Some(&[23]));
+
+                let minor6 = ChordType::new(&[0, 9, 15, 19], &[C, D, F, G], None);
+                let major9 = ChordType::new(&[0, 4, 10, 14], &[C, F, G], None);
+                let major7sharp9 = ChordType::new(&[0, 4, 10, 15], &[C, D, G, A], None);
+                let major7flat5sharp9 = ChordType::new(&[0, 4, 10, 15, 18], &[C, A], None);
+                let major9flat5 = ChordType::new(&[0, 4, 10, 15, 17], &[C, A], None);
+                let major7flat9 = ChordType::new(&[0, 4, 10, 13], &[C, D], None);
+
+                // extra chord types
+                let major = ChordType::new(&[0, 4, 7], &[DSHARP, GSHARP, ASHARP], None);
+                let minor = ChordType::new(&[0, 3, 7], &[C, D, F, G], None);
+
+                let minor9 = ChordType::new(&[0, 3, 7, 10, 14], &[G], None);
+
+                let major13 = ChordType::new(&[0, 5, 10, 21, 26, 31], &[C], Some(&[0, 5]));
+                let dominant9 = ChordType::new(&[0, 4, 9, 14, 18], &[CSHARP], None);
+                
+                let add9 = ChordType::new(&[0, 4, 7, 14], &[DSHARP, ASHARP], None);
+
                 let mut chord_types: Vec<ChordType> = Vec::with_capacity(chord_selections.len());
+                
+                add_chord_types!(
+                    chord_types, 
+                    chord_selections,
+                    ("minor7", minor7),
+                    ("major7", major7),
+                    ("diminished", diminished),
+                    ("augmented", augmented),
+                    ("major6", major6),
+                    ("minor6", minor6),
+                    ("major9", major9),
+                    ("major7sharp9", major7sharp9),
+                    ("major7flat5sharp9", major7flat5sharp9),
+                    ("major9flat5", major9flat5),
+                    ("major7flat9", major7flat9),
+                    ("major", major),
+                    ("minor", minor),
+                    ("minor9", minor9),
+                    ("major13", major13),
+                    ("dominant9", dominant9),
+                    ("add9", add9)
+                );
+                chord_types
+            },
+            "custom_pruning" => {
+                let minor7 = ChordType::all_roots(&[0, 10, 15, 19], None);
+                let major7 = ChordType::all_roots(&[0, 11, 16, 19], None);
+                let diminished = ChordType::all_roots(&[0, 3, 6], None);
+                let augmented = ChordType::all_roots(&[0,4,8], Some(&[12]));
+                //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
+                let major6 = ChordType::all_roots(&[0, 9, 16, 19], Some(&[23]));
+
+                let minor6 = ChordType::all_roots(&[0, 9, 15, 19], None);
+                let major9 = ChordType::all_roots(&[0, 4, 10, 14], None);
+                let major7sharp9 = ChordType::all_roots(&[0, 4, 10, 15], None);
+                let major7flat5sharp9 = ChordType::all_roots(&[0, 4, 10, 15, 18], None);
+                let major9flat5 = ChordType::all_roots(&[0, 4, 10, 15, 17], None);
+                let major7flat9 = ChordType::all_roots(&[0, 4, 10, 13], None);
+
+                // extra chord types
+                let major = ChordType::all_roots(&[0, 4, 7], None);
+                let minor = ChordType::all_roots(&[0, 3, 7], None);
+
+                let minor9 = ChordType::all_roots(&[0, 3, 7, 10, 14], None);
+
+                let major13 = ChordType::all_roots(&[0, 5, 10, 21, 26, 31], None);
+                let dominant9 = ChordType::all_roots(&[0, 4, 9, 14, 18], None);
+                
+                let add9 = ChordType::all_roots(&[0, 4, 7, 14], None);
+
+                let mut chord_types: Vec<ChordType> = Vec::with_capacity(chord_selections.len());
+                
                 add_chord_types!(
                     chord_types, 
                     chord_selections,

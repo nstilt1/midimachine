@@ -155,7 +155,8 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const chordGroups = [
     { label: "Default", value: "default" },
     { label: "Original", value: "original" },
-    { label: "Custom", value: "custom" }
+    { label: "Custom", value: "custom" },
+    { label: "Custom (use pruning)", value: "custom_pruning" }
   ];
 
   const customChordTypes = [
@@ -244,7 +245,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
               onChange={setChordGroup}
               label="Choose a chord group:"
             />
-            {chordGroup == "custom" && <MultiSelect
+            {chordGroup == "custom" || chordGroup == "custom_pruning" && <MultiSelect
               options={customChordTypes}
               selectedOptions={customChords}
               setSelectedOptions={handleChordTypeSelection}
