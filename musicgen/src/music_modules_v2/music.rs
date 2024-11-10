@@ -169,8 +169,8 @@ const KEYS: [&str; 12] = [
     "B"
 ];
 
-/// Removes chords that have notes outside of the minor natural scale
-/// The base key is C Minor, so we will remove:
+/// Removes chords that have notes outside of the chosen scale
+/// The base key is C Minor, so for the natural minor scale, we will remove:
 /// * C# - 1
 /// * E  - 4
 /// * F# - 6
@@ -203,15 +203,15 @@ fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<Chor
             all_chords_set.insert(base_chord.clone());
 
             // add more chords with different combinations of notes to the sets
-            // `collected_notes` is used to add chords with 1, 2, ..., n optional notes
+            // `cumulated_notes` is used to add chords with 1, 2, ..., n optional notes
             // to the sets
             // `notes` is used to add chords with just one of the optional notes
-            let mut collected_notes = base_chord_type.note_intervals.clone();
+            let mut cumulated_notes = base_chord_type.note_intervals.clone();
             for note in optional_notes {
                 let mut notes = base_chord_type.note_intervals.clone();
-                collected_notes.push(note);
+                cumulated_notes.push(note);
                 notes.push(note);
-                let new_chord_type = ChordType::new(&collected_notes, &[root], None);
+                let new_chord_type = ChordType::new(&cumulated_notes, &[root], None);
                 let new_chord_type_2 = ChordType::new(&notes, &[root], None);
                 let new_chord = Chord::new(chord.root, &new_chord_type);
                 let new_chord_2 = Chord::new(chord.root, &new_chord_type_2);
@@ -238,7 +238,6 @@ fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<Chor
         .collect();
 
     let mut bad_chords: HashSet<Chord> = HashSet::new();
-
 
     for bad_note in bad_notes {
         for chord in notes_of_chords[bad_note].iter() {
