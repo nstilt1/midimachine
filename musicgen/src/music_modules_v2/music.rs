@@ -207,18 +207,34 @@ fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<Chor
             // to the sets
             // `notes` is used to add chords with just one of the optional notes
             let mut cumulated_notes = base_chord_type.note_intervals.clone();
-            for note in optional_notes {
+            for note in optional_notes.iter() {
                 let mut notes = base_chord_type.note_intervals.clone();
-                cumulated_notes.push(note);
-                notes.push(note);
+                cumulated_notes.push(*note);
+                notes.push(*note);
                 let new_chord_type = ChordType::new(&cumulated_notes, &[root], None);
                 let new_chord_type_2 = ChordType::new(&notes, &[root], None);
                 let new_chord = Chord::new(chord.root, &new_chord_type);
                 let new_chord_2 = Chord::new(chord.root, &new_chord_type_2);
+                all_chords_set.insert(new_chord.to_owned());
+                all_chords_set.insert(new_chord_2.to_owned());
                 for c in &[&new_chord, &new_chord_2, &base_chord] {
                     for n_2 in c.get_notes().iter() {
                         let index = (root + *n_2 as u8) % 12;
                         notes_of_chords_sets[index as usize].insert(c.to_owned().to_owned());
+                    }
+                }
+            }
+            // accumulate chords with optional notes added in reverse order
+            if optional_notes.len() > 2 {
+                let mut cumulated_notes = base_chord_type.note_intervals.clone();
+                for note in optional_notes.iter().rev() {
+                    cumulated_notes.push(*note);
+                    let new_chord_type = ChordType::new(&cumulated_notes, &[root], None);
+                    let new_chord = Chord::new(chord.root, &new_chord_type);
+                    all_chords_set.insert(new_chord.to_owned());
+                    for n_2 in new_chord.get_notes().iter() {
+                        let index = (root + *n_2 as u8) % 12;
+                        notes_of_chords_sets[index as usize].insert(new_chord.to_owned());
                     }
                 }
             }
