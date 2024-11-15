@@ -66,6 +66,11 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
       return;
     }
 
+    if((chordGroup == "custom" || chordGroup == "custom_pruning") && customChords.length == 0) {
+      alert("Please choose some chord types");
+      return;
+    }
+
     try {
         let fileBinary;
         if (fileInputRef.current.files.length == 0) {
