@@ -6,7 +6,7 @@ const NumberInput = ({ value, onChange, id, labelText }) => {
     };
 
     return (
-        <div className="w-full max-w-sm">
+        <div className="rounded-lg p-2">
         <div className="flex items-center border border-gray-300 rounded-md p-2">
             <input
                 type="number"

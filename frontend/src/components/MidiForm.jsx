@@ -268,7 +268,8 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
               onChange={setScale}
               label="Prune chords to fit this scale:"
             />
-            {(scale == "all_notes" || scale == "disabled") && chordGroup == "custom_pruning" && <div>
+            {(scale == "all_notes" || scale == "disabled") && chordGroup == "custom_pruning" && 
+            <div className="w-full max-w-sm">
               <p className="text-red-500">
                 The "Custom (use pruning)" chord group is intended to be used with pruning. 
                 You are welcome to try it without pruning, but it will likely be 
