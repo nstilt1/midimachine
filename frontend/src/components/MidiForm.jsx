@@ -199,7 +199,8 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     { label: "Harmonic", value: "harmonic" },
     { label: "Pentatonic", value: "pentatonic" },
     { label: "Romanian", value: "romanian" },
-    { label: "Hungarian", value: "hungarian" }
+    { label: "Hungarian", value: "hungarian" },
+    { label: "No pruning, but clone chords with optional notes", value: "all_notes" }
   ];
 
   return (
@@ -262,6 +263,14 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
               onChange={setScale}
               label="Prune chords to fit this scale:"
             />
+            {(scale == "all_notes" || scale == "disabled") && chordGroup == "custom_pruning" && <div>
+              <p className="text-red-500">
+                The "Custom (use pruning)" chord group is intended to be used with pruning. 
+                You are welcome to try it without pruning, but it will likely be 
+                unsatisfactory because the chords will probably not be in a 
+                specific key.
+              </p>
+            </div>}
 
             </div>
             
