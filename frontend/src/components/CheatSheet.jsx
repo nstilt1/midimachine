@@ -5,6 +5,12 @@ import Selector from "./Selector";
 import { Button } from "./ui/button";
 import ChordTable from "./ChordTable";
 import MultiSelect from "./MultiSelector";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+  } from "@/components/ui/accordion";
 
 const CheatSheet = ({
     wasmModule,
@@ -23,6 +29,7 @@ const CheatSheet = ({
     showExtraControls
 }) => {
     const [chords, setChords] = useState([]);
+    const [allChords, setAllChords] = useState([]);
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -34,7 +41,8 @@ const CheatSheet = ({
         try {
             const json = wasmModule.get_chords_of_key(chosenKey, customChords, chordGroup, scale);
             const data = JSON.parse(json);
-            setChords(data);
+            setChords(data['notes_of_chords']);
+            setAllChords(data['all_chords']);
             //console.log(data);
         } catch (error) {
             console.error("Error getting chords", error);
@@ -80,7 +88,27 @@ const CheatSheet = ({
                 </div>}
             </div>}
             <Button type="submit">Get Chords</Button>
-            {chords && <ChordTable chordData={chords} chosenKey={chosenKey}/>}
+            {chords && <div>
+                <Accordion type="multiple" collapsible>
+                    <AccordionItem value="table">
+                        <AccordionTrigger>Chord table</AccordionTrigger>
+                        <AccordionContent><ChordTable chordData={chords} chosenKey={chosenKey}/></AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="list">
+                        <AccordionTrigger>Chord list</AccordionTrigger>
+                        <AccordionContent>
+                            <Accordion type="single" collapsible>
+                            {allChords.map((chord, index) => (
+                                <AccordionItem value={`${index}`}>
+                                    <AccordionTrigger>{chord['name']}</AccordionTrigger>
+                                    <AccordionContent>{chord['notes']}</AccordionContent>
+                                </AccordionItem>
+                            ))}
+                            </Accordion>
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+            </div>}
             </form>
         </div>
     );
