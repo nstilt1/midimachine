@@ -115,6 +115,43 @@ function addHeapObject(obj) {
     heap[idx] = obj;
     return idx;
 }
+/**
+ * @param {string} key
+ * @param {Array<any>} chord_selection
+ * @param {string} chord_type_group
+ * @param {string} scale
+ * @returns {string}
+ */
+export function get_chords_of_key(key, chord_selection, chord_type_group, scale) {
+    let deferred5_0;
+    let deferred5_1;
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        const ptr0 = passStringToWasm0(key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ptr1 = passStringToWasm0(chord_type_group, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len1 = WASM_VECTOR_LEN;
+        const ptr2 = passStringToWasm0(scale, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len2 = WASM_VECTOR_LEN;
+        wasm.get_chords_of_key(retptr, ptr0, len0, addHeapObject(chord_selection), ptr1, len1, ptr2, len2);
+        var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
+        var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
+        var r2 = getDataViewMemory0().getInt32(retptr + 4 * 2, true);
+        var r3 = getDataViewMemory0().getInt32(retptr + 4 * 3, true);
+        var ptr4 = r0;
+        var len4 = r1;
+        if (r3) {
+            ptr4 = 0; len4 = 0;
+            throw takeObject(r2);
+        }
+        deferred5_0 = ptr4;
+        deferred5_1 = len4;
+        return getStringFromWasm0(ptr4, len4);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(deferred5_0, deferred5_1, 1);
+    }
+}
 
 function passArray8ToWasm0(arg, malloc) {
     const ptr = malloc(arg.length * 1, 1) >>> 0;

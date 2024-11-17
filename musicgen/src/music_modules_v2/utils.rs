@@ -4,6 +4,8 @@ use std::time::SystemTime;
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
+use super::music::KEYS;
+
 /**
  * Convert beats to ticks
  */
@@ -71,4 +73,17 @@ pub fn time_ms() -> u128 {
 pub fn get_max_note_length_index(total_time: f64) -> u16 {
     let max_value = 4f64 - total_time;
     return (max_value * 2f64 - 1f64) as u16;
+}
+
+pub fn parse_key(key: &str) -> i16 {
+    if key.ne("random") {
+        for (i, k) in KEYS.iter().enumerate() {
+            let len = k.len();
+            if key[..len] == **k {
+                let is_major = key[len..] == *"maj";
+                return  (i as i16 + is_major as i16 * 3) % 12;
+            }
+        }
+    }
+    return 0;
 }

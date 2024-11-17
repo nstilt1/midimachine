@@ -9,21 +9,32 @@ import NumberInput from "./NumberInput";
 import MultiSelect from "./MultiSelector";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
-const MidiForm = ({ wasmModule, showExtraControls }) => {
+const MidiForm = ({ 
+  wasmModule, 
+  showExtraControls, 
+  chosenKey, 
+  setKey,
+  chordGroup,
+  setChordGroup,
+  customChords,
+  scale,
+  setScale,
+  handleChordTypeSelection,
+  keys,
+  chordGroups,
+  customChordTypes,
+  scales
+}) => {
   const [textInput, setTextInput] = useLocalStorage("textInput", '');
   const [mode, setMode] = useLocalStorage("mode", "melody");
   const [useSameChords, setUseSameChords] = useLocalStorage("useSameChords", false);
   const [midiFile, setMidiFile] = useState(null);
   const [numChords, setNumChords] = useLocalStorage("numChords", 20);
   const [sanitizedNumChords, setSanitizedNumChords] = useLocalStorage("sanitizedNumChords", 20);
-  const [key, setKey] = useLocalStorage("key", 'random');
   const [vibe, setVibe] = useLocalStorage("vibe", 'default');
-  const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
-  const [customChords, setCustomChords] = useLocalStorage("customChords", []);
   const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original');
   const [numUniqueChords, setNumUniqueChords] = useLocalStorage("numUniqueChords", 0);
   const [sanitizedNumUniqueChords, setSanitizedNumUniqueChords] = useLocalStorage("sanitizedNumUniqueChords", 0);
-  const [scale, setScale] = useLocalStorage("scale", "disabled");
 
   const fileInputRef = useRef(null);
 
@@ -34,14 +45,6 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
   const handleUseSameChordsChange = (event) => {
     setUseSameChords(!useSameChords);
   }
-
-  const handleChordTypeSelection = (option) => {
-    if (customChords.includes(option)) {
-      setCustomChords(customChords.filter((item) => item !== option));
-    } else {
-      setCustomChords([...customChords, option]);
-    }
-  };
 
   const handleNumChordsChange = (value) => {
     // ensure the number stored in `numChords` is greater than 0
@@ -91,13 +94,13 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
       combinedBinary.set(textBinary, fileBinary.length);
 
       //console.log("useSameChords = " + useSameChords);
-      //console.log("key: " + key);
+      //console.log("key: " + chosenKey);
       const midiBinary = wasmModule.generate_midi(
         combinedBinary, 
         mode, 
         useSameChords, 
         sanitizedNumChords, 
-        key, 
+        chosenKey, 
         customChords, 
         chordGroup,
         chord_picking_method,
@@ -115,34 +118,6 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     }
   };
 
-  const keys = [
-    { label: "Pick one for me", value: "random" },
-    { label: "C minor", value: "Cmin" },
-    { label: "C# minor", value: "C#min" },
-    { label: "D minor", value: "Dmin" },
-    { label: "D# minor", value: "D#min" },
-    { label: "E minor", value: "Emin" },
-    { label: "F minor", value: "Fmin" },
-    { label: "F# minor", value: "F#min" },
-    { label: "G minor", value: "Gmin" },
-    { label: "G# minor", value: "G#min" },
-    { label: "A minor", value: "Amin" },
-    { label: "A# minor", value: "A#min" },
-    { label: "B minor", value: "Bmin" },
-    { label: "C major", value: "Cmaj" },
-    { label: "C# major", value: "C#maj" },
-    { label: "D major", value: "Dmaj" },
-    { label: "D# major", value: "D#maj" },
-    { label: "E major", value: "Emaj" },
-    { label: "F major", value: "Fmaj" },
-    { label: "F# major", value: "F#maj" },
-    { label: "G major", value: "Gmaj" },
-    { label: "G# major", value: "G#maj" },
-    { label: "A major", value: "Amaj" },
-    { label: "A# major", value: "A#maj" },
-    { label: "B minor", value: "Bmaj" }
-  ];
-
   const vibes = [
     { label: "Default vibe", value: "default"},
     { label: "Vibe 1", value: "1" },
@@ -157,33 +132,6 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     { label: "Vibe 10", value: "10" }
   ];
 
-  const chordGroups = [
-    { label: "Default", value: "default" },
-    { label: "Original", value: "original" },
-    { label: "Custom", value: "custom" },
-    { label: "Custom (use pruning)", value: "custom_pruning" }
-  ];
-
-  const customChordTypes = [
-    "major",
-    "minor",
-    "minor7",
-    "major7",
-    "diminished",
-    "augmented",
-    "major6",
-    "minor6",
-    "major9",
-    "minor9",
-    "major7sharp9",
-    "major7flat5sharp9",
-    "major9flat5",
-    "major7flat9",
-    "major13",
-    "dominant9",
-    "add9"
-  ];
-
   const chordPickingMethods = [
     { label: "Original - 2D", value: "original" },
     { label: "1D", value: "1D" }
@@ -195,17 +143,6 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     { label: "Melody v2", value: "melody v2" },
     { label: "Melody v3", value: "melody v3" },
     { label: "Intended Placement", value: "intended" }
-  ];
-
-  const scales = [
-    { label: "Disable chord pruning", value: "disabled" },
-    { label: "Natural", value: "natural" },
-    { label: "Melodic", value: "melodic" },
-    { label: "Harmonic", value: "harmonic" },
-    { label: "Pentatonic", value: "pentatonic" },
-    { label: "Romanian", value: "romanian" },
-    { label: "Hungarian", value: "hungarian" },
-    { label: "No pruning, but clone chords with optional notes", value: "all_notes" }
   ];
 
   return (
@@ -241,7 +178,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
             />
             <Selector 
               options={keys} 
-              selectedOption={key}
+              selectedOption={chosenKey}
               onChange={setKey}
               label="Choose a key:"
             />

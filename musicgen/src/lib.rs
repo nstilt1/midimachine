@@ -14,6 +14,7 @@ pub enum Error {
     MusicError(MusicError),
     MidlyError(midly::Error),
     StrError(String),
+    SerdeError(serde_json::Error),
 }
 
 impl Into<JsValue> for Error {
@@ -38,6 +39,43 @@ impl From<&str> for Error {
     fn from(value: &str) -> Self {
         Self::StrError(value.to_string())
     }
+}
+
+impl From<serde_json::Error> for Error {
+    fn from(value: serde_json::Error) -> Self {
+        Self::SerdeError(value)
+    }
+}
+
+#[wasm_bindgen]
+#[cfg(target_arch="wasm32")]
+pub fn get_chords_of_key(
+    key: &str,
+    chord_selection: Array,
+    chord_type_group: &str,
+    scale: &str
+) -> Result<String, Error> {
+    use music_modules_v2::utils::parse_key;
+    use serde_json::to_string;
+
+    let chord_selection_hashset: HashSet<String> = chord_selection.iter()
+        .map(|js_val| js_val.as_string().unwrap_or_default())
+        .collect();
+    let mut musician = Music::smoke_hash(Default::default(), key, &chord_selection_hashset, chord_type_group, scale)?;
+
+    let key_int = parse_key(key);
+    for chords in musician.notes_of_chords.iter_mut() {
+        for chord in chords.iter_mut() {
+            chord.key = key_int as u8;
+        }
+    }
+
+    let mut transposed_chords = musician.notes_of_chords.clone();
+    transposed_chords.rotate_right(key_int as usize);
+
+    let json = to_string(&transposed_chords)?;
+    
+    Ok(json)
 }
 
 #[wasm_bindgen]
