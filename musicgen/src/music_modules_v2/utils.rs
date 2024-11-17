@@ -75,13 +75,23 @@ pub fn get_max_note_length_index(total_time: f64) -> u16 {
     return (max_value * 2f64 - 1f64) as u16;
 }
 
+/// The key is expected to be of this form
+/// 
+/// ```txt
+/// Dmaj
+/// D#maj
+/// Bmin
+/// ```
+/// 
+/// The keys cannot be flat, such as `Bb` or `Eb`.
 pub fn parse_key(key: &str) -> i16 {
     if key.ne("random") {
+        let is_sharp = key.chars().nth(1).unwrap_or(' ') == '#';
         for (i, k) in KEYS.iter().enumerate() {
             let len = k.len();
             if key[..len] == **k {
                 let is_major = key[len..] == *"maj";
-                return  (i as i16 + is_major as i16 * 3) % 12;
+                return  (i as i16 + is_major as i16 * 3 + is_sharp as i16) % 12;
             }
         }
     }
