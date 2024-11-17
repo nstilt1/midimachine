@@ -353,7 +353,7 @@ impl Music {
             }
         }
 
-        prune_chords(&mut notes_of_chords, &mut all_chords, scale);
+        prune_chords(&mut notes_of_chords, &mut all_chords, scale, key);
 
         return Ok(Music {
             math_magician,

@@ -64,7 +64,7 @@ pub fn get_chords_of_key(
     let mut musician = Music::smoke_hash(Default::default(), key, &chord_selection_hashset, chord_type_group, scale)?;
 
     let key_int = parse_key(key);
-    translate_and_prune(&mut musician.notes_of_chords, &mut musician.all_chords, key, scale);
+    //translate_and_prune(&mut musician.notes_of_chords, &mut musician.all_chords, key, scale);
 
     // sort the sub-arrays
     for col in musician.notes_of_chords.iter_mut() {
