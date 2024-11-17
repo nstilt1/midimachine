@@ -55,7 +55,7 @@ pub fn get_chords_of_key(
     chord_type_group: &str,
     scale: &str
 ) -> Result<String, Error> {
-    use music_modules_v2::utils::parse_key;
+    use music_modules_v2::{chord::Chord, utils::parse_key};
     use serde_json::to_string;
 
     let chord_selection_hashset: HashSet<String> = chord_selection.iter()
@@ -64,16 +64,19 @@ pub fn get_chords_of_key(
     let mut musician = Music::smoke_hash(Default::default(), key, &chord_selection_hashset, chord_type_group, scale)?;
 
     let key_int = parse_key(key);
-    for chords in musician.notes_of_chords.iter_mut() {
-        for chord in chords.iter_mut() {
-            chord.key = key_int as u8;
+    for chord in musician.all_chords.iter_mut() {
+        chord.key = key_int as u8;
+    }
+
+    let mut result: Vec<Vec<Chord>> = vec![Vec::new(); 12];
+    for chord in musician.all_chords.iter() {
+        for note in chord.get_notes() {
+            let n = (note + key_int) % 12;
+            result[n as usize].push(chord.clone());
         }
     }
 
-    let mut transposed_chords = musician.notes_of_chords.clone();
-    transposed_chords.rotate_right(key_int as usize);
-
-    let json = to_string(&transposed_chords)?;
+    let json = to_string(&result)?;
     
     Ok(json)
 }

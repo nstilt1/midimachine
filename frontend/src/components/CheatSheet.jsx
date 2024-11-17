@@ -4,6 +4,7 @@ import { useState } from "react";
 import Selector from "./Selector";
 import { Button } from "./ui/button";
 import ChordTable from "./ChordTable";
+import MultiSelect from "./MultiSelector";
 
 const CheatSheet = ({
     wasmModule,

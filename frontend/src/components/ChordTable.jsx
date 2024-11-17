@@ -37,11 +37,11 @@ const ChordTable = ({
             <TableBody>
                 {/*columns*/}
                 <TableRow>
-                    {chordData && chordData.map((chords) => (
+                    {chordData && chordData.map((chords, columnIndex) => (
                         <TableCell>
                             <Accordion type="single" collapsible>
-                                {chords.map((chord) => (
-                                    <AccordionItem value={chord['name']}>
+                                {chords.map((chord, chordIndex) => (
+                                    <AccordionItem value={`${columnIndex}-${chordIndex}`}>
                                         <AccordionTrigger>{chord['name']}</AccordionTrigger>
                                         <AccordionContent>{chord['notes']}</AccordionContent>
                                     </AccordionItem>
