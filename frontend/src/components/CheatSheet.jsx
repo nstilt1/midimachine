@@ -58,7 +58,7 @@ const CheatSheet = ({
                     onChange={setChordGroup}
                     label="Choose a chord group:"
                 />
-                {chordGroup == "custom" || chordGroup == "custom_pruning" && <MultiSelect
+                {(chordGroup == "custom" || chordGroup == "custom_pruning") && <MultiSelect
                     options={customChordTypes}
                     selectedOptions={customChords}
                     setSelectedOptions={handleChordTypeSelection}

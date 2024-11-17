@@ -66,7 +66,7 @@ const MidiApp = ({ showExtraControls }) => {
   const chordGroups = [
     { label: "Default", value: "default" },
     { label: "Original", value: "original" },
-    { label: "Custom", value: "custom" },
+    { label: "Custom (hand-picked)", value: "custom" },
     { label: "Custom (use pruning)", value: "custom_pruning" }
   ];
 
@@ -122,7 +122,7 @@ const MidiApp = ({ showExtraControls }) => {
           <Tabs defaultValue="generator">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="generator">Generator</TabsTrigger>
-              <TabsTrigger value="cheat-sheet">Chord Finder</TabsTrigger>
+              <TabsTrigger value="cheat-sheet">Chord Finder/Vocabulary</TabsTrigger>
             </TabsList>
             <TabsContent value="generator">
               <Card>
@@ -152,7 +152,7 @@ const MidiApp = ({ showExtraControls }) => {
             <TabsContent value="cheat-sheet">
               <Card>
                 <CardHeader>
-                  <CardTitle>Chord Finder</CardTitle>
+                  <CardTitle>Chord Finder/Vocabulary</CardTitle>
                 </CardHeader>
                 <CardContent>
               <CheatSheet
