@@ -10,7 +10,7 @@ use super::chord_type::*;
 pub struct Chord {
     pub chord_type: ChordType,
     pub root: u8,
-    pub key: u8,
+    pub key: i16,
     _chords_to_not_play_next: Vec<Chord>,
 }
 
@@ -27,7 +27,9 @@ impl Default for Chord {
 
 impl PartialEq for Chord {
     fn eq(&self, other: &Self) -> bool {
-        self.root.eq(&other.root) && self.chord_type.eq(&other.chord_type)
+        self.root.eq(&other.root) 
+            && self.chord_type.note_intervals.eq(&other.chord_type.note_intervals)
+            && self.chord_type.optional_notes.eq(&other.chord_type.optional_notes)
     }
 }
 
@@ -35,8 +37,8 @@ impl Eq for Chord {}
 
 impl Hash for Chord {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.chord_type.hash(state);
-        self.root.hash(state);
+        self.get_name(self.key).hash(state);
+        self.get_note_names(self.key).hash(state);
     }
 }
 
@@ -85,7 +87,7 @@ impl Chord {
     }
 
     /// Gets the name of this chord, given the current key.
-    pub fn get_name(&self, key: u8) -> String {
+    pub fn get_name(&self, key: i16) -> String {
         let letter = KEYS[(self.root as usize + key as usize) % 12];
         format!("{} {}", letter, self.chord_type.name)
     }
@@ -93,7 +95,7 @@ impl Chord {
     /// Gets the names of the notes of this chord.
     /// 
     /// Returns a string like "F, A, C#, E"
-    pub fn get_note_names(&self, key: u8) -> String {
+    pub fn get_note_names(&self, key: i16) -> String {
         let notes = self.get_notes();
         if notes.len() == 0 {
             return String::new();

@@ -5,6 +5,7 @@ use sha2::Sha256;
 
 use super::error::MusicError;
 
+use super::pruning::prune_chords;
 use super::utils::{get_max_note_length_index, parse_key};
 use super::{chord_type::ChordType, chord::Chord, utils::MathMagician, midi::MidiFile};
 
@@ -14,7 +15,7 @@ macro_rules! define_consts {
     ($(($const_name:ident, $value:literal)),*) => {
         $(
             #[allow(unused)]
-            const $const_name: u8 = $value;
+            pub const $const_name: u8 = $value;
         )*
     };
 }
@@ -168,111 +169,6 @@ pub const KEYS: [&str; 12] = [
     "A#",
     "B"
 ];
-
-/// Removes chords that have notes outside of the chosen scale
-/// The base key is C Minor, so for the natural minor scale, we will remove:
-/// * C# - 1
-/// * E  - 4
-/// * F# - 6
-/// * A  - 9
-/// * B - 11
-fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<Chord>, scale: &str) {
-    let mut all_chords_set: HashSet<Chord> = HashSet::from_iter(all_chords.iter().cloned());
-
-    let good_notes_set: HashSet<usize> = match scale {
-        "disabled" => return,
-        "natural" => HashSet::from([0, 2, 3, 4, 5, 7, 8, 10]),
-        "melodic" => HashSet::from([0, 2, 3, 5, 7, 9, 11]),
-        "harmonic" => HashSet::from([0, 2, 3, 5, 7, 8, 11]),
-        "pentatonic" => HashSet::from([0, 3, 5, 7, 10]),
-        "romanian" => HashSet::from([0, 2, 3, 6, 7, 9, 10]),
-        "hungarian" => HashSet::from([0, 2, 3, 6, 7, 8, 11]),
-        // "all_notes" restructures `notes_of_chords` and `all_chords` with the
-        // optional notes vecs getting converted to new chords
-        "all_notes" => HashSet::from([0,1,2,3,4,5,6,7,8,9,10,11]),
-        _ => return
-    };
-
-    // turn chords with optional notes into new chords
-    let mut notes_of_chords_sets: Vec<HashSet<Chord>> = vec![HashSet::new(); 12];
-    for (n, chords) in notes_of_chords.iter().enumerate() {
-        for chord in chords.iter() {
-            let mut base_chord_type = chord.chord_type.clone();
-            let optional_notes = base_chord_type.optional_notes;
-            let root = chord.root;
-            base_chord_type.optional_notes = Vec::new();
-            let base_chord = Chord::new(chord.root, &base_chord_type);
-            notes_of_chords_sets[n].insert(base_chord.clone());
-            all_chords_set.insert(base_chord.clone());
-
-            // add more chords with different combinations of notes to the sets
-            // `cumulated_notes` is used to add chords with 1, 2, ..., n optional notes
-            // to the sets
-            // `notes` is used to add chords with just one of the optional notes
-            let mut cumulated_notes = base_chord_type.note_intervals.clone();
-            for note in optional_notes.iter() {
-                let mut notes = base_chord_type.note_intervals.clone();
-                cumulated_notes.push(*note);
-                notes.push(*note);
-                let new_chord_type = ChordType::new(&base_chord_type.name, &cumulated_notes, &[root], None);
-                let new_chord_type_2 = ChordType::new(&base_chord_type.name, &notes, &[root], None);
-                let new_chord = Chord::new(chord.root, &new_chord_type);
-                let new_chord_2 = Chord::new(chord.root, &new_chord_type_2);
-                all_chords_set.insert(new_chord.to_owned());
-                all_chords_set.insert(new_chord_2.to_owned());
-                for c in &[&new_chord, &new_chord_2, &base_chord] {
-                    for n_2 in c.get_notes().iter() {
-                        let index = (root + *n_2 as u8) % 12;
-                        notes_of_chords_sets[index as usize].insert(c.to_owned().to_owned());
-                    }
-                }
-            }
-            // accumulate chords with optional notes added in reverse order
-            if optional_notes.len() > 2 {
-                let mut cumulated_notes = base_chord_type.note_intervals.clone();
-                for note in optional_notes.iter().rev() {
-                    cumulated_notes.push(*note);
-                    let new_chord_type = ChordType::new(&base_chord_type.name, &cumulated_notes, &[root], None);
-                    let new_chord = Chord::new(chord.root, &new_chord_type);
-                    all_chords_set.insert(new_chord.to_owned());
-                    for n_2 in new_chord.get_notes().iter() {
-                        let index = (root + *n_2 as u8) % 12;
-                        notes_of_chords_sets[index as usize].insert(new_chord.to_owned());
-                    }
-                }
-            }
-        }
-    }
-
-    for (chords_set, chords_vec) in notes_of_chords_sets.iter().zip(notes_of_chords.iter_mut()) {
-        *chords_vec = chords_set.iter().cloned().collect()
-    }
-    *all_chords = all_chords_set.iter().cloned().collect();
-
-    // prune the chords
-    let good_notes: Vec<usize> = good_notes_set.iter().cloned().collect();
-    let bad_notes: Vec<usize> = HashSet::from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
-        .difference(&good_notes_set)
-        .cloned()
-        .collect();
-
-    let mut bad_chords: HashSet<Chord> = HashSet::new();
-
-    for bad_note in bad_notes {
-        for chord in notes_of_chords[bad_note].iter() {
-            bad_chords.insert(chord.clone());
-        }
-        notes_of_chords[bad_note] = Vec::new();
-    }
-
-    for note in good_notes {
-        let chords: HashSet<Chord> = HashSet::from_iter(notes_of_chords[note].iter().cloned());
-        let subtracted: Vec<Chord> = chords.difference(&bad_chords).cloned().collect();
-        notes_of_chords[note] = subtracted;
-    }
-
-    *all_chords = all_chords_set.difference(&bad_chords).cloned().collect();
-}
 
 impl Music {
     pub fn smoke_hash(
