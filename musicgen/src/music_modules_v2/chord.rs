@@ -37,8 +37,8 @@ impl Eq for Chord {}
 
 impl Hash for Chord {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.get_name(self.key).hash(state);
-        self.get_note_names(self.key).hash(state);
+        self.get_name().hash(state);
+        self.get_note_names().hash(state);
     }
 }
 
@@ -48,8 +48,8 @@ impl Serialize for Chord {
         S: serde::Serializer 
     {
         let mut state = serializer.serialize_struct("Chord", 2)?;
-        state.serialize_field("name", &self.get_name(self.key))?;
-        state.serialize_field("notes", &self.get_note_names(self.key))?;
+        state.serialize_field("name", &self.get_name())?;
+        state.serialize_field("notes", &self.get_note_names())?;
         state.end()
     }
 }
@@ -71,7 +71,7 @@ impl Chord {
     pub fn get_notes(&self) -> Vec<i16> {
         let mut result: Vec<i16> = Vec::new();
         for n in self.chord_type.to_owned().note_intervals {
-            result.push((n + self.root) as i16);
+            result.push((n + self.root + self.key as u8) as i16);
         }
         return result
     }
@@ -87,23 +87,23 @@ impl Chord {
     }
 
     /// Gets the name of this chord, given the current key.
-    pub fn get_name(&self, key: i16) -> String {
-        let letter = KEYS[(self.root as usize + key as usize) % 12];
+    pub fn get_name(&self) -> String {
+        let letter = KEYS[(self.root as usize + self.key as usize) % 12];
         format!("{} {}", letter, self.chord_type.name)
     }
 
     /// Gets the names of the notes of this chord.
     /// 
     /// Returns a string like "F, A, C#, E"
-    pub fn get_note_names(&self, key: i16) -> String {
+    pub fn get_note_names(&self) -> String {
         let notes = self.get_notes();
         if notes.len() == 0 {
             return String::new();
         }
         let mut result = String::with_capacity(4 * notes.len());
-        result.push_str(KEYS[(notes[0] as usize + key as usize) % 12]);
+        result.push_str(KEYS[(notes[0] as usize) % 12]);
         for note in notes.iter().skip(1) {
-            result.push_str(&format!(", {}", KEYS[(*note as usize + key as usize) % 12]))
+            result.push_str(&format!(", {}", KEYS[(*note as usize) % 12]))
         }
         result
     }

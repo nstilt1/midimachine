@@ -55,20 +55,34 @@ pub fn get_chords_of_key(
     chord_type_group: &str,
     scale: &str
 ) -> Result<String, Error> {
-    use music_modules_v2::{pruning::translate_and_prune, utils::parse_key};
+    use music_modules_v2::utils::parse_key;
     use serde_json::to_string;
 
     let chord_selection_hashset: HashSet<String> = chord_selection.iter()
         .map(|js_val| js_val.as_string().unwrap_or_default())
         .collect();
-    let mut musician = Music::smoke_hash(Default::default(), key, &chord_selection_hashset, chord_type_group, scale)?;
+    let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale)?;
 
     let key_int = parse_key(key);
     //translate_and_prune(&mut musician.notes_of_chords, &mut musician.all_chords, key, scale);
 
+    for chord in musician.all_chords.iter_mut() {
+        chord.key = key_int;
+        //chord.root = (chord.root + key_int as u8) % 12;
+    }
+
+    for chords in musician.notes_of_chords.iter_mut() {
+        for chord in chords.iter_mut() {
+            chord.key = key_int;
+            //chord.root = (chord.root + key_int as u8) % 12;
+        }
+    }
+
+    musician.notes_of_chords.rotate_right(key_int as usize);
+
     // sort the sub-arrays
     for col in musician.notes_of_chords.iter_mut() {
-        col.sort_unstable_by(|a, b| a.get_name(key_int).cmp(&b.get_name(key_int)));
+        col.sort_unstable_by(|a, b| a.get_name().cmp(&b.get_name()));
     }
 
     let json = to_string(&musician.notes_of_chords)?;
