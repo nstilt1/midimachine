@@ -56,7 +56,7 @@ pub fn get_chords_of_key(
     scale: &str
 ) -> Result<String, Error> {
     use music_modules_v2::utils::parse_key;
-    use serde_json::{json, to_string};
+    use serde_json::json;
 
     let chord_selection_hashset: HashSet<String> = chord_selection.iter()
         .map(|js_val| js_val.as_string().unwrap_or_default())
@@ -94,6 +94,79 @@ pub fn get_chords_of_key(
 
     //let json = to_string(&musician.notes_of_chords)?;
     
+    Ok(json.to_string())
+}
+
+#[wasm_bindgen]
+#[cfg(target_arch="wasm32")]
+pub fn chord_finder(
+    key: &str,
+    chord_selection: Array,
+    chord_type_group: &str,
+    scale: &str,
+    notes: Array,
+) -> Result<String, Error> {
+    use music_modules_v2::{chord::Chord, utils::parse_key};
+    use serde_json::json;
+
+    let chord_selection_hashset: HashSet<String> = chord_selection.iter()
+        .map(|js_val| js_val.as_string().unwrap_or_default())
+        .collect();
+    let notes_vec: Vec<usize> = notes
+        .iter()
+        .map(|js_val| parse_key(&js_val.as_string().unwrap_or_default()) as usize)
+        .collect();
+    if notes_vec.is_empty() {
+        return Ok(json!({}).to_string())
+    }
+    let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale)?;
+
+    let key_int = parse_key(key);
+
+    for chord in musician.all_chords.iter_mut() {
+        chord.key = key_int;
+    }
+
+    for chords in musician.notes_of_chords.iter_mut() {
+        for chord in chords.iter_mut() {
+            chord.key = key_int;
+        }
+    }
+
+    musician.notes_of_chords.rotate_right(key_int as usize);
+
+    let mut intersected_chords: HashSet<Chord> = HashSet::from_iter(musician.notes_of_chords[notes_vec[0]].iter().cloned());
+    for note in notes_vec.iter().skip(1) {
+        intersected_chords = intersected_chords
+            .intersection(
+                &HashSet::from_iter(musician.notes_of_chords[*note]
+                    .iter()
+                    .cloned()
+                )
+            ).cloned()
+            .collect();
+    }
+
+    for chords in musician.notes_of_chords.iter_mut() {
+        *chords = HashSet::from_iter(chords.iter().cloned())
+            .intersection(&intersected_chords)
+            .cloned()
+            .collect();
+    }
+    musician.all_chords = intersected_chords.iter().cloned().collect();
+
+    // sort the sub-arrays
+    for col in musician.notes_of_chords.iter_mut() {
+        col.sort_unstable_by(|a, b| a.get_name().cmp(&b.get_name()));
+    }
+
+    musician.all_chords.sort_unstable_by(|a, b| a.get_name().cmp(&b.get_name()));
+
+    let json = json!({
+        "all_chords": musician.all_chords,
+        "notes_of_chords": musician.notes_of_chords
+    });
+
     Ok(json.to_string())
 }
 
@@ -140,7 +213,6 @@ pub mod test_utils {
     pub const FILENAMES: [&str; 5] = ["melody_", "chords_", "intended_", "melody_v2_", "melody_v3_"];
 
     /// Rust variant for testing.
-    #[cfg(not(target_arch="wasm32"))]
     pub fn generate_midi(
         file_content: &[u8], 
         generation_mode: &str, 

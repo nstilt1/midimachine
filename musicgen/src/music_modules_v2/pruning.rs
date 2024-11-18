@@ -93,14 +93,17 @@ pub fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<
     }
 
     for note in 0..11 {
+        // version 1
+        let chords: HashSet<Chord> = HashSet::from_iter(notes_of_chords[note].iter().cloned());
+        let subtracted: Vec<Chord> = chords.difference(&bad_chords).cloned().collect();
+        notes_of_chords[note] = subtracted;
+
+        // version 2 - does not work for some reason
         // notes_of_chords_sets[note] = notes_of_chords_sets[note]
         //     .difference(&bad_chords)
         //     .cloned()
         //     .collect();
         // notes_of_chords[note] = notes_of_chords_sets[note].iter().cloned().collect();
-        let chords: HashSet<Chord> = HashSet::from_iter(notes_of_chords[note].iter().cloned());
-        let subtracted: Vec<Chord> = chords.difference(&bad_chords).cloned().collect();
-        notes_of_chords[note] = subtracted;
     }
 
     *all_chords = all_chords_set.difference(&bad_chords).cloned().collect();

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/card"
 import MidiForm from './MidiForm';
 import CheatSheet from './CheatSheet';
+import ChordFinder from './ChordFinder';
 
 const MidiApp = ({ showExtraControls }) => {
   const [wasmModule, setWasmModule] = useState(null);
@@ -120,9 +121,10 @@ const MidiApp = ({ showExtraControls }) => {
       {wasmModule ? 
         <div>
           <Tabs defaultValue="generator">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="generator">Generator</TabsTrigger>
-              <TabsTrigger value="cheat-sheet">Chord Finder/Vocabulary</TabsTrigger>
+              <TabsTrigger value="cheat-sheet">Chord Vocabulary</TabsTrigger>
+              <TabsTrigger value="chord-finder">Chord Finder</TabsTrigger>
             </TabsList>
             <TabsContent value="generator">
               <Card>
@@ -152,7 +154,7 @@ const MidiApp = ({ showExtraControls }) => {
             <TabsContent value="cheat-sheet">
               <Card>
                 <CardHeader>
-                  <CardTitle>Chord Finder/Vocabulary</CardTitle>
+                  <CardTitle>Chord Vocabulary</CardTitle>
                 </CardHeader>
                 <CardContent>
               <CheatSheet
@@ -172,6 +174,31 @@ const MidiApp = ({ showExtraControls }) => {
                 showExtraControls={showExtraControls}
               />
               </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="chord-finder">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Chord Finder</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ChordFinder
+                    wasmModule={wasmModule}
+                    chosenKey={key}
+                    setKey={setKey}
+                    chordGroup={chordGroup}
+                    setChordGroup={setChordGroup}
+                    customChords={customChords}
+                    scale={scale}
+                    setScale={setScale}
+                    handleChordTypeSelection={handleChordTypeSelection}
+                    keys={keys}
+                    chordGroups={chordGroups}
+                    customChordTypes={customChordTypes}
+                    scales={scales}
+                    showExtraControls={showExtraControls}
+                  />
+                </CardContent>
               </Card>
             </TabsContent>
           </Tabs>
