@@ -40,7 +40,7 @@ const ChordTable = ({
                 <TableRow>
                     {chordData && chordData.map((chords, columnIndex) => (
                         <TableCell>
-                            <Accordion type="single" collapsible>
+                            <Accordion type="multiple" collapsible>
                                 {chords.map((chord, chordIndex) => (
                                     <Chord
                                         midi={chord['midi']}

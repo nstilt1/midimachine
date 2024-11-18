@@ -98,7 +98,7 @@ const CheatSheet = ({
                     <AccordionItem value="list">
                         <AccordionTrigger>Chord list</AccordionTrigger>
                         <AccordionContent>
-                            <Accordion type="single" collapsible>
+                            <Accordion type="multiple" collapsible>
                             {allChords.map((chord, index) => (
                                 <Chord
                                     midi={chord['midi']}
