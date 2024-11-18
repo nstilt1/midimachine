@@ -5,9 +5,9 @@ import {
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-  } from "@/components/ui/accordion";
+} from "@/components/ui/accordion";
 import { Button } from "./ui/button";
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Chord = ({
     midi,
@@ -15,8 +15,9 @@ const Chord = ({
     notes,
     index
 }) => {
+    const [midiFileUrl, setMidiFileUrl] = useState(null);
 
-    const midiFileURL = () => {
+    useEffect(() => {
         const byteChars = atob(midi);
         const byteNumbers = new Array(byteChars.length);
 
@@ -25,32 +26,36 @@ const Chord = ({
         }
 
         const byteArray = new Uint8Array(byteNumbers);
-
         const midiBlob = new Blob([byteArray], { type: 'audio/midi' });
-        return URL.createObjectURL(midiBlob);
-    }
+        const url = URL.createObjectURL(midiBlob);
 
-    const playMidi = () => {
+        setMidiFileUrl(url);
 
-    }
+        // Cleanup the URL when the component unmounts
+        return () => {
+            URL.revokeObjectURL(url);
+        };
+    }, [midi]);
 
     return (
         <AccordionItem value={index + '' + chordName}>
             <AccordionTrigger>{chordName}</AccordionTrigger>
             <AccordionContent>
                 <div>
-                {notes}
+                    {notes}
                 </div>
                 <div>
-                    <midi-player
-                        src={midiFileURL()}
-                        sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
-                        style={{ width: '75px', height: '20px' }}
-                    ></midi-player>    
+                    {midiFileUrl && (
+                        <midi-player
+                            src={midiFileUrl}
+                            sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
+                            style={{ width: '75px', height: '20px' }}
+                        ></midi-player>
+                    )}
                 </div>
             </AccordionContent>
         </AccordionItem>
-    )
-}
+    );
+};
 
 export default Chord;
