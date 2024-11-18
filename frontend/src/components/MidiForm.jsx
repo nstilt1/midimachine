@@ -208,7 +208,7 @@ const MidiForm = ({
             {(scale == "all_notes" || scale == "disabled") && chordGroup == "custom_pruning" && 
             <div className="w-full max-w-sm">
               <p className="text-red-500">
-                The "Custom (use pruning)" chord group is intended to be used with pruning. 
+                The &quot;Custom (use pruning)&quot; chord group is intended to be used with pruning. 
                 You are welcome to try it without pruning, but it will likely be 
                 unsatisfactory because the chords will probably not be in a 
                 specific key.

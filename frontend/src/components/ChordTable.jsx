@@ -31,7 +31,7 @@ const ChordTable = ({
             <TableHeader>
                 <TableRow>
                     {headers.map((header) => (
-                        <TableHead>{header}</TableHead>
+                        <TableHead key={header}>{header}</TableHead>
                     ))}
                 </TableRow>
             </TableHeader>
@@ -39,10 +39,11 @@ const ChordTable = ({
                 {/*columns*/}
                 <TableRow>
                     {chordData && chordData.map((chords, columnIndex) => (
-                        <TableCell>
+                        <TableCell key={columnIndex}>
                             <Accordion type="multiple" collapsible>
                                 {chords.map((chord, chordIndex) => (
                                     <Chord
+                                        key={chordIndex}
                                         midi={chord['midi']}
                                         chordName={chord['name']}
                                         notes={chord['notes']}
