@@ -13,18 +13,18 @@ const MidiPlayerComponent = ({ midiFileUrl, textInput }) => {
     const maxNameLength = 100;
     let sanitized = str.replace(/[^a-z0-9_\-]/gi, '_');
     if (sanitized.length > maxNameLength) {
-      sanitized = sanitized.substring(0, maxNameLength);
-      sanitized += '-';
+      sanitized = sanitized.substring(0, maxNameLength) + '-';
     }
     return "midimachine-" + sanitized + ".mid";
-  }
+  };
 
   useEffect(() => {
     if (playerRef.current && visualizerRef.current) {
-      visualizerRef.current.player = playerRef.current;
-      //playerRef.current.addVisualizer(playerRef.current);
+      playerRef.current.addVisualizer(visualizerRef.current);
     }
+  }, [playerRef, visualizerRef]);
 
+  useEffect(() => {
     if (midiFileUrl) {
       fetch(midiFileUrl)
         .then((response) => response.blob())
@@ -32,23 +32,15 @@ const MidiPlayerComponent = ({ midiFileUrl, textInput }) => {
           const url = URL.createObjectURL(blob);
           setDownloadUrl(url);
         });
-    }
-  }, [midiFileUrl]);
 
-  // Cleanup the created URL
-  useEffect(() => {
-    return () => {
-      if (downloadUrl) {
-        URL.revokeObjectURL(downloadUrl);
-      }
-    };
-  }, [downloadUrl]);
-
-  useEffect(() => {
-    if (playerRef.current && visualizerRef.current) {
-      playerRef.current.addVisualizer(visualizerRef.current);
+      // Clean up the previous URL if it exists
+      return () => {
+        if (downloadUrl) {
+          URL.revokeObjectURL(downloadUrl);
+        }
+      };
     }
-  })
+  }, [midiFileUrl, downloadUrl]);
 
   return (
     <div>
@@ -71,7 +63,6 @@ const MidiPlayerComponent = ({ midiFileUrl, textInput }) => {
             src={midiFileUrl}
             type="piano-roll"
             id="mainVisualizer"
-            //src={midiFileUrl}
             style={{ width: '600px', border: '1px solid black' }}
           ></midi-visualizer>
 
