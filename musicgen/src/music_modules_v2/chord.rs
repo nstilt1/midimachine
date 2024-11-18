@@ -1,10 +1,12 @@
 use std::hash::Hash;
 
+use base64::{engine::general_purpose, Engine};
+use midly::Smf;
 use serde::{ser::SerializeStruct, Serialize};
 
 use crate::music_modules_v2::music::KEYS;
 
-use super::chord_type::*;
+use super::{chord_type::*, midi::MidiFile};
 
 #[derive(Clone, Debug)]
 pub struct Chord {
@@ -47,9 +49,10 @@ impl Serialize for Chord {
     where
         S: serde::Serializer 
     {
-        let mut state = serializer.serialize_struct("Chord", 2)?;
+        let mut state = serializer.serialize_struct("Chord", 3)?;
         state.serialize_field("name", &self.get_name())?;
         state.serialize_field("notes", &self.get_note_names())?;
+        state.serialize_field("midi", &self.to_midi())?;
         state.end()
     }
 }
@@ -106,5 +109,26 @@ impl Chord {
             result.push_str(&format!(", {}", KEYS[(*note as usize) % 12]))
         }
         result
+    }
+
+    pub fn to_midi(&self) -> String {
+        let mut track = MidiFile::new();
+        for note in self.get_notes() {
+            track.add_note_beats(note as u8 + 12 * 4, 0f64, 1f64, 80);
+        }
+        let track = track.finalize();
+
+        let smf = Smf {
+            header: midly::Header { format: midly::Format::SingleTrack, timing: midly::Timing::Metrical(96.into())},
+            tracks: vec![track]
+        };
+
+        let mut output = vec![];
+        smf.write(&mut output).expect("Should be valid");
+
+        let mut base64 = String::new();
+        general_purpose::STANDARD.encode_string(output, &mut base64);
+
+        base64
     }
 }

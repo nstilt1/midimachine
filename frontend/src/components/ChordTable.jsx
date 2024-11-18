@@ -16,6 +16,7 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion";
+import Chord from "./Chord";
 
 
 const ChordTable = ({
@@ -41,10 +42,12 @@ const ChordTable = ({
                         <TableCell>
                             <Accordion type="single" collapsible>
                                 {chords.map((chord, chordIndex) => (
-                                    <AccordionItem value={`${columnIndex}-${chordIndex}`}>
-                                        <AccordionTrigger>{chord['name']}</AccordionTrigger>
-                                        <AccordionContent>{chord['notes']}</AccordionContent>
-                                    </AccordionItem>
+                                    <Chord
+                                        midi={chord['midi']}
+                                        chordName={chord['name']}
+                                        notes={chord['notes']}
+                                        index={chordIndex}
+                                    />
                                 ))}
                             </Accordion>
                         </TableCell>

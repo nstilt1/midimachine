@@ -11,6 +11,7 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion";
+import Chord from "./Chord";
 
 const CheatSheet = ({
     wasmModule,
@@ -99,10 +100,12 @@ const CheatSheet = ({
                         <AccordionContent>
                             <Accordion type="single" collapsible>
                             {allChords.map((chord, index) => (
-                                <AccordionItem value={`${index}`}>
-                                    <AccordionTrigger>{chord['name']}</AccordionTrigger>
-                                    <AccordionContent>{chord['notes']}</AccordionContent>
-                                </AccordionItem>
+                                <Chord
+                                    midi={chord['midi']}
+                                    chordName={chord['name']}
+                                    notes={chord['notes']}
+                                    index={index}
+                                />
                             ))}
                             </Accordion>
                         </AccordionContent>
