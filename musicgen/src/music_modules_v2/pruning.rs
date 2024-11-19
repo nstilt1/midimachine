@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use super::{chord::Chord, chord_type::ChordType, utils::parse_key};
+use super::{chord::Chord, chord_type::ChordType, utils::{parse_key, HashSetMath}};
 
 /// Removes chords that have notes outside of the chosen scale
 /// The base key is C Minor, so for the natural minor scale, we will remove:
@@ -9,9 +9,7 @@ use super::{chord::Chord, chord_type::ChordType, utils::parse_key};
 /// * F# - 6
 /// * A  - 9
 /// * B - 11
-pub fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<Chord>, scale: &str, key: i16) {
-    let mut all_chords_set: HashSet<Chord> = HashSet::from_iter(all_chords.iter().cloned());
-
+pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chord>, scale: &str, key: i16) {
     let good_notes_set: HashSet<usize> = match scale {
         "disabled" => return,
         "natural" => HashSet::from([0, 2, 3, 4, 5, 7, 8, 10]),
@@ -20,24 +18,54 @@ pub fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<
         "pentatonic" => HashSet::from([0, 3, 5, 7, 10]),
         "romanian" => HashSet::from([0, 2, 3, 6, 7, 9, 10]),
         "hungarian" => HashSet::from([0, 2, 3, 6, 7, 8, 11]),
-        // "all_notes" restructures `notes_of_chords` and `all_chords` with the
+        // "all_notes" restructures `chord_table` and `chord_list` with the
         // optional notes vecs getting converted to new chords
         "all_notes" => HashSet::from([0,1,2,3,4,5,6,7,8,9,10,11]),
         _ => return
     };
 
-    // turn chords with optional notes into new chords
-    let mut notes_of_chords_sets: Vec<HashSet<Chord>> = vec![HashSet::new(); 12];
-    for chord in all_chords.iter() {
+    chord_list.iter_mut().for_each(|c| c.key = key);
+
+    let (mut chord_set, mut chord_table_sets) = expand_chords(chord_list);
+
+    // prune the chords
+    let bad_notes: Vec<usize> = HashSet::from_iter(0..12)
+        .difference(&good_notes_set)
+        .cloned()
+        .collect();
+
+    let mut bad_chords: HashSet<Chord> = HashSet::with_capacity(chord_set.capacity());
+
+    for bad_note in bad_notes {
+        bad_chords.add_assign(&chord_table_sets[(bad_note + key as usize) % 12]);
+        //chord_table[bad_note] = Vec::new();
+        //chord_table_sets[bad_note] = HashSet::new();
+    }
+
+    chord_table_sets.iter_mut().zip(chord_table.iter_mut()).for_each(|(chord_table_set, chord_table_vec)| {
+        // version 1
+        // let chords: HashSet<&Chord> = HashSet::from_iter(chord_table_vec.iter());
+        // let subtracted: Vec<Chord> = chords.sub(&bad_chords).to_vec();
+        // chord_table_vec = subtracted;
+
+        // version 2 - does not work for some reason
+        chord_table_set.sub_assign(&bad_chords);
+        *chord_table_vec = chord_table_set.to_vec();
+    });
+
+    *chord_list = chord_set.sub(&bad_chords).to_vec();
+}
+
+/// Turns chords with optional notes into new chords.
+fn expand_chords(chord_list: &mut Vec<Chord>) -> (HashSet<Chord>, Vec<HashSet<Chord>>) {
+    let mut chord_set: HashSet<Chord> = HashSet::with_capacity(chord_list.capacity());
+    for chord in chord_list.iter() {
         let mut base_chord_type = chord.chord_type.clone();
-        let optional_notes = base_chord_type.optional_notes;
         let root = chord.root;
+        let optional_notes = base_chord_type.optional_notes.clone();
         base_chord_type.optional_notes = Vec::new();
         let base_chord = Chord::new(chord.root, &base_chord_type);
-        for note in base_chord.get_notes() {
-            notes_of_chords_sets[(note + chord.key) as usize % 12].insert(base_chord.clone());
-        }
-        all_chords_set.insert(base_chord.clone());
+        chord_set.insert(base_chord.clone());
 
         // add more chords with different combinations of notes to the sets
         // `cumulated_notes` is used to add chords with 1, 2, ..., n optional notes
@@ -52,14 +80,8 @@ pub fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<
             let new_chord_type_2 = ChordType::new(&base_chord_type.name, &notes, &[root], None);
             let new_chord = Chord::new(chord.root, &new_chord_type);
             let new_chord_2 = Chord::new(chord.root, &new_chord_type_2);
-            all_chords_set.insert(new_chord.to_owned());
-            all_chords_set.insert(new_chord_2.to_owned());
-            for c in &[&new_chord, &new_chord_2, &base_chord] {
-                for n_2 in c.get_notes().iter() {
-                    let index = (*n_2 as u8) % 12;
-                    notes_of_chords_sets[index as usize].insert(c.to_owned().to_owned());
-                }
-            }
+            chord_set.insert(new_chord.to_owned());
+            chord_set.insert(new_chord_2.to_owned());
         }
         // accumulate chords with optional notes added in reverse order
         if optional_notes.len() > 2 {
@@ -68,69 +90,46 @@ pub fn prune_chords(notes_of_chords: &mut Vec<Vec<Chord>>, all_chords: &mut Vec<
                 cumulated_notes.push(*note);
                 let new_chord_type = ChordType::new(&base_chord_type.name, &cumulated_notes, &[root], None);
                 let new_chord = Chord::new(chord.root, &new_chord_type);
-                all_chords_set.insert(new_chord.to_owned());
-                for n_2 in new_chord.get_notes().iter() {
-                    let index = (*n_2 as u8) % 12;
-                    notes_of_chords_sets[index as usize].insert(new_chord.to_owned());
-                }
+                chord_set.insert(new_chord.to_owned());
             }
         }
     }
 
-    // prune the chords
-    let bad_notes: Vec<usize> = HashSet::from_iter(0..12)
-        .difference(&good_notes_set)
-        .cloned()
-        .collect();
+    let mut chord_table_sets: Vec<HashSet<Chord>> = vec![HashSet::new(); 12];
+    // insert chord_set into chord_table_sets
+    chord_set.iter().for_each(|chord| {
+        chord.get_notes()
+            .iter()
+            .for_each(|n| {
+                chord_table_sets[*n as usize % 12].insert(chord.clone());
+            });
+    });
 
-    let mut bad_chords: HashSet<Chord> = HashSet::new();
-
-    for mut bad_note in bad_notes {
-        bad_note = (bad_note + key as usize) % 12;
-        bad_chords = bad_chords.union(&notes_of_chords_sets[bad_note]).cloned().collect();
-        notes_of_chords[bad_note] = Vec::new();
-        notes_of_chords_sets[bad_note] = HashSet::new();
-    }
-
-    for note in 0..11 {
-        // version 1
-        let chords: HashSet<Chord> = HashSet::from_iter(notes_of_chords[note].iter().cloned());
-        let subtracted: Vec<Chord> = chords.difference(&bad_chords).cloned().collect();
-        notes_of_chords[note] = subtracted;
-
-        // version 2 - does not work for some reason
-        // notes_of_chords_sets[note] = notes_of_chords_sets[note]
-        //     .difference(&bad_chords)
-        //     .cloned()
-        //     .collect();
-        // notes_of_chords[note] = notes_of_chords_sets[note].iter().cloned().collect();
-    }
-
-    *all_chords = all_chords_set.difference(&bad_chords).cloned().collect();
+    (chord_set, chord_table_sets)
 }
 
 pub fn translate_and_prune(
-    notes_of_chords: &mut Vec<Vec<Chord>>, 
-    all_chords: &mut Vec<Chord>, 
+    chord_table: &mut Vec<Vec<Chord>>, 
+    chord_list: &mut Vec<Chord>, 
     key: &str,
     scale: &str
 ) {
     let key_int = parse_key(key);
-    for chord in all_chords.iter_mut() {
+    for chord in chord_list.iter_mut() {
         chord.key = key_int;
     }
-    *notes_of_chords = vec![Vec::new(); 12];
+    *chord_table = vec![Vec::new(); 12];
 
-    for chord in all_chords.iter() {
+    for chord in chord_list.iter() {
         for note in chord.get_notes() {
             let n = (note + key_int) % 12;
-            notes_of_chords[n as usize].push(chord.clone());
+            chord_table[n as usize].push(chord.clone());
         }
     }
 
-    let mut notes_of_chords_set: Vec<HashSet<Chord>> = vec![HashSet::with_capacity(16); 12];
-    for (i, col) in notes_of_chords.iter().enumerate() {
-        notes_of_chords_set[i] = HashSet::from_iter(col.iter().cloned());
+    let mut chord_table_sets: Vec<HashSet<Chord>> = vec![HashSet::with_capacity(16); 12];
+    for (i, col) in chord_table.iter().enumerate() {
+        chord_table_sets[i] = HashSet::from_iter(col.iter().cloned());
     }
 
     let good_notes_set: HashSet<usize> = match scale {
@@ -141,7 +140,7 @@ pub fn translate_and_prune(
         "pentatonic" => HashSet::from([0, 3, 5, 7, 10]),
         "romanian" => HashSet::from([0, 2, 3, 6, 7, 9, 10]),
         "hungarian" => HashSet::from([0, 2, 3, 6, 7, 8, 11]),
-        // "all_notes" restructures `notes_of_chords` and `all_chords` with the
+        // "all_notes" restructures `chord_table` and `chord_list` with the
         // optional notes vecs getting converted to new chords
         "all_notes" => HashSet::from([0,1,2,3,4,5,6,7,8,9,10,11]),
         _ => return
@@ -156,24 +155,21 @@ pub fn translate_and_prune(
     for mut bad_note in bad_notes {
         bad_note = (bad_note + key_int as usize) % 12;
         bad_chords = bad_chords
-            .union(&notes_of_chords_set[bad_note])
+            .union(&chord_table_sets[bad_note])
             .cloned()
             .collect();
-        notes_of_chords[bad_note] = Vec::new();
-        notes_of_chords_set[bad_note] = HashSet::new();
+        chord_table[bad_note] = Vec::new();
+        chord_table_sets[bad_note] = HashSet::new();
     }
 
     for note in 0..11 {
-        notes_of_chords_set[note] = notes_of_chords_set[note]
+        chord_table_sets[note] = chord_table_sets[note]
             .difference(&bad_chords)
             .cloned()
             .collect();
     }
-    let all_chords_set: HashSet<Chord> = HashSet::from_iter(all_chords.iter().cloned());
-    *all_chords = all_chords_set
-        .difference(&bad_chords)
-        .cloned()
-        .collect();
+    let chord_set: HashSet<Chord> = HashSet::from_iter(chord_list.iter().cloned());
+    *chord_list = chord_set.sub(&bad_chords).to_vec()
 }
 
 #[cfg(test)]
@@ -200,38 +196,38 @@ mod tests {
             "Cmin",
             &HashSet::new(),
             "default",
-            "disabled"
+            "pentatonic"
         ).unwrap();
 
-        prune_chords(&mut musician.notes_of_chords, &mut musician.all_chords, "pentatonic", 0);
+        //prune_chords(&mut musician.chord_table, &mut musician.chord_list, "pentatonic", parse_key("Cmin"));
 
-        // for chord in musician.all_chords.iter_mut() {
+        // for chord in musician.chord_list.iter_mut() {
         //     chord.key = 0;
         // }
 
         // let mut result: Vec<Vec<Chord>> = vec![Vec::new(); 12];
-        // for chord in musician.all_chords.iter() {
+        // for chord in musician.chord_list.iter() {
         //     for note in chord.get_notes() {
         //         let n = note % 12;
         //         result[n as usize].push(chord.clone());
         //     }
         // }
         //
-        //musician.notes_of_chords = result;
+        //musician.chord_table = result;
 
-        assert!(musician.notes_of_chords[CSHARP as usize].len() == 0, "C# had some chords in it");
-        assert!(musician.notes_of_chords[D as usize].len() == 0, "D had some notes in it");
-        assert!(musician.notes_of_chords[E as usize].len() == 0, "E had some notes in it");
-        assert!(musician.notes_of_chords[FSHARP as usize].len() == 0, "F# had some notes in it");
-        assert!(musician.notes_of_chords[GSHARP as usize].len() == 0, "G# had some notes in it");
-        assert!(musician.notes_of_chords[A as usize].len() == 0, "A had some notes in it");
-        assert!(musician.notes_of_chords[B as usize].len() == 0, "B had some notes in it");
+        assert!(musician.chord_table[CSHARP as usize].len() == 0, "C# had some chords in it");
+        assert!(musician.chord_table[D as usize].len() == 0, "D had some notes in it");
+        assert!(musician.chord_table[E as usize].len() == 0, "E had some notes in it");
+        assert!(musician.chord_table[FSHARP as usize].len() == 0, "F# had some notes in it");
+        assert!(musician.chord_table[GSHARP as usize].len() == 0, "G# had some notes in it");
+        assert!(musician.chord_table[A as usize].len() == 0, "A had some notes in it");
+        assert!(musician.chord_table[B as usize].len() == 0, "B had some notes in it");
 
-        assert!(musician.notes_of_chords[C as usize].len() != 0, "C was empty");
-        assert!(musician.notes_of_chords[DSHARP as usize].len() != 0, "D# was empty");
-        assert!(musician.notes_of_chords[F as usize].len() != 0, "F was empty");
-        assert!(musician.notes_of_chords[G as usize].len() != 0, "G was empty");
-        assert!(musician.notes_of_chords[ASHARP as usize].len() != 0, "A# was empty");
+        assert!(musician.chord_table[C as usize].len() != 0, "C was empty");
+        assert!(musician.chord_table[DSHARP as usize].len() != 0, "D# was empty");
+        assert!(musician.chord_table[F as usize].len() != 0, "F was empty");
+        assert!(musician.chord_table[G as usize].len() != 0, "G was empty");
+        assert!(musician.chord_table[ASHARP as usize].len() != 0, "A# was empty");
     }
 
     #[test]
@@ -244,20 +240,20 @@ mod tests {
             "disabled"
         ).unwrap();
 
-        prune_chords(&mut musician.notes_of_chords, &mut musician.all_chords, "pentatonic", parse_key("F#min"));
+        prune_chords(&mut musician.chord_table, &mut musician.chord_list, "pentatonic", parse_key("F#min"));
 
-        assert!(musician.notes_of_chords[G as usize].len() == 0, "G had some chords in it");
-        assert!(musician.notes_of_chords[GSHARP as usize].len() == 0, "G# had some notes in it");
-        assert!(musician.notes_of_chords[ASHARP as usize].len() == 0, "A# had some notes in it");
-        assert!(musician.notes_of_chords[C as usize].len() == 0, "C had some notes in it");
-        assert!(musician.notes_of_chords[D as usize].len() == 0, "D had some notes in it");
-        assert!(musician.notes_of_chords[DSHARP as usize].len() == 0, "D# had some notes in it");
-        assert!(musician.notes_of_chords[F as usize].len() == 0, "F had some notes in it");
+        assert!(musician.chord_table[G as usize].len() == 0, "G had some chords in it");
+        assert!(musician.chord_table[GSHARP as usize].len() == 0, "G# had some notes in it");
+        assert!(musician.chord_table[ASHARP as usize].len() == 0, "A# had some notes in it");
+        assert!(musician.chord_table[C as usize].len() == 0, "C had some notes in it");
+        assert!(musician.chord_table[D as usize].len() == 0, "D had some notes in it");
+        assert!(musician.chord_table[DSHARP as usize].len() == 0, "D# had some notes in it");
+        assert!(musician.chord_table[F as usize].len() == 0, "F had some notes in it");
 
-        assert!(musician.notes_of_chords[FSHARP as usize].len() != 0, "F# was empty");
-        assert!(musician.notes_of_chords[A as usize].len() != 0, "A was empty");
-        assert!(musician.notes_of_chords[B as usize].len() != 0, "B was empty");
-        assert!(musician.notes_of_chords[CSHARP as usize].len() != 0, "C# was empty");
-        assert!(musician.notes_of_chords[E as usize].len() != 0, "E was empty");
+        assert!(musician.chord_table[FSHARP as usize].len() != 0, "F# was empty");
+        assert!(musician.chord_table[A as usize].len() != 0, "A was empty");
+        assert!(musician.chord_table[B as usize].len() != 0, "B was empty");
+        assert!(musician.chord_table[CSHARP as usize].len() != 0, "C# was empty");
+        assert!(musician.chord_table[E as usize].len() != 0, "E was empty");
     }
 }

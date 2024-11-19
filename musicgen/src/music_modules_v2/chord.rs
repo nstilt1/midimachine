@@ -29,9 +29,8 @@ impl Default for Chord {
 
 impl PartialEq for Chord {
     fn eq(&self, other: &Self) -> bool {
-        self.root.eq(&other.root) 
-            && self.chord_type.note_intervals.eq(&other.chord_type.note_intervals)
-            && self.chord_type.optional_notes.eq(&other.chord_type.optional_notes)
+        self.get_name().eq(&other.get_name())
+            && self.get_note_names().eq(&other.get_note_names())
     }
 }
 

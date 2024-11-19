@@ -41,8 +41,8 @@ pub struct Music {
     midi_file: MidiFile,
     pub key: i16,
     _chord_types: Vec<ChordType>,
-    pub notes_of_chords: Vec<Vec<Chord>>,
-    pub all_chords: Vec<Chord>
+    pub chord_table: Vec<Vec<Chord>>,
+    pub chord_list: Vec<Chord>
 }
 
 macro_rules! enforce_unique_chord {
@@ -340,28 +340,28 @@ impl Music {
             _ => vec![ChordType::default()]
         };
 
-        let mut notes_of_chords: Vec<Vec<Chord>> = (0..12).map(|_| Vec::new()).collect();
-        let mut all_chords: Vec<Chord> = Vec::new();
+        let mut chord_table: Vec<Vec<Chord>> = vec![Vec::new(); 12];
+        let mut chord_list: Vec<Chord> = Vec::new();
 
         for ct in chord_types.iter() {
             for r in ct.clone().roots {
                 let chord = Chord::new(r, &ct);
-                all_chords.push(chord.clone());
+                chord_list.push(chord.clone());
                 for note in chord.get_notes() {
-                    notes_of_chords[(note % 12) as usize].push(chord.clone());
+                    chord_table[(note % 12) as usize].push(chord.clone());
                 }
             }
         }
 
-        prune_chords(&mut notes_of_chords, &mut all_chords, scale, key);
+        prune_chords(&mut chord_table, &mut chord_list, scale, key);
 
         return Ok(Music {
             math_magician,
             midi_file: MidiFile::new(),
             key,
-            notes_of_chords,
+            chord_table,
             _chord_types: chord_types,
-            all_chords
+            chord_list
         })
     }
 
@@ -398,7 +398,7 @@ impl Music {
         let mut i = 0;
         let mut note = self.math_magician.pick_note();
         loop {
-            let chord_list = self.notes_of_chords[note as usize].to_owned();
+            let chord_list = self.chord_table[note as usize].to_owned();
             if chord_list.len() != 0 {
                 return chord_list[self.math_magician.big_decision(0, (chord_list.len() - 1) as u16) as usize].to_owned();
             }
@@ -410,14 +410,14 @@ impl Music {
         }
     }
 
-    /// Picks a random chord from the `all_chords` 1-dimensional list of chords.
+    /// Picks a random chord from the `chord_list` 1-dimensional list of chords.
     fn pick_chord_1d(&mut self) -> Chord {
-        if self.all_chords.len() == 0 {
+        if self.chord_list.len() == 0 {
             return Chord::default();
         }
-        let chord_index = self.math_magician.big_decision(0, (self.all_chords.len() - 1) as u16);
+        let chord_index = self.math_magician.big_decision(0, (self.chord_list.len() - 1) as u16);
         
-        self.all_chords[chord_index as usize].to_owned()
+        self.chord_list[chord_index as usize].to_owned()
     }
     
     /// The original implementation of `def place(self, octave, initTime, isHighPos = True)

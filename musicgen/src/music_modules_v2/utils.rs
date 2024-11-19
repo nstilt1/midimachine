@@ -1,6 +1,6 @@
 static PPQ: u32 = 96;
 
-use std::time::SystemTime;
+use std::{collections::HashSet, hash::Hash, ops::Add, time::SystemTime};
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
@@ -96,4 +96,51 @@ pub fn parse_key(key: &str) -> i16 {
         }
     }
     return 0;
+}
+
+/// Math operators for HashSets
+pub trait HashSetMath {
+    type Inner: Eq + Hash + Clone;
+    fn add(&self, other: &Self) -> Self;
+    fn add_assign(&mut self, other: &Self);
+    fn sub(&self, other: &Self) -> Self;
+    fn sub_assign(&mut self, other: &Self);
+    fn to_vec(&self) -> Vec<Self::Inner>;
+}
+
+impl<T: Eq + Hash + Clone> HashSetMath for HashSet<T> {
+    type Inner = T;
+    fn add(&self, other: &Self) -> Self {
+        self.union(other).cloned().collect()
+    }
+    fn add_assign(&mut self, other: &Self) {
+        *self = self.add(other);
+    }
+    fn sub(&self, other: &Self) -> Self {
+        self.difference(other).cloned().collect()
+    }
+    fn sub_assign(&mut self, other: &Self) {
+        *self = self.sub(other);
+    }
+    fn to_vec(&self) -> Vec<Self::Inner> {
+        self.iter().cloned().collect()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::HashSet;
+
+    #[test]
+    fn hashset_math() {
+        let a = HashSet::from([1, 2, 3]);
+        let b = HashSet::from([3, 4, 5]);
+
+        assert_eq!(a.sub(&b), HashSet::from([1, 2]));
+        assert_eq!(b.sub(&a), HashSet::from([4, 5]));
+
+        assert_eq!(a.add(&b), b.add(&a));
+        assert_eq!(a.add(&b), HashSet::from([1, 2, 3, 4, 5]));
+    }
 }
