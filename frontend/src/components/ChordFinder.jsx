@@ -57,7 +57,7 @@ const ChordFinder = ({
             setAllChords(data['all_chords']);
         } catch (error) {
             console.error("Error getting chords", error);
-            alert("An error occurred while looking for chords.");
+            //alert("An error occurred while looking for chords.");
         }
     }
 
