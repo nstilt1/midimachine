@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use super::{chord::Chord, chord_type::ChordType, utils::{parse_key, HashSetMath}};
+use super::{chord::Chord, chord_type::ChordType, utils::{parse_key, CustomIterators, HashSetMath}};
 
 /// Removes chords that have notes outside of the chosen scale
 /// The base key is C Minor, so for the natural minor scale, we will remove:
@@ -10,14 +10,14 @@ use super::{chord::Chord, chord_type::ChordType, utils::{parse_key, HashSetMath}
 /// * A  - 9
 /// * B - 11
 pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chord>, scale: &str, key: i16) {
-    let good_notes_set: HashSet<usize> = match scale {
+    let good_notes_set: HashSet<i16> = match scale {
         "disabled" => return,
-        "natural" => HashSet::from([0, 2, 3, 4, 5, 7, 8, 10]),
-        "melodic" => HashSet::from([0, 2, 3, 5, 7, 9, 11]),
-        "harmonic" => HashSet::from([0, 2, 3, 5, 7, 8, 11]),
-        "pentatonic" => HashSet::from([0, 3, 5, 7, 10]),
-        "romanian" => HashSet::from([0, 2, 3, 6, 7, 9, 10]),
-        "hungarian" => HashSet::from([0, 2, 3, 6, 7, 8, 11]),
+        "natural" => HashSet::from_iter([0i16, 2, 3, 4, 5, 7, 8, 10].transpose(key),),
+        "melodic" => HashSet::from_iter([0i16, 2, 3, 5, 7, 9, 11].transpose(key),),
+        "harmonic" => HashSet::from_iter([0i16, 2, 3, 5, 7, 8, 11].transpose(key)),
+        "pentatonic" => HashSet::from_iter([0i16, 3, 5, 7, 10].transpose(key)),
+        "romanian" => HashSet::from_iter([0i16, 2, 3, 6, 7, 9, 10].transpose(key)),
+        "hungarian" => HashSet::from_iter([0i16, 2, 3, 6, 7, 8, 11].transpose(key)),
         // "all_notes" restructures `chord_table` and `chord_list` with the
         // optional notes vecs getting converted to new chords
         "all_notes" => HashSet::from([0,1,2,3,4,5,6,7,8,9,10,11]),
@@ -26,18 +26,21 @@ pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chor
 
     chord_list.iter_mut().for_each(|c| c.key = key);
 
-    let (mut chord_set, mut chord_table_sets) = expand_chords(chord_list);
-
     // prune the chords
-    let bad_notes: Vec<usize> = HashSet::from_iter(0..12)
+    let bad_notes_set: HashSet<i16> = HashSet::from_iter(0..12)
         .difference(&good_notes_set)
         .cloned()
         .collect();
 
+    let bad_notes = bad_notes_set.to_vec();
+
+    let (mut chord_set, mut chord_table_sets) = expand_chords(chord_list, bad_notes_set);
+
+    /*
     let mut bad_chords: HashSet<Chord> = HashSet::with_capacity(chord_set.capacity());
 
     for bad_note in bad_notes {
-        bad_chords.add_assign(&chord_table_sets[(bad_note + key as usize) % 12]);
+        bad_chords.add_assign(&chord_table_sets[(bad_note + key) as usize % 12]);
         //chord_table[bad_note] = Vec::new();
         //chord_table_sets[bad_note] = HashSet::new();
     }
@@ -52,12 +55,20 @@ pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chor
         chord_table_set.sub_assign(&bad_chords);
         *chord_table_vec = chord_table_set.to_vec();
     });
+    */
+    let mut chord_set: HashSet<Chord> = HashSet::new();
+    chord_table_sets.iter().zip(chord_table.iter_mut()).for_each(|(chord_table_set, chord_table_vec)| {
+        *chord_table_vec = chord_table_set.to_vec();
+        chord_set.add_assign(chord_table_set);
+    });
 
-    *chord_list = chord_set.sub(&bad_chords).to_vec();
+    *chord_list = chord_set.to_vec();
+
+    //*chord_list = chord_set.sub(&bad_chords).to_vec();
 }
 
 /// Turns chords with optional notes into new chords.
-fn expand_chords(chord_list: &mut Vec<Chord>) -> (HashSet<Chord>, Vec<HashSet<Chord>>) {
+fn expand_chords(chord_list: &mut Vec<Chord>, bad_notes_set: HashSet<i16>) -> (HashSet<Chord>, Vec<HashSet<Chord>>) {
     let mut chord_set: HashSet<Chord> = HashSet::with_capacity(chord_list.capacity());
     for chord in chord_list.iter() {
         let mut base_chord_type = chord.chord_type.clone();
@@ -98,11 +109,14 @@ fn expand_chords(chord_list: &mut Vec<Chord>) -> (HashSet<Chord>, Vec<HashSet<Ch
     let mut chord_table_sets: Vec<HashSet<Chord>> = vec![HashSet::new(); 12];
     // insert chord_set into chord_table_sets
     chord_set.iter().for_each(|chord| {
-        chord.get_notes()
-            .iter()
-            .for_each(|n| {
-                chord_table_sets[*n as usize % 12].insert(chord.clone());
-            });
+        let chord_has_bad_notes = !chord.notes_set().intersect(&bad_notes_set).is_empty();
+        if !chord_has_bad_notes {
+            chord.get_notes()
+                .iter()
+                .for_each(|n| {
+                    chord_table_sets[*n as usize % 12].insert(chord.clone());
+                });
+        }
     });
 
     (chord_set, chord_table_sets)

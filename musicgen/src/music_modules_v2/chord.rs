@@ -1,4 +1,4 @@
-use std::hash::Hash;
+use std::{collections::HashSet, hash::Hash};
 
 use base64::{engine::general_purpose, Engine};
 use midly::Smf;
@@ -6,7 +6,7 @@ use serde::{ser::SerializeStruct, Serialize};
 
 use crate::music_modules_v2::music::KEYS;
 
-use super::{chord_type::*, midi::MidiFile};
+use super::{chord_type::*, midi::MidiFile, utils::CustomIterators};
 
 #[derive(Clone, Debug)]
 pub struct Chord {
@@ -129,5 +129,9 @@ impl Chord {
         general_purpose::STANDARD.encode_string(output, &mut base64);
 
         base64
+    }
+
+    pub fn notes_set(&self) -> HashSet<i16> {
+        HashSet::from_iter(self.get_notes().transpose(0))
     }
 }

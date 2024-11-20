@@ -103,6 +103,7 @@ pub trait HashSetMath {
     type Inner: Eq + Hash + Clone;
     fn add(&self, other: &Self) -> Self;
     fn add_assign(&mut self, other: &Self);
+    fn intersect(&self, other: &Self) -> Vec<Self::Inner>;
     fn sub(&self, other: &Self) -> Self;
     fn sub_assign(&mut self, other: &Self);
     fn to_vec(&self) -> Vec<Self::Inner>;
@@ -116,6 +117,9 @@ impl<T: Eq + Hash + Clone> HashSetMath for HashSet<T> {
     fn add_assign(&mut self, other: &Self) {
         *self = self.add(other);
     }
+    fn intersect(&self, other: &Self) -> Vec<Self::Inner> {
+        self.intersection(other).cloned().collect()
+    }
     fn sub(&self, other: &Self) -> Self {
         self.difference(other).cloned().collect()
     }
@@ -124,6 +128,38 @@ impl<T: Eq + Hash + Clone> HashSetMath for HashSet<T> {
     }
     fn to_vec(&self) -> Vec<Self::Inner> {
         self.iter().cloned().collect()
+    }
+}
+
+pub trait CustomIterators {
+    type Item;
+    
+    /// Returns an iterator that transposes each element by the given amount,
+    /// wrapping around at 12
+    fn transpose(&self, transpose_amount: i16) -> impl Iterator<Item = Self::Item> + '_;
+}
+
+impl CustomIterators for [usize] {
+    type Item = usize;
+    
+    fn transpose(&self, transpose_amount: i16) -> impl Iterator<Item = Self::Item> + '_ {
+        self.iter().map(move |&n| (n + transpose_amount as usize) % 12)
+    }
+}
+
+impl CustomIterators for [i16] {
+    type Item = i16;
+    
+    fn transpose(&self, transpose_amount: i16) -> impl Iterator<Item = Self::Item> + '_ {
+        self.iter().map(move |&n| (n + transpose_amount as i16) % 12)
+    }
+}
+
+impl CustomIterators for [i32] {
+    type Item = i32;
+    
+    fn transpose(&self, transpose_amount: i16) -> impl Iterator<Item = Self::Item> + '_ {
+        self.iter().map(move |&n| (n + transpose_amount as i32) % 12)
     }
 }
 
@@ -142,5 +178,15 @@ mod tests {
 
         assert_eq!(a.add(&b), b.add(&a));
         assert_eq!(a.add(&b), HashSet::from([1, 2, 3, 4, 5]));
+    }
+
+    #[test]
+    fn transpose_test() {
+        let test_1: [i32; 7] = [0, 2, 4, 6, 8, 9, 11];
+        let transposed: Vec<i32> = test_1.transpose(1).collect();
+        assert_eq!(transposed, [1, 3, 5, 7, 9, 10, 0]);
+
+        let set: HashSet<i32> = HashSet::from_iter([0, 3, 6, 9].transpose(2));
+        assert_eq!(set, HashSet::from([2, 5, 8, 11]));
     }
 }
