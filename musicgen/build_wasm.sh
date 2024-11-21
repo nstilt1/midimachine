@@ -1,9 +1,9 @@
 # Run cargo tests
-#cargo test
+cargo test generation_mode_mutations
 
 # Check if the tests were successful
-#if [ $? -eq 0 ]; then
-#    echo "No mutations found"
+if [ $? -eq 0 ]; then
+    echo "No mutations found"
     
     # compile rust code to webassembly
     wasm-pack build --target web --release
@@ -13,6 +13,6 @@
     mv pkg/musicgen.js ../frontend/public/musicgen.js
 
     echo "Build successful"
-#else
-#    echo "Mutation tests failed. Run `cargo test` to see which tests failed."
-#fi
+else
+    echo "Mutation tests failed. Run `cargo test` to see which tests failed."
+fi
