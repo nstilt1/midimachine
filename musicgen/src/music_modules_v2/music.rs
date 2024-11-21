@@ -3,6 +3,7 @@ use std::collections::{HashSet, VecDeque};
 use midly::TrackEvent;
 use sha2::Sha256;
 
+use super::chord_type::{default_chord_types, expand_chord_types};
 use super::error::MusicError;
 
 use super::pruning::prune_chords;
@@ -13,10 +14,12 @@ const NOTE_LENGTHS: [f64; 8] = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
 
 macro_rules! define_consts {
     ($(($const_name:ident, $value:literal)),*) => {
-        $(
-            #[allow(unused)]
-            pub const $const_name: u8 = $value;
-        )*
+        pub mod notes {
+            $(
+                #[allow(unused)]
+                pub const $const_name: u8 = $value;
+            )*
+        }
     };
 }
 
@@ -34,6 +37,8 @@ define_consts!(
     (ASHARP, 10),
     (B, 11)
 );
+
+use notes::*;
 
 #[derive(Debug)]
 pub struct Music {
@@ -192,33 +197,7 @@ impl Music {
         let chord_types = match chord_type_group {
             "default" => {
                 // default chord type definitions
-                let minor7 = ChordType::new("minor 7", &[0, 10, 15, 19], &[C, D, F, FSHARP, ASHARP], None);
-                let major7 = ChordType::new("major 7", &[0, 11, 16, 19], &[DSHARP, GSHARP], None);
-                let diminished = ChordType::new("diminished", &[0, 3, 6], &[DSHARP, FSHARP], None);
-                let augmented = ChordType::new("augmented", &[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
-                //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
-                let major6 = ChordType::new("major 6", &[0, 9, 16, 19], &[DSHARP, GSHARP, ASHARP], Some(&[23]));
-
-                let minor6 = ChordType::new("minor 6", &[0, 9, 15, 19], &[C, D, F, G], None);
-                let major9 = ChordType::new("major 9", &[0, 4, 10, 14], &[C, F, G], None);
-                let major7sharp9 = ChordType::new("major 7 #9", &[0, 4, 10, 15], &[C, D, G, A], None);
-                let major7flat5sharp9 = ChordType::new("major 7b5#9", &[0, 4, 10, 15, 18], &[C, A], None);
-                let major9flat5 = ChordType::new("major 9b5", &[0, 4, 10, 15, 17], &[C, A], None);
-                let major7flat9 = ChordType::new("major 7b9", &[0, 4, 10, 13], &[C, D], None);
-                
-                vec![
-                    minor7,
-                    major7,
-                    diminished,
-                    augmented,
-                    major6,
-                    minor6,
-                    major9,
-                    major7sharp9,
-                    major7flat5sharp9,
-                    major9flat5,
-                    major7flat9
-                ]
+                default_chord_types()
             },
             "major and minor" => {
                 let major = ChordType::new("major", &[0, 4, 7], &[DSHARP, GSHARP, ASHARP], None);
@@ -340,18 +319,7 @@ impl Music {
             _ => vec![ChordType::default()]
         };
 
-        let mut chord_table: Vec<Vec<Chord>> = vec![Vec::new(); 12];
-        let mut chord_list: Vec<Chord> = Vec::new();
-
-        for ct in chord_types.iter() {
-            for r in ct.clone().roots {
-                let chord = Chord::new(r, &ct);
-                chord_list.push(chord.clone());
-                for note in chord.get_notes() {
-                    chord_table[(note % 12) as usize].push(chord.clone());
-                }
-            }
-        }
+        let (mut chord_list, mut chord_table) = expand_chord_types(&chord_types, 0);
 
         prune_chords(&mut chord_table, &mut chord_list, scale, key);
 

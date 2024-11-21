@@ -1,5 +1,9 @@
 use std::hash::Hash;
 
+use crate::music_modules_v2::music::notes::*;
+
+use super::chord::Chord;
+
 
 #[derive(Clone, Debug)]
 pub struct ChordType {
@@ -62,4 +66,102 @@ impl Hash for ChordType {
         self.optional_notes.hash(state);
         self.roots.hash(state);
     }
+}
+
+/// Definitions for the default chord types.
+pub fn default_chord_types() -> Vec<ChordType> {
+    let minor7 = ChordType::new("minor 7", &[0, 10, 15, 19], &[C, D, F, FSHARP, ASHARP], None);
+    let major7 = ChordType::new("major 7", &[0, 11, 16, 19], &[DSHARP, GSHARP], None);
+    let diminished = ChordType::new("diminished", &[0, 3, 6], &[DSHARP, FSHARP], None);
+    let augmented = ChordType::new("augmented", &[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
+    //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
+    let major6 = ChordType::new("major 6", &[0, 9, 16, 19], &[DSHARP, GSHARP, ASHARP], Some(&[23]));
+
+    let minor6 = ChordType::new("minor 6", &[0, 9, 15, 19], &[C, D, F, G], None);
+    let major9 = ChordType::new("major 9", &[0, 4, 10, 14], &[C, F, G], None);
+    let major7sharp9 = ChordType::new("major 7 #9", &[0, 4, 10, 15], &[C, D, G, A], None);
+    let major7flat5sharp9 = ChordType::new("major 7b5#9", &[0, 4, 10, 15, 18], &[C, A], None);
+    let major9flat5 = ChordType::new("major 9b5", &[0, 4, 10, 15, 17], &[C, A], None);
+    let major7flat9 = ChordType::new("major 7b9", &[0, 4, 10, 13], &[C, D], None);
+    
+    vec![
+        minor7,
+        major7,
+        diminished,
+        augmented,
+        major6,
+        minor6,
+        major9,
+        major7sharp9,
+        major7flat5sharp9,
+        major9flat5,
+        major7flat9
+    ]
+}
+
+/// Expands chord types into a list of chords and a table of chords.
+pub fn expand_chord_types(chord_types: &Vec<ChordType>, key: i16) -> (Vec<Chord>, Vec<Vec<Chord>>) {
+    let mut chord_list: Vec<Chord> = Vec::with_capacity(chord_types.len() * 5);
+    let mut chord_table: Vec<Vec<Chord>> = vec![Vec::with_capacity(chord_list.capacity()); 12];
+    for chord_type in chord_types.iter() {
+        for root in chord_type.roots.iter() {
+            let mut chord = Chord::new(*root, chord_type);
+            chord.key = key;
+            chord_list.push(chord.clone());
+            for note in chord.get_notes() {
+                chord_table[(note % 12) as usize].push(chord.clone());
+            }
+        }
+    }
+
+    (chord_list, chord_table)
+}
+
+#[cfg(test)]
+#[allow(unused)]
+pub fn all_roots_chord_types() -> Vec<ChordType> {
+    let minor7 = ChordType::all_roots("minor 7", &[0, 10, 15, 19], None);
+    let major7 = ChordType::all_roots("major 7", &[0, 11, 16, 19], None);
+    let diminished = ChordType::all_roots("diminished", &[0, 3, 6], None);
+    let augmented = ChordType::all_roots("augmented", &[0,4,8], Some(&[12]));
+    //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
+    let major6 = ChordType::all_roots("major 6", &[0, 9, 16, 19], Some(&[23]));
+
+    let minor6 = ChordType::all_roots("minor 6", &[0, 9, 15, 19], None);
+    let major9 = ChordType::all_roots("major 9", &[0, 4, 10, 14], None);
+    let major7sharp9 = ChordType::all_roots("major 7#9", &[0, 4, 10, 15], None);
+    let major7flat5sharp9 = ChordType::all_roots("major 7b5#9", &[0, 4, 10, 15, 18], None);
+    let major9flat5 = ChordType::all_roots("major 9b5", &[0, 4, 10, 15, 17], None);
+    let major7flat9 = ChordType::all_roots("major 7b9", &[0, 4, 10, 13], None);
+
+    // extra chord types
+    let major = ChordType::all_roots("major", &[0, 4, 7], None);
+    let minor = ChordType::all_roots("minor", &[0, 3, 7], None);
+
+    let minor9 = ChordType::all_roots("minor 9", &[0, 3, 7, 10, 14], None);
+
+    let major13 = ChordType::all_roots("major 13", &[0, 5, 10, 21, 26, 31], None);
+    let dominant9 = ChordType::all_roots("dominant 9", &[0, 4, 9, 14, 18], None);
+    
+    let add9 = ChordType::all_roots("add 9", &[0, 4, 7, 14], None);
+
+    vec![
+        minor7,
+        major7,
+        diminished,
+        augmented,
+        major6,
+        minor6,
+        major9,
+        major7sharp9,
+        major7flat5sharp9,
+        major9flat5,
+        major7flat9,
+        major,
+        minor,
+        minor9,
+        major13,
+        dominant9,
+        add9
+    ]
 }
