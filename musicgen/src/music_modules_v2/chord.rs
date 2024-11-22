@@ -39,8 +39,9 @@ impl Eq for Chord {}
 
 impl Hash for Chord {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.get_name().hash(state);
-        self.get_note_names().hash(state);
+        self.root.hash(state);
+        self.chord_type.note_intervals.hash(state);
+        self.chord_type.optional_notes.hash(state);
     }
 }
 
