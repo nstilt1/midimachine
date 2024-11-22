@@ -106,7 +106,7 @@ pub fn chord_finder(
     scale: &str,
     notes: Array,
 ) -> Result<String, Error> {
-    use music_modules_v2::{chord::Chord, utils::parse_key};
+    use music_modules_v2::{chord::Chord, utils::{parse_key, sets::SetOpsCollection}};
     use serde_json::json;
 
     let chord_selection_hashset: HashSet<String> = chord_selection.iter()
@@ -143,15 +143,13 @@ pub fn chord_finder(
                     .iter()
                     .cloned()
                 )
-            ).cloned()
-            .collect();
+            ).to_set();
     }
 
     for chords in musician.chord_table.iter_mut() {
         *chords = HashSet::from_iter(chords.iter().cloned())
             .intersection(&intersected_chords)
-            .cloned()
-            .collect();
+            .to_vec();
     }
     musician.chord_list = intersected_chords.iter().cloned().collect();
 

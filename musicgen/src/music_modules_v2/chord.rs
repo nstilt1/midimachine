@@ -79,6 +79,13 @@ impl Chord {
         return result
     }
 
+    /// Gets a hashset of the notes in this chord. The notes will be between 
+    /// 0 and 12.
+    #[cfg(test)]
+    pub fn get_notes_set(&self) -> HashSet<i16> {
+        self.get_notes().iter().map(|n| *n % 12).collect()
+    }
+
     
     /// Gets an array of optional notes for this chord.
     pub fn get_optional_notes(&self) -> Vec<i16> {

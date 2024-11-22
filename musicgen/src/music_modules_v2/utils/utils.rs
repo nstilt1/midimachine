@@ -4,7 +4,7 @@ use std::time::SystemTime;
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
-use super::music::KEYS;
+use crate::music_modules_v2::music::KEYS;
 
 /**
  * Convert beats to ticks
