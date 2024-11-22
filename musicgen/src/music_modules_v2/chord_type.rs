@@ -1,5 +1,7 @@
 use std::hash::Hash;
 
+use crate::music_modules_v2::music::notes::*;
+
 
 #[derive(Clone, Debug)]
 pub struct ChordType {
@@ -62,4 +64,35 @@ impl Hash for ChordType {
         self.optional_notes.hash(state);
         self.roots.hash(state);
     }
+}
+
+/// Default chord type definitions
+pub fn default_chord_types() -> Vec<ChordType> {
+    let minor7 = ChordType::new("minor 7", &[0, 10, 15, 19], &[C, D, F, FSHARP, ASHARP], None);
+    let major7 = ChordType::new("major 7", &[0, 11, 16, 19], &[DSHARP, GSHARP], None);
+    let diminished = ChordType::new("diminished", &[0, 3, 6], &[DSHARP, FSHARP], None);
+    let augmented = ChordType::new("augmented", &[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
+    //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
+    let major6 = ChordType::new("major 6", &[0, 9, 16, 19], &[DSHARP, GSHARP, ASHARP], Some(&[23]));
+
+    let minor6 = ChordType::new("minor 6", &[0, 9, 15, 19], &[C, D, F, G], None);
+    let major9 = ChordType::new("major 9", &[0, 4, 10, 14], &[C, F, G], None);
+    let major7sharp9 = ChordType::new("major 7 #9", &[0, 4, 10, 15], &[C, D, G, A], None);
+    let major7flat5sharp9 = ChordType::new("major 7b5#9", &[0, 4, 10, 15, 18], &[C, A], None);
+    let major9flat5 = ChordType::new("major 9b5", &[0, 4, 10, 15, 17], &[C, A], None);
+    let major7flat9 = ChordType::new("major 7b9", &[0, 4, 10, 13], &[C, D], None);
+    
+    vec![
+        minor7,
+        major7,
+        diminished,
+        augmented,
+        major6,
+        minor6,
+        major9,
+        major7sharp9,
+        major7flat5sharp9,
+        major9flat5,
+        major7flat9
+    ]
 }

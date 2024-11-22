@@ -1,4 +1,4 @@
-use std::hash::Hash;
+use std::{collections::HashSet, hash::Hash};
 
 use base64::{engine::general_purpose, Engine};
 use midly::Smf;
@@ -131,4 +131,59 @@ impl Chord {
 
         base64
     }
+}
+
+/// Expands chords into new chords based on their optional notes, adding them
+pub fn expand_chords(chord_list: &mut Vec<Chord>) -> (HashSet<Chord>, Vec<HashSet<Chord>>) {
+    let mut chord_set: HashSet<Chord> = HashSet::with_capacity(chord_list.capacity());
+    let mut chord_table_sets: Vec<HashSet<Chord>> = vec![HashSet::new(); 12];
+    for chord in chord_list.iter() {
+        let mut base_chord_type = chord.chord_type.clone();
+        let optional_notes = base_chord_type.optional_notes;
+        let root = chord.root;
+        base_chord_type.optional_notes = Vec::new();
+        let base_chord = Chord::new(chord.root, &base_chord_type);
+        for note in base_chord.get_notes() {
+            chord_table_sets[(note + chord.key) as usize % 12].insert(base_chord.clone());
+        }
+        chord_set.insert(base_chord.clone());
+
+        // add more chords with different combinations of notes to the sets
+        // `cumulated_notes` is used to add chords with 1, 2, ..., n optional notes
+        // to the sets
+        // `notes` is used to add chords with just one of the optional notes
+        let mut cumulated_notes = base_chord_type.note_intervals.clone();
+        for note in optional_notes.iter() {
+            let mut notes = base_chord_type.note_intervals.clone();
+            cumulated_notes.push(*note);
+            notes.push(*note);
+            let new_chord_type = ChordType::new(&base_chord_type.name, &cumulated_notes, &[root], None);
+            let new_chord_type_2 = ChordType::new(&base_chord_type.name, &notes, &[root], None);
+            let new_chord = Chord::new(chord.root, &new_chord_type);
+            let new_chord_2 = Chord::new(chord.root, &new_chord_type_2);
+            chord_set.insert(new_chord.to_owned());
+            chord_set.insert(new_chord_2.to_owned());
+            for c in &[&new_chord, &new_chord_2, &base_chord] {
+                for n_2 in c.get_notes().iter() {
+                    let index = (*n_2 as u8) % 12;
+                    chord_table_sets[index as usize].insert(c.to_owned().to_owned());
+                }
+            }
+        }
+        // accumulate chords with optional notes added in reverse order
+        if optional_notes.len() > 2 {
+            let mut cumulated_notes = base_chord_type.note_intervals.clone();
+            for note in optional_notes.iter().rev() {
+                cumulated_notes.push(*note);
+                let new_chord_type = ChordType::new(&base_chord_type.name, &cumulated_notes, &[root], None);
+                let new_chord = Chord::new(chord.root, &new_chord_type);
+                chord_set.insert(new_chord.to_owned());
+                for n_2 in new_chord.get_notes().iter() {
+                    let index = (*n_2 as u8) % 12;
+                    chord_table_sets[index as usize].insert(new_chord.to_owned());
+                }
+            }
+        }
+    }
+    (chord_set, chord_table_sets)
 }
