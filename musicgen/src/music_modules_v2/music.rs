@@ -3,8 +3,9 @@ use std::collections::{HashSet, VecDeque};
 use midly::TrackEvent;
 use sha2::Sha256;
 
+use crate::Error;
+
 use super::chord_type::default_chord_types;
-use super::error::MusicError;
 
 use super::pruning::prune_chords;
 use super::utils::{get_max_note_length_index, parse_key};
@@ -182,7 +183,7 @@ impl Music {
         chord_selections: &HashSet<String>, 
         chord_type_group: &str,
         scale: &str
-    ) -> Result<Music, MusicError> {
+    ) -> Result<Music, Error> {
         let mut stash = [0u8; 32];
         stash.copy_from_slice(&hash);
         let mut math_magician = MathMagician::share_hash(stash);
@@ -353,7 +354,7 @@ impl Music {
         should_use_same_chords: bool, 
         chord_picking_method: &str, 
         minimum_number_of_unique_chords: u32,
-    ) -> Result<Vec<TrackEvent>, MusicError> {
+    ) -> Result<Vec<TrackEvent>, Error> {
         pick_chord_placement_method!(
             self,
             generation_mode, 
@@ -369,6 +370,23 @@ impl Music {
         );
 
         return Ok(self.midi_file.finalize());
+    }
+
+    /// Rotates the chords in the chord table.
+    pub fn rotate_chords(&mut self, key: &str) {
+        let k = parse_key(key);
+        self
+            .chord_list
+            .iter_mut()
+            .for_each(|chord| chord.key = k);
+        self
+            .chord_table
+            .iter_mut()
+            .for_each(|chords| chords
+                .iter_mut()
+                .for_each(|chord| chord.key = k));
+        self.chord_table.rotate_right(k as usize);
+
     }
 
     /// Picks a random chord from the 2-dimensional list of chords.

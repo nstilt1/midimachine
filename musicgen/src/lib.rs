@@ -1,9 +1,9 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, fmt::Display};
 
 #[cfg(target_arch = "wasm32")]
 use js_sys::Array;
 use midly::Smf;
-use music_modules_v2::{error::MusicError, Music};
+use music_modules_v2::Music;
 use wasm_bindgen::prelude::*;
 use sha2::{Digest, Sha256};
 
@@ -11,7 +11,6 @@ mod music_modules_v2;
 
 #[derive(Debug)]
 pub enum Error {
-    MusicError(MusicError),
     MidlyError(midly::Error),
     StrError(String),
     SerdeError(serde_json::Error),
@@ -20,12 +19,6 @@ pub enum Error {
 impl Into<JsValue> for Error {
     fn into(self) -> JsValue {
         JsValue::from_str("Error")
-    }
-}
-
-impl From<MusicError> for Error {
-    fn from(value: MusicError) -> Self {
-        Self::MusicError(value)
     }
 }
 
@@ -47,6 +40,23 @@ impl From<serde_json::Error> for Error {
     }
 }
 
+impl Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            Self::MidlyError(v) => v.to_string(),
+            Self::SerdeError(v) => v.to_string(),
+            Self::StrError(v) => v.to_string()
+        };
+        f.write_str(&s)
+    }
+}
+
+impl From<Error> for JsError {
+    fn from(value: Error) -> Self {
+        Self::new(&value.to_string())
+    }
+}
+
 #[wasm_bindgen]
 #[cfg(target_arch="wasm32")]
 pub fn get_chords_of_key(
@@ -54,8 +64,7 @@ pub fn get_chords_of_key(
     chord_selection: Array,
     chord_type_group: &str,
     scale: &str
-) -> Result<String, Error> {
-    use music_modules_v2::utils::parse_key;
+) -> Result<String, JsError> {
     use serde_json::json;
 
     let chord_selection_hashset: HashSet<String> = chord_selection.iter()
@@ -63,22 +72,7 @@ pub fn get_chords_of_key(
         .collect();
     let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale)?;
 
-    let key_int = parse_key(key);
-    //translate_and_prune(&mut musician.chord_table, &mut musician.chord_list, key, scale);
-
-    for chord in musician.chord_list.iter_mut() {
-        chord.key = key_int;
-        //chord.root = (chord.root + key_int as u8) % 12;
-    }
-
-    for chords in musician.chord_table.iter_mut() {
-        for chord in chords.iter_mut() {
-            chord.key = key_int;
-            //chord.root = (chord.root + key_int as u8) % 12;
-        }
-    }
-
-    musician.chord_table.rotate_right(key_int as usize);
+    musician.rotate_chords(key);
 
     // sort the sub-arrays
     for col in musician.chord_table.iter_mut() {
@@ -105,8 +99,8 @@ pub fn chord_finder(
     chord_type_group: &str,
     scale: &str,
     notes: Array,
-) -> Result<String, Error> {
-    use music_modules_v2::{chord::Chord, utils::{parse_key, sets::SetOpsCollection}};
+) -> Result<String, JsError> {
+    use music_modules_v2::{chord::Chord, utils::{parse_key, sets::{SetMath, SetOpsCollection}}};
     use serde_json::json;
 
     let chord_selection_hashset: HashSet<String> = chord_selection.iter()
@@ -121,25 +115,13 @@ pub fn chord_finder(
     }
     let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale)?;
 
-    let key_int = parse_key(key);
-
-    for chord in musician.chord_list.iter_mut() {
-        chord.key = key_int;
-    }
-
-    for chords in musician.chord_table.iter_mut() {
-        for chord in chords.iter_mut() {
-            chord.key = key_int;
-        }
-    }
-
-    musician.chord_table.rotate_right(key_int as usize);
+    musician.rotate_chords(key);
 
     let mut intersected_chords: HashSet<Chord> = HashSet::from_iter(musician.chord_table[notes_vec[0]].iter().cloned());
     for note in notes_vec.iter().skip(1) {
         intersected_chords = intersected_chords
             .intersection(
-                &HashSet::from_iter(musician.chord_table[*note]
+                &HashSet::from_iter(musician.chord_table[*note % 12]
                     .iter()
                     .cloned()
                 )
@@ -151,7 +133,7 @@ pub fn chord_finder(
             .intersection(&intersected_chords)
             .to_vec();
     }
-    musician.chord_list = intersected_chords.iter().cloned().collect();
+    musician.chord_list = intersected_chords.to_vec();
 
     // sort the sub-arrays
     for col in musician.chord_table.iter_mut() {
