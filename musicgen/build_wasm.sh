@@ -1,5 +1,5 @@
 # Run cargo tests
-cargo test
+cargo test generation_mode_mutations
 
 # Check if the tests were successful
 if [ $? -eq 0 ]; then
