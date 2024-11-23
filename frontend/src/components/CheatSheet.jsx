@@ -51,11 +51,14 @@ const CheatSheet = ({
         }
 
         try {
+            console.time("get_vocabulary");
             const json = wasmModule.get_chords_of_key(chosenKey, customChords, chordGroup, scale, tableScheme, showProbabilities);
+            console.timeEnd("get_vocabulary");
+
             const data = JSON.parse(json);
             setChords(data['chord_table']);
             setAllChords(data['chord_list']);
-            console.log(data);
+            //console.log(data);
         } catch (error) {
             console.error("Error getting chords", error);
             alert("An error occurred while computing valid chords.");

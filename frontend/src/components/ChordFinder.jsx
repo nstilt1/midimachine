@@ -54,7 +54,10 @@ const ChordFinder = ({
         }
 
         try {
+            console.time("chord_finder");
             const json = wasmModule.chord_finder(chosenKey, customChords, chordGroup, scale, notes, tableScheme);
+            console.timeEnd("chord_finder");
+            
             const data = JSON.parse(json);
             setChords(data['chord_table']);
             setAllChords(data['chord_list']);

@@ -95,6 +95,7 @@ const MidiForm = ({
 
       //console.log("useSameChords = " + useSameChords);
       //console.log("key: " + chosenKey);
+      console.time("generate_midi");
       const midiBinary = wasmModule.generate_midi(
         combinedBinary, 
         mode, 
@@ -107,6 +108,7 @@ const MidiForm = ({
         sanitizedNumUniqueChords,
         scale
       );
+      console.timeEnd("generate_midi");
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
       const midiUrl = URL.createObjectURL(midiBlob);
