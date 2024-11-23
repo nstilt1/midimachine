@@ -1,6 +1,8 @@
+//! Methods related to pruning chords from the chord table and chord list.
+
 use std::collections::HashSet;
 
-use super::{chord::{expand_chords, Chord}, utils::{parse_key, sets::{SetMath, SetOpsCollection}}};
+use super::{chord::{expand_chords, Chord}, utils::sets::{SetMath, SetOpsCollection}};
 
 /// Returns the good notes set and the bad notes set for a given scale in the 
 /// key of C minor.
@@ -65,70 +67,6 @@ pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chor
     }
 
     *chord_list = chord_set.difference(&bad_chords).cloned().collect();
-}
-
-pub fn translate_and_prune(
-    chord_table: &mut Vec<Vec<Chord>>, 
-    chord_list: &mut Vec<Chord>, 
-    key: &str,
-    scale: &str
-) {
-    let key_int = parse_key(key);
-    for chord in chord_list.iter_mut() {
-        chord.key = key_int;
-    }
-    *chord_table = vec![Vec::new(); 12];
-
-    for chord in chord_list.iter() {
-        for note in chord.get_notes() {
-            let n = (note + key_int) % 12;
-            chord_table[n as usize].push(chord.clone());
-        }
-    }
-
-    let mut chord_table_sets: Vec<HashSet<Chord>> = vec![HashSet::with_capacity(16); 12];
-    for (i, col) in chord_table.iter().enumerate() {
-        chord_table_sets[i] = HashSet::from_iter(col.iter().cloned());
-    }
-
-    let good_notes_set: HashSet<usize> = match scale {
-        "disabled" => return,
-        "natural" => HashSet::from([0, 2, 3, 4, 5, 7, 8, 10]),
-        "melodic" => HashSet::from([0, 2, 3, 5, 7, 9, 11]),
-        "harmonic" => HashSet::from([0, 2, 3, 5, 7, 8, 11]),
-        "pentatonic" => HashSet::from([0, 3, 5, 7, 10]),
-        "romanian" => HashSet::from([0, 2, 3, 6, 7, 9, 10]),
-        "hungarian" => HashSet::from([0, 2, 3, 6, 7, 8, 11]),
-        // "all_notes" restructures `chord_table` and `chord_list` with the
-        // optional notes vecs getting converted to new chords
-        "all_notes" => HashSet::from([0,1,2,3,4,5,6,7,8,9,10,11]),
-        _ => return
-    };
-
-    let bad_notes: Vec<usize> = HashSet::from_iter(0..12)
-        .difference(&good_notes_set)
-        .cloned()
-        .collect();
-
-    let mut bad_chords: HashSet<Chord> = HashSet::with_capacity(12 * 8);
-    for mut bad_note in bad_notes {
-        bad_note = (bad_note + key_int as usize) % 12;
-        bad_chords = bad_chords
-            .union(&chord_table_sets[bad_note])
-            .to_set();
-        //chord_table[bad_note] = Vec::new();
-        //chord_table_sets[bad_note] = HashSet::new();
-    }
-
-    for note in 0..11 {
-        chord_table_sets[note] = chord_table_sets[note]
-            .difference(&bad_chords)
-            .to_set()
-    }
-    let chord_set: HashSet<Chord> = HashSet::from_iter(chord_list.iter().cloned());
-    *chord_list = chord_set
-        .difference(&bad_chords)
-        .to_vec();
 }
 
 #[cfg(test)]
