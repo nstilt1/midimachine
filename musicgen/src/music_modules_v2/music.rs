@@ -373,6 +373,7 @@ impl Music {
     }
 
     /// Rotates the chords in the chord table.
+    #[allow(unused)]
     pub fn rotate_chords(&mut self, key: &str) {
         let k = parse_key(key);
         self
@@ -391,6 +392,7 @@ impl Music {
 
     /// Rearranges the chord table so that each column's highest note is the 
     /// column's note.
+    #[allow(unused)]
     pub fn rearrange_by_highest_note(&mut self, key: &str) {
         let k = parse_key(key);
         let mut table: Vec<Vec<Chord>> = vec![Vec::with_capacity(32); 12];
@@ -406,6 +408,7 @@ impl Music {
 
     /// Rearranges the chord table so that each column's lowest note is the 
     /// column's note.
+    #[allow(unused)]
     pub fn rearrange_by_lowest_note(&mut self, key: &str) {
         let k = parse_key(key);
         let mut table: Vec<Vec<Chord>> = vec![Vec::with_capacity(32); 12];

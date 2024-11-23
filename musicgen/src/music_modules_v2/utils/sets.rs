@@ -9,8 +9,10 @@ pub trait SetOpsCollection {
     type Inner: Eq + Clone;
     type Set;
     /// Converts the intermediate result into a HashSet.
+    #[allow(unused)]
     fn to_set(self) -> Self::Set;
     /// Converts the intermediate result into a Vector.
+    #[allow(unused)]
     fn to_vec(self) -> Vec<Self::Inner>;
 }
 

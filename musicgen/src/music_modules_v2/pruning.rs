@@ -71,7 +71,7 @@ pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chor
 
 #[cfg(test)]
 mod tests {
-    use crate::music_modules_v2::{music::notes::*, utils::sets::ToSet, Music};
+    use crate::music_modules_v2::{music::notes::*, utils::{parse_key, sets::ToSet}, Music};
 
     use super::*;
 
@@ -112,22 +112,6 @@ mod tests {
             "default",
             "pentatonic"
         ).unwrap();
-
-        //prune_chords(&mut musician.chord_table, &mut musician.chord_list, "pentatonic", 0);
-
-        // for chord in musician.chord_list.iter_mut() {
-        //     chord.key = 0;
-        // }
-
-        // let mut result: Vec<Vec<Chord>> = vec![Vec::new(); 12];
-        // for chord in musician.chord_list.iter() {
-        //     for note in chord.get_notes() {
-        //         let n = note % 12;
-        //         result[n as usize].push(chord.clone());
-        //     }
-        // }
-        //
-        //musician.chord_table = result;
 
         assert!(musician.chord_table[CSHARP as usize].len() == 0, "C# had some chords in it");
         assert!(musician.chord_table[D as usize].len() == 0, "D had some notes in it");
@@ -180,8 +164,6 @@ mod tests {
         let (_good_notes, bad_notes) = get_good_notes_set("pentatonic").unwrap();
 
         let bad_notes_set: HashSet<i16> = HashSet::from_iter(bad_notes.iter().map(|n| (*n as i16 + parse_key("F#min")) % 12));
-
-        //prune_chords(&mut musician.chord_table, &mut musician.chord_list, "pentatonic", parse_key("F#min"));
 
         // bad notes
         assert!(musician.chord_table[G as usize].len() == 0, "G had some chords in it");
@@ -246,7 +228,6 @@ mod tests {
         assert!(musician.chord_table[G as usize].len() != 0, "G was empty");
         assert!(musician.chord_table[GSHARP as usize].len() != 0, "G# was empty");
         assert!(musician.chord_table[ASHARP as usize].len() != 0, "A# was empty");
-        
 
         // check for chords that shouldn't be there
         let (_good_notes, bad_notes) = get_good_notes_set("natural").unwrap();

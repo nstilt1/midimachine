@@ -8,6 +8,9 @@ use super::sets::SetMath;
 
 
 impl Music {
+    /// Sets the probabilities of chords being picked within self.chord_table 
+    /// and self.chord_list.
+    #[allow(unused)]
     pub fn set_probabilities(&mut self) {
         let mut chord_table_set: Vec<HashSet<Chord>> = self.chord_table
             .iter()
