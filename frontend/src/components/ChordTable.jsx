@@ -46,9 +46,7 @@ const ChordTable = ({
                                     <div key={chordIndex} className="flex items-start">
                                     <Chord
                                         key={chordIndex}
-                                        midi={chord['midi']}
-                                        chordName={chord['name']}
-                                        notes={chord['notes']}
+                                        json={chord}
                                         index={chordIndex}
                                     />
                                     </div>

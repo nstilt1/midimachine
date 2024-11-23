@@ -13,6 +13,9 @@ pub struct Chord {
     pub chord_type: ChordType,
     pub root: u8,
     pub key: i16,
+    pub probability_2d: f32,
+    pub probability_1d: f32,
+    pub show_probability: bool,
     _chords_to_not_play_next: Vec<Chord>,
 }
 
@@ -22,6 +25,9 @@ impl Default for Chord {
             chord_type: ChordType::default(),
             root: 0,
             key: 0,
+            probability_2d: 0f32,
+            probability_1d: 0f32,
+            show_probability: false,
             _chords_to_not_play_next: Vec::new()
         }
     }
@@ -50,7 +56,14 @@ impl Serialize for Chord {
     where
         S: serde::Serializer 
     {
-        let mut state = serializer.serialize_struct("Chord", 3)?;
+        let mut state = if self.show_probability {
+            let mut state = serializer.serialize_struct("Chord", 5)?;
+            state.serialize_field("probability_2d", &format!("{:.1}%", &self.probability_2d * 100f32))?;
+            state.serialize_field("probability_1d", &format!("{:.1}%", &self.probability_1d * 100f32))?;
+            state
+        } else {
+            serializer.serialize_struct("Chord", 3)?
+        };
         state.serialize_field("name", &self.get_name())?;
         state.serialize_field("notes", &self.get_note_names())?;
         state.serialize_field("midi", &self.to_midi())?;
@@ -65,6 +78,9 @@ impl Chord {
             chord_type: chord_type.to_owned(),
             root: root_index,
             key: 0,
+            probability_2d: 0f32,
+            probability_1d: 0f32,
+            show_probability: false,
             _chords_to_not_play_next: Vec::new()
         }
     }
@@ -79,14 +95,6 @@ impl Chord {
         }
         return result
     }
-
-    /// Gets a hashset of the notes in this chord. The notes will be between 
-    /// 0 and 12.
-    #[cfg(test)]
-    pub fn get_notes_set(&self) -> HashSet<i16> {
-        self.get_notes().iter().map(|n| *n % 12).collect()
-    }
-
     
     /// Gets an array of optional notes for this chord.
     pub fn get_optional_notes(&self) -> Vec<i16> {

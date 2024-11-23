@@ -12,6 +12,8 @@ import {
     AccordionTrigger,
   } from "@/components/ui/accordion";
 import Chord from "./Chord";
+import { Checkbox } from "./ui/checkbox";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 const CheatSheet = ({
     wasmModule,
@@ -33,7 +35,13 @@ const CheatSheet = ({
     tableSchemes
 }) => {
     const [chords, setChords] = useState([]);
-    const [allChords, setAllChords] = useState([]);
+    const [allChords, setAllChords] = useState([]);  
+    const [showProbabilities, setShowProbabilities] = useLocalStorage("showProbability", false);
+
+    const handleShowProbabilitiesChange = () => {
+        setShowProbabilities(!showProbabilities);
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -43,11 +51,11 @@ const CheatSheet = ({
         }
 
         try {
-            const json = wasmModule.get_chords_of_key(chosenKey, customChords, chordGroup, scale, tableScheme);
+            const json = wasmModule.get_chords_of_key(chosenKey, customChords, chordGroup, scale, tableScheme, showProbabilities);
             const data = JSON.parse(json);
             setChords(data['chord_table']);
             setAllChords(data['chord_list']);
-            //console.log(data);
+            console.log(data);
         } catch (error) {
             console.error("Error getting chords", error);
             alert("An error occurred while computing valid chords.");
@@ -97,6 +105,19 @@ const CheatSheet = ({
                     label="Chord table arranged by:"
                 />
             </div>}
+            <input 
+                type="checkbox"
+                id="showProbabilities" 
+                checked={showProbabilities} 
+                onChange={handleShowProbabilitiesChange} 
+            />
+            <label 
+                htmlFor="showProbabilities"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+                Show probabilities?
+            </label>
+            <br />
             <Button type="submit">Get Chords</Button>
             {chords && <div>
                 <Accordion type="multiple" collapsible>
@@ -111,9 +132,7 @@ const CheatSheet = ({
                             {allChords.map((chord, index) => (
                                 <Chord
                                     key={index}
-                                    midi={chord['midi']}
-                                    chordName={chord['name']}
-                                    notes={chord['notes']}
+                                    json={chord}
                                     index={index}
                                 />
                             ))}

@@ -121,9 +121,10 @@ function addHeapObject(obj) {
  * @param {string} chord_type_group
  * @param {string} scale
  * @param {string} table_scheme
+ * @param {boolean} show_probabilities
  * @returns {string}
  */
-export function get_chords_of_key(key, chord_selection, chord_type_group, scale, table_scheme) {
+export function get_chords_of_key(key, chord_selection, chord_type_group, scale, table_scheme, show_probabilities) {
     let deferred6_0;
     let deferred6_1;
     try {
@@ -136,7 +137,7 @@ export function get_chords_of_key(key, chord_selection, chord_type_group, scale,
         const len2 = WASM_VECTOR_LEN;
         const ptr3 = passStringToWasm0(table_scheme, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len3 = WASM_VECTOR_LEN;
-        wasm.get_chords_of_key(retptr, ptr0, len0, addHeapObject(chord_selection), ptr1, len1, ptr2, len2, ptr3, len3);
+        wasm.get_chords_of_key(retptr, ptr0, len0, addHeapObject(chord_selection), ptr1, len1, ptr2, len2, ptr3, len3, show_probabilities);
         var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
         var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
         var r2 = getDataViewMemory0().getInt32(retptr + 4 * 2, true);

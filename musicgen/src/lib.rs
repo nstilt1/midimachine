@@ -65,6 +65,7 @@ pub fn get_chords_of_key(
     chord_type_group: &str,
     scale: &str,
     table_scheme: &str,
+    show_probabilities: bool,
 ) -> Result<String, JsError> {
     use serde_json::json;
 
@@ -78,6 +79,10 @@ pub fn get_chords_of_key(
         "highest_note" => musician.rearrange_by_highest_note(key),
         "lowest_note" => musician.rearrange_by_lowest_note(key),
         _ => return Err(JsError::new("table_scheme did not match"))
+    }
+
+    if show_probabilities {
+        musician.set_probabilities();
     }
 
     // sort the sub-arrays

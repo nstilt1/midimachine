@@ -137,9 +137,7 @@ const ChordFinder = ({
                             {allChords.map((chord, index) => (
                                 <Chord
                                     key={index}
-                                    midi={chord['midi']}
-                                    chordName={chord['name']}
-                                    notes={chord['notes']}
+                                    json={chord}
                                     index={index}
                                 />
                             ))}

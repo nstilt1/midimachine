@@ -10,15 +10,13 @@ import { Button } from "./ui/button";
 import React, { useEffect, useRef, useState } from 'react';
 
 const Chord = ({
-    midi,
-    chordName,
-    notes,
+    json,
     index
 }) => {
     const [midiFileUrl, setMidiFileUrl] = useState(null);
 
     useEffect(() => {
-        const byteChars = atob(midi);
+        const byteChars = atob(json['midi']);
         const byteNumbers = new Array(byteChars.length);
 
         for (let i = 0; i < byteChars.length; i++) {
@@ -35,15 +33,23 @@ const Chord = ({
         return () => {
             URL.revokeObjectURL(url);
         };
-    }, [midi]);
+    }, [json['midi']]);
 
     return (
-        <AccordionItem value={index + '' + chordName}>
-            <AccordionTrigger>{chordName}</AccordionTrigger>
+        <AccordionItem value={index + '' + json['name']}>
+            <AccordionTrigger>{json['name']}</AccordionTrigger>
             <AccordionContent>
                 <div>
-                    {notes}
+                    {json['notes']}
                 </div>
+                {json['probability_2d'] && <div>
+                    <div>
+                        P(2D): {json['probability_2d']}
+                    </div>
+                    <div>
+                        P(1D): {json['probability_1d']}
+                    </div>
+                </div>}
                 <div>
                     {midiFileUrl && (
                         <midi-player
