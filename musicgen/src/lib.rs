@@ -82,8 +82,8 @@ pub fn get_chords_of_key(
     musician.chord_list.sort_unstable_by(|a, b| a.get_name().cmp(&b.get_name()));
 
     let json = json!({
-        "all_chords": musician.chord_list,
-        "notes_of_chords": musician.chord_table
+        "chord_list": musician.chord_list,
+        "chord_table": musician.chord_table
     });
 
     //let json = to_string(&musician.chord_table)?;
@@ -143,8 +143,8 @@ pub fn chord_finder(
     musician.chord_list.sort_unstable_by(|a, b| a.get_name().cmp(&b.get_name()));
 
     let json = json!({
-        "all_chords": musician.chord_list,
-        "notes_of_chords": musician.chord_table
+        "chord_list": musician.chord_list,
+        "chord_table": musician.chord_table
     });
 
     Ok(json.to_string())

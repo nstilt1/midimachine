@@ -42,8 +42,8 @@ const CheatSheet = ({
         try {
             const json = wasmModule.get_chords_of_key(chosenKey, customChords, chordGroup, scale);
             const data = JSON.parse(json);
-            setChords(data['notes_of_chords']);
-            setAllChords(data['all_chords']);
+            setChords(data['chord_table']);
+            setAllChords(data['chord_list']);
             //console.log(data);
         } catch (error) {
             console.error("Error getting chords", error);

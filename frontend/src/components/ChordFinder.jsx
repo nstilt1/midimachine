@@ -53,8 +53,8 @@ const ChordFinder = ({
         try {
             const json = wasmModule.chord_finder(chosenKey, customChords, chordGroup, scale, notes);
             const data = JSON.parse(json);
-            setChords(data['notes_of_chords']);
-            setAllChords(data['all_chords']);
+            setChords(data['chord_table']);
+            setAllChords(data['chord_list']);
         } catch (error) {
             console.error("Error getting chords", error);
             //alert("An error occurred while looking for chords.");
