@@ -27,7 +27,10 @@ const CheatSheet = ({
     chordGroups,
     customChordTypes,
     scales,
-    showExtraControls
+    showExtraControls,
+    tableScheme,
+    setTableScheme,
+    tableSchemes
 }) => {
     const [chords, setChords] = useState([]);
     const [allChords, setAllChords] = useState([]);
@@ -40,7 +43,7 @@ const CheatSheet = ({
         }
 
         try {
-            const json = wasmModule.get_chords_of_key(chosenKey, customChords, chordGroup, scale);
+            const json = wasmModule.get_chords_of_key(chosenKey, customChords, chordGroup, scale, tableScheme);
             const data = JSON.parse(json);
             setChords(data['chord_table']);
             setAllChords(data['chord_list']);
@@ -87,6 +90,12 @@ const CheatSheet = ({
                         specific key.
                     </p>
                 </div>}
+                <Selector 
+                    options={tableSchemes}
+                    selectedOption={tableScheme}
+                    onChange={setTableScheme}
+                    label="Chord table arranged by:"
+                />
             </div>}
             <Button type="submit">Get Chords</Button>
             {chords && <div>

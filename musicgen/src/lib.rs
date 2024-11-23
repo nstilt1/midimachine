@@ -63,7 +63,8 @@ pub fn get_chords_of_key(
     key: &str,
     chord_selection: Array,
     chord_type_group: &str,
-    scale: &str
+    scale: &str,
+    table_scheme: &str,
 ) -> Result<String, JsError> {
     use serde_json::json;
 
@@ -72,7 +73,12 @@ pub fn get_chords_of_key(
         .collect();
     let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale)?;
 
-    musician.rotate_chords(key);
+    match table_scheme {
+        "contains_note" => musician.rotate_chords(key),
+        "highest_note" => musician.rearrange_by_highest_note(key),
+        "lowest_note" => musician.rearrange_by_lowest_note(key),
+        _ => return Err(JsError::new("table_scheme did not match"))
+    }
 
     // sort the sub-arrays
     for col in musician.chord_table.iter_mut() {
@@ -99,6 +105,7 @@ pub fn chord_finder(
     chord_type_group: &str,
     scale: &str,
     notes: Array,
+    table_scheme: &str
 ) -> Result<String, JsError> {
     use music_modules_v2::{chord::Chord, utils::{parse_key, sets::{SetMath, SetOpsCollection}}};
     use serde_json::json;
@@ -115,7 +122,12 @@ pub fn chord_finder(
     }
     let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale)?;
 
-    musician.rotate_chords(key);
+    match table_scheme {
+        "contains_note" => musician.rotate_chords(key),
+        "highest_note" => musician.rearrange_by_highest_note(key),
+        "lowest_note" => musician.rearrange_by_lowest_note(key),
+        _ => return Err(JsError::new("table_scheme did not match"))
+    }
 
     let mut intersected_chords: HashSet<Chord> = HashSet::from_iter(musician.chord_table[notes_vec[0]].iter().cloned());
     for note in notes_vec.iter().skip(1) {

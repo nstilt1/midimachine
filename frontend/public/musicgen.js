@@ -120,11 +120,12 @@ function addHeapObject(obj) {
  * @param {Array<any>} chord_selection
  * @param {string} chord_type_group
  * @param {string} scale
+ * @param {string} table_scheme
  * @returns {string}
  */
-export function get_chords_of_key(key, chord_selection, chord_type_group, scale) {
-    let deferred5_0;
-    let deferred5_1;
+export function get_chords_of_key(key, chord_selection, chord_type_group, scale, table_scheme) {
+    let deferred6_0;
+    let deferred6_1;
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passStringToWasm0(key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -133,23 +134,25 @@ export function get_chords_of_key(key, chord_selection, chord_type_group, scale)
         const len1 = WASM_VECTOR_LEN;
         const ptr2 = passStringToWasm0(scale, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len2 = WASM_VECTOR_LEN;
-        wasm.get_chords_of_key(retptr, ptr0, len0, addHeapObject(chord_selection), ptr1, len1, ptr2, len2);
+        const ptr3 = passStringToWasm0(table_scheme, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len3 = WASM_VECTOR_LEN;
+        wasm.get_chords_of_key(retptr, ptr0, len0, addHeapObject(chord_selection), ptr1, len1, ptr2, len2, ptr3, len3);
         var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
         var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
         var r2 = getDataViewMemory0().getInt32(retptr + 4 * 2, true);
         var r3 = getDataViewMemory0().getInt32(retptr + 4 * 3, true);
-        var ptr4 = r0;
-        var len4 = r1;
+        var ptr5 = r0;
+        var len5 = r1;
         if (r3) {
-            ptr4 = 0; len4 = 0;
+            ptr5 = 0; len5 = 0;
             throw takeObject(r2);
         }
-        deferred5_0 = ptr4;
-        deferred5_1 = len4;
-        return getStringFromWasm0(ptr4, len4);
+        deferred6_0 = ptr5;
+        deferred6_1 = len5;
+        return getStringFromWasm0(ptr5, len5);
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_free(deferred5_0, deferred5_1, 1);
+        wasm.__wbindgen_free(deferred6_0, deferred6_1, 1);
     }
 }
 
@@ -159,11 +162,12 @@ export function get_chords_of_key(key, chord_selection, chord_type_group, scale)
  * @param {string} chord_type_group
  * @param {string} scale
  * @param {Array<any>} notes
+ * @param {string} table_scheme
  * @returns {string}
  */
-export function chord_finder(key, chord_selection, chord_type_group, scale, notes) {
-    let deferred5_0;
-    let deferred5_1;
+export function chord_finder(key, chord_selection, chord_type_group, scale, notes, table_scheme) {
+    let deferred6_0;
+    let deferred6_1;
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passStringToWasm0(key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -172,23 +176,25 @@ export function chord_finder(key, chord_selection, chord_type_group, scale, note
         const len1 = WASM_VECTOR_LEN;
         const ptr2 = passStringToWasm0(scale, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len2 = WASM_VECTOR_LEN;
-        wasm.chord_finder(retptr, ptr0, len0, addHeapObject(chord_selection), ptr1, len1, ptr2, len2, addHeapObject(notes));
+        const ptr3 = passStringToWasm0(table_scheme, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len3 = WASM_VECTOR_LEN;
+        wasm.chord_finder(retptr, ptr0, len0, addHeapObject(chord_selection), ptr1, len1, ptr2, len2, addHeapObject(notes), ptr3, len3);
         var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
         var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
         var r2 = getDataViewMemory0().getInt32(retptr + 4 * 2, true);
         var r3 = getDataViewMemory0().getInt32(retptr + 4 * 3, true);
-        var ptr4 = r0;
-        var len4 = r1;
+        var ptr5 = r0;
+        var len5 = r1;
         if (r3) {
-            ptr4 = 0; len4 = 0;
+            ptr5 = 0; len5 = 0;
             throw takeObject(r2);
         }
-        deferred5_0 = ptr4;
-        deferred5_1 = len4;
-        return getStringFromWasm0(ptr4, len4);
+        deferred6_0 = ptr5;
+        deferred6_1 = len5;
+        return getStringFromWasm0(ptr5, len5);
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_free(deferred5_0, deferred5_1, 1);
+        wasm.__wbindgen_free(deferred6_0, deferred6_1, 1);
     }
 }
 

@@ -389,6 +389,36 @@ impl Music {
 
     }
 
+    /// Rearranges the chord table so that each column's highest note is the 
+    /// column's note.
+    pub fn rearrange_by_highest_note(&mut self, key: &str) {
+        let k = parse_key(key);
+        let mut table: Vec<Vec<Chord>> = vec![Vec::with_capacity(32); 12];
+        self
+            .chord_list
+            .iter_mut()
+            .for_each(|chord| {
+                chord.key = k;
+                table[*chord.get_notes().last().expect("Should contain notes") as usize % 12].push(chord.to_owned());
+            });
+        self.chord_table = table;
+    }
+
+    /// Rearranges the chord table so that each column's lowest note is the 
+    /// column's note.
+    pub fn rearrange_by_lowest_note(&mut self, key: &str) {
+        let k = parse_key(key);
+        let mut table: Vec<Vec<Chord>> = vec![Vec::with_capacity(32); 12];
+        self
+            .chord_list
+            .iter_mut()
+            .for_each(|chord| {
+                chord.key = k;
+                table[*chord.get_notes().first().expect("Should contain notes") as usize % 12].push(chord.to_owned());
+            });
+        self.chord_table = table;
+    }
+
     /// Picks a random chord from the 2-dimensional list of chords.
     fn pick_chord(&mut self) -> Chord {
         let mut i = 0;

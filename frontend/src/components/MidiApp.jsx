@@ -27,6 +27,7 @@ const MidiApp = ({ showExtraControls }) => {
   const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
   const [customChords, setCustomChords] = useLocalStorage("customChords", []);
   const [scale, setScale] = useLocalStorage("scale", "disabled");
+  const [tableScheme, setTableScheme] = useLocalStorage("tableScheme", "contains_note");
 
   const handleChordTypeSelection = (option) => {
     if (customChords.includes(option)) {
@@ -102,6 +103,12 @@ const MidiApp = ({ showExtraControls }) => {
     { label: "No pruning, but clone chords with optional notes", value: "all_notes" }
   ];
 
+  const tableSchemes = [
+    { label: "Contains note", value: "contains_note" },
+    { label: "Highest note", value: "highest_note" },
+    { label: "Lowest note", value: "lowest_note" }
+  ];
+
   useEffect(() => {
     const loadWasm = async () => {
       try {
@@ -172,6 +179,9 @@ const MidiApp = ({ showExtraControls }) => {
                 customChordTypes={customChordTypes}
                 scales={scales}
                 showExtraControls={showExtraControls}
+                tableScheme={tableScheme}
+                setTableScheme={setTableScheme}
+                tableSchemes={tableSchemes}
               />
               </CardContent>
               </Card>
@@ -197,6 +207,9 @@ const MidiApp = ({ showExtraControls }) => {
                     customChordTypes={customChordTypes}
                     scales={scales}
                     showExtraControls={showExtraControls}
+                    tableScheme={tableScheme}
+                    setTableScheme={setTableScheme}
+                    tableSchemes={tableSchemes}
                   />
                 </CardContent>
               </Card>

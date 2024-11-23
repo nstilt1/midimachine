@@ -28,7 +28,10 @@ const ChordFinder = ({
     chordGroups,
     customChordTypes,
     scales,
-    showExtraControls
+    showExtraControls,
+    tableScheme,
+    setTableScheme,
+    tableSchemes
 }) => {
     const [chords, setChords] = useState([]);
     const [allChords, setAllChords] = useState([]);
@@ -51,7 +54,7 @@ const ChordFinder = ({
         }
 
         try {
-            const json = wasmModule.chord_finder(chosenKey, customChords, chordGroup, scale, notes);
+            const json = wasmModule.chord_finder(chosenKey, customChords, chordGroup, scale, notes, tableScheme);
             const data = JSON.parse(json);
             setChords(data['chord_table']);
             setAllChords(data['chord_list']);
