@@ -425,7 +425,7 @@ impl Music {
     /// Picks a random chord from the 2-dimensional list of chords.
     fn pick_chord(&mut self) -> Chord {
         let mut i = 0;
-        let mut note = self.math_magician.pick_note();
+        let mut note = self.math_magician.pick_column(&self.chord_table);
         loop {
             let chord_list = self.chord_table[note as usize].to_owned();
             if chord_list.len() != 0 {

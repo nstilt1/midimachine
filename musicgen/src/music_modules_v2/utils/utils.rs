@@ -4,7 +4,7 @@ use std::time::SystemTime;
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
-use crate::music_modules_v2::music::KEYS;
+use crate::music_modules_v2::{chord::Chord, music::KEYS};
 
 /**
  * Convert beats to ticks
@@ -44,6 +44,18 @@ impl MathMagician {
      */
     pub fn pick_note(&mut self) -> i16 {
         return self.noggin.gen_range(0..=11);
+    }
+
+    /// Math magician picks a column that is not empty.
+    pub fn pick_column(&mut self, chord_table: &Vec<Vec<Chord>>) -> usize {
+        let mut columns: Vec<usize> = Vec::with_capacity(12);
+        for (col_index, col) in chord_table.iter().enumerate() {
+            if !col.is_empty() {
+                columns.push(col_index);
+            }
+        }
+        let index: i16 = self.noggin.gen_range(0..columns.len() as i16);
+        return columns[index as usize]
     }
 }
 
