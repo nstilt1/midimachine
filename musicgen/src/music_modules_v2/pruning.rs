@@ -54,16 +54,9 @@ pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chor
     }
 
     for note in 0..11 {
-        // version 1
-        //let chords: HashSet<Chord> = HashSet::from_iter(chord_table[note].iter().cloned());
-        //let subtracted: Vec<Chord> = chords.difference(&bad_chords).to_vec();
-        //chord_table[note] = subtracted;
-
-        // version 2 - does not work for some reason
-        chord_table_sets[note] = chord_table_sets[note]
+        chord_table[note] = chord_table_sets[note]
             .difference(&bad_chords)
-            .to_set();
-        chord_table[note] = chord_table_sets[note].to_vec();
+            .to_vec()
     }
 
     *chord_list = chord_set.difference(&bad_chords).cloned().collect();
@@ -74,6 +67,16 @@ mod tests {
     use crate::music_modules_v2::{music::notes::*, utils::{parse_key, sets::ToSet}, Music};
 
     use super::*;
+
+    macro_rules! print_chord_counts {
+        ($musician:expr, $test_name:expr) => {
+            println!("Test: {}", $test_name);
+            println!("Chord table column lengths:");
+            for (col_index, col) in $musician.chord_table.iter().enumerate() {
+                println!("{}: {}", col_index, col.len());
+            }
+        };
+    }
 
     #[test]
     fn get_bad_notes() {
@@ -146,20 +149,12 @@ mod tests {
 
     #[test]
     fn prune_in_fsharp_min() {
-        let mut musician = Music::smoke_hash(
-            Default::default(),
-            "Cmin",
-            &HashSet::new(),
-            "default",
-            "pentatonic"
-        ).unwrap();
+        let mut musician = Music::smoke_hash_all_pruning_chords("Cmin", "pentatonic");
+        print_chord_counts!(musician, "prune_in_fsharp_min");
 
-        let key = parse_key("F#min");
+        musician.rotate_chords("F#min");
 
-        musician.chord_list.iter_mut().for_each(|chord| chord.key = key);
-        musician.chord_table.iter_mut().for_each(|chord_vec| chord_vec.iter_mut().for_each(|chord| chord.key = key));
-
-        musician.chord_table.rotate_right(key as usize);
+        print_chord_counts!(musician, "prune_in_fsharp_min");
 
         let (_good_notes, bad_notes) = get_good_notes_set("pentatonic").unwrap();
 
@@ -177,7 +172,7 @@ mod tests {
         // good notes
         assert!(musician.chord_table[FSHARP as usize].len() != 0, "F# was empty");
         assert!(musician.chord_table[A as usize].len() != 0, "A was empty");
-        //assert!(musician.chord_table[B as usize].len() != 0, "B was empty");
+        assert!(musician.chord_table[B as usize].len() != 0, "B was empty");
         assert!(musician.chord_table[CSHARP as usize].len() != 0, "C# was empty");
         assert!(musician.chord_table[E as usize].len() != 0, "E was empty");
 

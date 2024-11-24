@@ -27,7 +27,7 @@ impl Music {
             "dominant9",
             "add9"
         ].iter().map(|str| str.to_string()));
-        let mut musician = Music::smoke_hash(Default::default(), key, &chord_selection, "cutom_pruning", scale).unwrap();
+        let mut musician = Music::smoke_hash(Default::default(), key, &chord_selection, "custom_pruning", scale).unwrap();
         musician
     }
 }
@@ -37,5 +37,16 @@ impl Chord {
     /// 0 and 12.
     pub fn get_notes_set(&self) -> HashSet<i16> {
         self.get_notes().iter().map(|n| *n % 12).collect()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn chords_are_present() {
+        let m = Music::smoke_hash_all_pruning_chords("Cmin", "pentatonic");
+        assert!(m.chord_list.len() > 0);
     }
 }
