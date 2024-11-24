@@ -2,7 +2,7 @@
 
 use std::collections::HashSet;
 
-use super::{chord::{expand_chords, Chord}, utils::sets::{SetMath, SetOpsCollection}};
+use super::{chord::{expand_chords, Chord}, utils::sets::SetOpsCollection};
 
 /// Returns the good notes set and the bad notes set for a given scale in the 
 /// key of C minor.
@@ -33,13 +33,11 @@ fn get_good_notes_set(scale: &str) -> Option<(HashSet<i16>, Vec<usize>)> {
 /// * F# - 6
 /// * A  - 9
 /// * B - 11
-pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chord>, scale: &str, key: i16) {
+pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chord>, scale: &str) {
     let (_good_notes_set, bad_notes) = match get_good_notes_set(scale) {
         Some(v) => v,
         None => { return; }
     };
-
-    chord_list.iter_mut().for_each(|chord| chord.key = key);
     
     // turn chords with optional notes into new chords
     let (chord_set, mut chord_table_sets) = expand_chords(chord_list);
@@ -47,7 +45,7 @@ pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chor
     let mut bad_chords: HashSet<Chord> = HashSet::new();
 
     for mut bad_note in bad_notes {
-        bad_note = (bad_note + key as usize) % 12;
+        bad_note = bad_note % 12;
         bad_chords = bad_chords.union(&chord_table_sets[bad_note]).cloned().collect();
         chord_table[bad_note] = Vec::new();
         chord_table_sets[bad_note] = HashSet::new();
