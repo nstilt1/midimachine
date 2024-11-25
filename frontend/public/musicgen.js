@@ -129,13 +129,13 @@ export function get_chords_of_key(key, chord_selection, chord_type_group, scale,
     let deferred6_1;
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        const ptr0 = passStringToWasm0(key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr0 = passStringToWasm0(key, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len0 = WASM_VECTOR_LEN;
-        const ptr1 = passStringToWasm0(chord_type_group, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr1 = passStringToWasm0(chord_type_group, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len1 = WASM_VECTOR_LEN;
-        const ptr2 = passStringToWasm0(scale, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr2 = passStringToWasm0(scale, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len2 = WASM_VECTOR_LEN;
-        const ptr3 = passStringToWasm0(table_scheme, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr3 = passStringToWasm0(table_scheme, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len3 = WASM_VECTOR_LEN;
         wasm.get_chords_of_key(retptr, ptr0, len0, addHeapObject(chord_selection), ptr1, len1, ptr2, len2, ptr3, len3, show_probabilities);
         var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
@@ -153,7 +153,7 @@ export function get_chords_of_key(key, chord_selection, chord_type_group, scale,
         return getStringFromWasm0(ptr5, len5);
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_free(deferred6_0, deferred6_1, 1);
+        wasm.__wbindgen_export_2(deferred6_0, deferred6_1, 1);
     }
 }
 
@@ -171,13 +171,13 @@ export function chord_finder(key, chord_selection, chord_type_group, scale, note
     let deferred6_1;
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        const ptr0 = passStringToWasm0(key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr0 = passStringToWasm0(key, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len0 = WASM_VECTOR_LEN;
-        const ptr1 = passStringToWasm0(chord_type_group, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr1 = passStringToWasm0(chord_type_group, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len1 = WASM_VECTOR_LEN;
-        const ptr2 = passStringToWasm0(scale, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr2 = passStringToWasm0(scale, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len2 = WASM_VECTOR_LEN;
-        const ptr3 = passStringToWasm0(table_scheme, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr3 = passStringToWasm0(table_scheme, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len3 = WASM_VECTOR_LEN;
         wasm.chord_finder(retptr, ptr0, len0, addHeapObject(chord_selection), ptr1, len1, ptr2, len2, addHeapObject(notes), ptr3, len3);
         var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
@@ -195,7 +195,7 @@ export function chord_finder(key, chord_selection, chord_type_group, scale, note
         return getStringFromWasm0(ptr5, len5);
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_free(deferred6_0, deferred6_1, 1);
+        wasm.__wbindgen_export_2(deferred6_0, deferred6_1, 1);
     }
 }
 
@@ -226,17 +226,17 @@ function getArrayU8FromWasm0(ptr, len) {
 export function generate_midi(file_content, generation_mode, should_use_same_chords, num_chords, key, chord_selection, chord_type_group, chord_picking_method, min_number_of_unique_chords, scale) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        const ptr0 = passArray8ToWasm0(file_content, wasm.__wbindgen_malloc);
+        const ptr0 = passArray8ToWasm0(file_content, wasm.__wbindgen_export_0);
         const len0 = WASM_VECTOR_LEN;
-        const ptr1 = passStringToWasm0(generation_mode, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr1 = passStringToWasm0(generation_mode, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len1 = WASM_VECTOR_LEN;
-        const ptr2 = passStringToWasm0(key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr2 = passStringToWasm0(key, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len2 = WASM_VECTOR_LEN;
-        const ptr3 = passStringToWasm0(chord_type_group, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr3 = passStringToWasm0(chord_type_group, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len3 = WASM_VECTOR_LEN;
-        const ptr4 = passStringToWasm0(chord_picking_method, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr4 = passStringToWasm0(chord_picking_method, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len4 = WASM_VECTOR_LEN;
-        const ptr5 = passStringToWasm0(scale, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr5 = passStringToWasm0(scale, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         const len5 = WASM_VECTOR_LEN;
         wasm.generate_midi(retptr, ptr0, len0, ptr1, len1, should_use_same_chords, num_chords, ptr2, len2, addHeapObject(chord_selection), ptr3, len3, ptr4, len4, min_number_of_unique_chords, ptr5, len5);
         var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
@@ -247,7 +247,7 @@ export function generate_midi(file_content, generation_mode, should_use_same_cho
             throw takeObject(r2);
         }
         var v7 = getArrayU8FromWasm0(r0, r1).slice();
-        wasm.__wbindgen_free(r0, r1 * 1, 1);
+        wasm.__wbindgen_export_2(r0, r1 * 1, 1);
         return v7;
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
@@ -291,7 +291,7 @@ function __wbg_get_imports() {
     imports.wbg.__wbindgen_string_get = function(arg0, arg1) {
         const obj = getObject(arg1);
         const ret = typeof(obj) === 'string' ? obj : undefined;
-        var ptr1 = isLikeNone(ret) ? 0 : passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var ptr1 = isLikeNone(ret) ? 0 : passStringToWasm0(ret, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
         var len1 = WASM_VECTOR_LEN;
         getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
         getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);

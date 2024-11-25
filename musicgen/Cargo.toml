@@ -24,3 +24,7 @@ opt-level = 'z'     # optimize for size
 lto = true          # enable link time optimization
 panic = 'abort'     # reduce binary size by not including panic messages
 codegen-units = 1   # fewer codegen units for better optimization
+strip = true        # strip debug symbols
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ['-Oz']
