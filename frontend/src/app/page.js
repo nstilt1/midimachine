@@ -9,6 +9,13 @@ import Navbar from "@/components/NavbarMainSite";
 export default function Home() {
   const [clickedLogo, setClickedLogo] = useLocalStorage("clickedLogo", false);
 
+  const buttonText = () => {
+    if (clickedLogo) {
+      return "Hide advanced controls";
+    }
+    return "Show advanced controls";
+  }
+
   return (
     <div>
       <Navbar whenClickedLogo={() => setClickedLogo(!clickedLogo)} />
@@ -19,9 +26,13 @@ export default function Home() {
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center p-8">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
           target="_blank"
+          href="https://alteredbrainchemistry.com"
           rel="noopener noreferrer"
+          onClick={(event) => {
+            event.preventDefault();
+            setClickedLogo(!clickedLogo);
+          }}
         >
           <Image
             aria-hidden
@@ -30,7 +41,7 @@ export default function Home() {
             width={16}
             height={16}
           />
-          Learn
+          {buttonText()}
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
