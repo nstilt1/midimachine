@@ -28,3 +28,9 @@ strip = true        # strip debug symbols
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = ['-Oz']
+
+[package.metadata.wasm-pack.profile.release.wasm-bindgen]
+debug-js-glue = false               # removes debug info from the generated js glue code
+demangle-name-section = false       # controls whether function names are readable in stack traces
+dwarf-debug-info = false            # removes DWARF debug info
+omit-default-module-path = false    # removes default module path
