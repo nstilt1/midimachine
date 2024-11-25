@@ -68,7 +68,7 @@ const CheatSheet = ({
     return (
         <div>
             <form onSubmit={handleSubmit}>
-            {showExtraControls && <div>
+            <div>
                 <Selector
                     options={keys}
                     selectedOption={chosenKey}
@@ -107,7 +107,7 @@ const CheatSheet = ({
                     onChange={setTableScheme}
                     label="Chord table arranged by:"
                 />
-            </div>}
+            </div>
             <input 
                 type="checkbox"
                 id="showProbabilities" 

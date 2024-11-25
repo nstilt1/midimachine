@@ -57,7 +57,7 @@ const ChordFinder = ({
             console.time("chord_finder");
             const json = wasmModule.chord_finder(chosenKey, customChords, chordGroup, scale, notes, tableScheme);
             console.timeEnd("chord_finder");
-            
+
             const data = JSON.parse(json);
             setChords(data['chord_table']);
             setAllChords(data['chord_list']);
@@ -86,7 +86,7 @@ const ChordFinder = ({
         <div>
             <form onSubmit={handleSubmit}>
                 <div>
-                {showExtraControls && <div>
+                <div>
                 <Selector
                     options={keys}
                     selectedOption={chosenKey}
@@ -125,7 +125,7 @@ const ChordFinder = ({
                     setSelectedOptions={handleNoteSelection}
                 />
 
-            </div>}
+            </div>
             <Button type="submit">Find Chords</Button>
             {chords && <div>
                 <Accordion type="multiple" collapsible>
