@@ -21,7 +21,8 @@ import Chord from "./Chord";
 
 const ChordTable = ({
     chordData,
-    chosenKey
+    chosenKey,
+    cpbRef
 }) => {
     const headers = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
@@ -48,6 +49,11 @@ const ChordTable = ({
                                         key={chordIndex}
                                         json={chord}
                                         index={chordIndex}
+                                        onAdd={() => {
+                                            if(cpbRef.current) {
+                                                cpbRef.current.handleAddChord(chord);
+                                            }
+                                        }}
                                     />
                                     </div>
                                 ))}

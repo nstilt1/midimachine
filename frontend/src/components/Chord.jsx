@@ -7,11 +7,31 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "./ui/button";
+
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import React, { useEffect, useRef, useState } from 'react';
+
+import { Trash, ArrowUp, ArrowDown, Plus } from "lucide-react";
 
 const Chord = ({
     json,
-    index
+    index,
+    onDelete,
+    onMoveUp,
+    onMoveDown,
+    onAdd,
+    isInProgression = false
 }) => {
     const [midiFileUrl, setMidiFileUrl] = useState(null);
 
@@ -37,11 +57,69 @@ const Chord = ({
 
     return (
         <AccordionItem value={index + '' + json['name']}>
-            <AccordionTrigger>{json['name']}</AccordionTrigger>
+            <AccordionTrigger className="group">{json['name']}</AccordionTrigger>
             <AccordionContent>
                 <div>
                     {json['notes']}
                 </div>
+                {isInProgression ? (
+                    <>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                            >
+                                <Trash className="h-4 w-4" />
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure you want to delete this chord?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete this chord.
+                            </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => {onDelete?.(index);}}>Continue</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onMoveUp?.(index);
+                            }}
+                            disabled={index === 0}
+                        >
+                            <ArrowUp className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onMoveDown?.(index);
+                            }}
+                        >
+                            <ArrowDown className="h-4 w-4" />
+                        </Button>
+                    </>
+                ) : (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onAdd?.(json);
+                        }}
+                    >
+                        <Plus className="h-4 w-4" />
+                    </Button>
+                )}
                 {json['probability_2d'] && <div>
                     <div>
                         P(2D): {json['probability_2d']}
