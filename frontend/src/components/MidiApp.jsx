@@ -21,8 +21,7 @@ import MidiForm from './MidiForm';
 import CheatSheet from './CheatSheet';
 import ChordFinder from './ChordFinder';
 
-const MidiApp = ({ showExtraControls }) => {
-  const [wasmModule, setWasmModule] = useState(null);
+const MidiApp = ({ showExtraControls, cpbRef, wasmModule }) => {
   const [key, setKey] = useLocalStorage("key", 'random');
   const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
   const [customChords, setCustomChords] = useLocalStorage("customChords", []);
@@ -109,20 +108,6 @@ const MidiApp = ({ showExtraControls }) => {
     { label: "Lowest note", value: "lowest_note" }
   ];
 
-  useEffect(() => {
-    const loadWasm = async () => {
-      try {
-        const wasm = await import('../../public/musicgen.js');
-        // console.log(wasm);
-        await wasm.default();
-        setWasmModule(wasm);
-      } catch (error) {
-        console.error("Error loading WASM module", error);
-      }
-    };
-    loadWasm();
-  }, []);
-
   return (
     <div>
       {wasmModule ? 
@@ -136,7 +121,7 @@ const MidiApp = ({ showExtraControls }) => {
             <TabsContent value="generator">
               <Card>
                 <CardHeader>
-                  <CardTitle><span class="blend">&quot;</span>AI<span class="blend">&quot;</span> MIDI File Generator</CardTitle>
+                  <CardTitle><span className="blend">&quot;</span>AI<span className="blend">&quot;</span> MIDI File Generator</CardTitle>
                 </CardHeader>
                 <CardContent>
               <MidiForm
@@ -182,6 +167,7 @@ const MidiApp = ({ showExtraControls }) => {
                 tableScheme={tableScheme}
                 setTableScheme={setTableScheme}
                 tableSchemes={tableSchemes}
+                cpbRef={cpbRef}
               />
               </CardContent>
               </Card>
@@ -210,6 +196,7 @@ const MidiApp = ({ showExtraControls }) => {
                     tableScheme={tableScheme}
                     setTableScheme={setTableScheme}
                     tableSchemes={tableSchemes}
+                    cpbRef={cpbRef}
                   />
                 </CardContent>
               </Card>

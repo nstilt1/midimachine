@@ -31,7 +31,8 @@ const ChordFinder = ({
     showExtraControls,
     tableScheme,
     setTableScheme,
-    tableSchemes
+    tableSchemes,
+    cpbRef
 }) => {
     const [chords, setChords] = useState([]);
     const [allChords, setAllChords] = useState([]);
@@ -142,6 +143,11 @@ const ChordFinder = ({
                                     key={index}
                                     json={chord}
                                     index={index}
+                                    onAdd={() => {
+                                        if (cpbRef.current) {
+                                            cpbRef.current.handleAddChord(chord)
+                                        }
+                                    }}
                                 />
                             ))}
                             </Accordion>

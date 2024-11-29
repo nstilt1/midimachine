@@ -9,9 +9,16 @@ import {
 import { Button } from "./ui/button";
 import React, { useEffect, useRef, useState } from 'react';
 
+import { Trash, ArrowUp, ArrowDown, Plus } from "lucide-react";
+
 const Chord = ({
     json,
-    index
+    index,
+    onDelete,
+    onMoveUp,
+    onMoveDown,
+    onAdd,
+    isInProgression = false
 }) => {
     const [midiFileUrl, setMidiFileUrl] = useState(null);
 
@@ -37,11 +44,57 @@ const Chord = ({
 
     return (
         <AccordionItem value={index + '' + json['name']}>
-            <AccordionTrigger>{json['name']}</AccordionTrigger>
+            <AccordionTrigger className="group">{json['name']}</AccordionTrigger>
             <AccordionContent>
                 <div>
                     {json['notes']}
                 </div>
+                {isInProgression ? (
+                    <>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onDelete?.(index);
+                            }}
+                        >
+                            <Trash className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onMoveUp?.(index);
+                            }}
+                            disabled={index === 0}
+                        >
+                            <ArrowUp className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onMoveDown?.(index);
+                            }}
+                        >
+                            <ArrowDown className="h-4 w-4" />
+                        </Button>
+                    </>
+                ) : (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onAdd?.(json);
+                        }}
+                    >
+                        <Plus className="h-4 w-4" />
+                    </Button>
+                )}
                 {json['probability_2d'] && <div>
                     <div>
                         P(2D): {json['probability_2d']}

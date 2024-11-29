@@ -56,17 +56,20 @@ impl Serialize for Chord {
     where
         S: serde::Serializer 
     {
+        // increment this by one when adding a new serialized field
+        let num_standard_fields = 4;
         let mut state = if self.show_probability {
-            let mut state = serializer.serialize_struct("Chord", 5)?;
+            let mut state = serializer.serialize_struct("Chord", num_standard_fields + 2)?;
             state.serialize_field("probability_2d", &format!("{:.1}%", &self.probability_2d * 100f32))?;
             state.serialize_field("probability_1d", &format!("{:.1}%", &self.probability_1d * 100f32))?;
             state
         } else {
-            serializer.serialize_struct("Chord", 3)?
+            serializer.serialize_struct("Chord", num_standard_fields)?
         };
         state.serialize_field("name", &self.get_name())?;
         state.serialize_field("notes", &self.get_note_names())?;
         state.serialize_field("midi", &self.to_midi())?;
+        state.serialize_field("note_vec", &self.get_notes_vec())?;
         state.end()
     }
 }
@@ -129,8 +132,8 @@ impl Chord {
 
     pub fn to_midi(&self) -> String {
         let mut track = MidiFile::new();
-        for note in self.get_notes() {
-            track.add_note_beats(note as u8 + 12 * 4, 0f64, 1f64, 80);
+        for note in self.get_notes_vec() {
+            track.add_note_beats(note as u8, 0f64, 1f64, 80);
         }
         let track = track.finalize();
 
@@ -146,6 +149,12 @@ impl Chord {
         general_purpose::STANDARD.encode_string(output, &mut base64);
 
         base64
+    }
+
+    fn get_notes_vec(&self) -> Vec<i16> {
+        let mut result = self.get_notes();
+        result.iter_mut().for_each(|note| *note = *note + 12 * 4);
+        result
     }
 }
 

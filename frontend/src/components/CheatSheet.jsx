@@ -32,7 +32,8 @@ const CheatSheet = ({
     showExtraControls,
     tableScheme,
     setTableScheme,
-    tableSchemes
+    tableSchemes,
+    cpbRef
 }) => {
     const [chords, setChords] = useState([]);
     const [allChords, setAllChords] = useState([]);  
@@ -126,7 +127,7 @@ const CheatSheet = ({
                 <Accordion type="multiple" collapsible>
                     <AccordionItem value="table">
                         <AccordionTrigger>Chord table</AccordionTrigger>
-                        <AccordionContent><ChordTable chordData={chords} chosenKey={chosenKey}/></AccordionContent>
+                        <AccordionContent><ChordTable chordData={chords} chosenKey={chosenKey} cpbRef={cpbRef}/></AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="list">
                         <AccordionTrigger>Chord list</AccordionTrigger>
@@ -137,6 +138,11 @@ const CheatSheet = ({
                                     key={index}
                                     json={chord}
                                     index={index}
+                                    onAdd={() => {
+                                        if (cpbRef.current) {
+                                            cpbRef.current.handleAddChord(chord);
+                                        }
+                                    }}
                                 />
                             ))}
                             </Accordion>

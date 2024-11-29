@@ -3,7 +3,7 @@ use std::{collections::HashSet, fmt::Display};
 #[cfg(target_arch = "wasm32")]
 use js_sys::Array;
 use midly::Smf;
-use music_modules_v2::Music;
+use music_modules_v2::{midi::MidiFile, Music};
 use wasm_bindgen::prelude::*;
 use sha2::{Digest, Sha256};
 
@@ -199,6 +199,29 @@ pub fn generate_midi(
 
     smf.write(&mut output)?;
 
+    Ok(output)
+}
+
+#[wasm_bindgen]
+#[cfg(target_arch="wasm32")]
+pub fn generate_midi_chord_progression(chords: JsValue) -> Result<Vec<u8>, JsError> {
+    let chords: Vec<Vec<usize>> = serde_wasm_bindgen::from_value(chords).expect("Bad input");
+    
+    let mut track = MidiFile::new();
+    let mut time = 0f64;
+    for chord in chords.iter() {
+        for note in chord {
+            track.add_note_beats(*note as u8, time, 4f64, 80);
+        }
+        time += 4f64;
+    }
+    let track = track.finalize();
+    let smf = Smf {
+        header: midly::Header { format: midly::Format::SingleTrack, timing: midly::Timing::Metrical(96.into()) },
+        tracks: vec![track]
+    };
+    let mut output = vec![];
+    smf.write(&mut output).expect("Should be valid");
     Ok(output)
 }
 
