@@ -38,17 +38,17 @@ const SavedChords = ({
       ? currentChords(name) 
       : currentChords;
 
-    const updatedProgressions = {
-      ...savedProgressions,
-      [name]: {
-        type: filterType || 'chordProgression',
-        contents,
-        timestamp: new Date().toISOString()
-      }
-    };
-
-    // Browser save always happens
-    setSavedProgressions(updatedProgressions);
+    if (method === 'browser' || method === 'everywhere') {
+        const updatedProgressions = {
+            ...savedProgressions,
+            [name]: {
+                type: filterType || 'chordProgression',
+                contents,
+                timestamp: new Date().toISOString()
+            }
+        };
+        setSavedProgressions(updatedProgressions);
+    }
 
     // Computer or everywhere save
     if (method === 'computer' || method === 'everywhere') {
@@ -112,7 +112,8 @@ const SavedChords = ({
       if (!filterType) return true;
       // Otherwise, filter by the specified type
       return item?.type === filterType;
-    });
+    })
+    .reverse();
 
   return (
     <>
@@ -190,7 +191,11 @@ const SavedChords = ({
                 placeholder={`Enter ${filterType === 'generated' ? 'settings' : 'progression'} name`}
                 className="w-full p-2 border rounded"
               />
-              <div className="flex space-x-2">
+              {filterType === 'generated' ? 
+                (
+                    <div></div>
+                ) : (
+                <div className="flex space-x-2">
                 <Button 
                   variant={saveMethod === 'browser' ? 'default' : 'outline'}
                   onClick={() => setSaveMethod('browser')}
@@ -210,6 +215,7 @@ const SavedChords = ({
                   Everywhere
                 </Button>
               </div>
+                )}
             </div>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
