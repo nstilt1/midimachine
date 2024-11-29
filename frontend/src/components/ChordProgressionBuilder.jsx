@@ -23,33 +23,50 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
     const [isMidiUpToDate, setIsMidiUpToDate] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [savedChordsOpen, setSavedChordsOpen] = useState(false);
+    const [isWasmReady, setIsWasmReady] = useState(false);
+
+    // Wait for the WASM module to load
+    useEffect(() => {
+        if (wasmModule) {
+            setIsWasmReady(true); // Set ready state once module is loaded
+        }
+    }, [wasmModule]);
 
     const updateMidi = async () => {
+        if (!isWasmReady) {
+            console.error("WASM module not ready yet.");
+            return;
+        }
         if (chords.length === 0) {
             console.warn("No chords to generate MIDI");
             return;
         }
-    
+
         try {
             console.time("generate_chord_progression_midi");
-            let chordsArr = chords.map(chord => chord['note_vec']);
+            const chordsArr = chords.map((chord) => chord['note_vec']);
             const midiBinary = wasmModule.generate_midi_chord_progression(chordsArr);
             console.timeEnd("generate_chord_progression_midi");
-            
+
             const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
             const midiUrl = URL.createObjectURL(midiBlob);
-            
+
             // Revoke previous URL to prevent memory leaks
             if (midiFileUrl) {
                 URL.revokeObjectURL(midiFileUrl);
             }
-            
             setMidiFileUrl(midiUrl);
         } catch (error) {
             console.error("Error generating chord progression MIDI file:", error);
-            throw error; // Rethrow to be caught in togglePlayOrPause
         }
-    }
+    };
+
+    useEffect(() => {
+        // Automatically update MIDI when chords change and WASM is ready
+        if (isWasmReady && !isMidiUpToDate) {
+            updateMidi();
+        }
+    }, [chords, isWasmReady]);
 
     const togglePlayOrPause = async () => {
         if (isPlaying) {
@@ -210,6 +227,7 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
                 currentChords={chords}
                 onLoadProgression={handleLoadChordProgression}
                 filterType="chordProgression"
+                midiFileUrl={midiFileUrl}
             />
             </div>
         </div>

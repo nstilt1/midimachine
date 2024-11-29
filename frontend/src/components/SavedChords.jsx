@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sheet, 
   SheetContent, 
@@ -25,7 +25,8 @@ const SavedChords = ({
     onClose, 
     currentChords, 
     onLoadProgression,
-    filterType
+    filterType,
+    midiFileUrl
 }) => {
   const [savedProgressions, setSavedProgressions] = useLocalStorage("savedProgressions", {});
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
@@ -34,33 +35,32 @@ const SavedChords = ({
 
   const saveChordProgression = (name, method = 'browser') => {
     // Determine contents based on whether it's a function or direct object
-    const contents = typeof currentChords === 'function' 
-      ? currentChords(name) 
-      : currentChords;
-
+    const contents =
+      typeof currentChords === 'function' ? currentChords(name) : currentChords;
+  
     if (method === 'browser' || method === 'everywhere') {
-        const updatedProgressions = {
-            ...savedProgressions,
-            [name]: {
-                type: filterType || 'chordProgression',
-                contents,
-                timestamp: new Date().toISOString()
-            }
-        };
-        setSavedProgressions(updatedProgressions);
+      const updatedProgressions = {
+        ...savedProgressions,
+        [name]: {
+          type: filterType || 'chordProgression',
+          contents,
+          timestamp: new Date().toISOString(),
+        },
+      };
+      setSavedProgressions(updatedProgressions);
     }
-
-    // Computer or everywhere save
+  
     if (method === 'computer' || method === 'everywhere') {
-      const blob = new Blob([JSON.stringify(contents)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${filterType || 'progression'}-${name}.json`;
-      link.click();
-      URL.revokeObjectURL(url);
+        if (midiFileUrl) {
+            const link = document.createElement('a');
+            link.href = midiFileUrl; // Use the prop directly
+            link.download = `${filterType || 'progression'}-${name}.midi`;
+            link.click();
+        } else {
+            console.error("No MIDI file available to download");
+        }
     }
-
+  
     setSaveDialogOpen(false);
   };
 
@@ -85,9 +85,10 @@ const SavedChords = ({
         const everywhereBlob = new Blob([JSON.stringify(currentChords)], { type: 'application/json' });
         const everywhereUrl = URL.createObjectURL(everywhereBlob);
         const everywhereLink = document.createElement('a');
-        everywhereLink.href = everywhereUrl;
-        everywhereLink.download = `chordProgression-${saveProgressionName}.json`;
+        everywhereLink.href = downloadUrl;
+        everywhereLink.download = `chordProgression-${saveProgressionName}.mid`;
         everywhereLink.click();
+        console.log("URLs: " + {midiFileUrl, downloadUrl})
         URL.revokeObjectURL(everywhereUrl);
         break;
     }
