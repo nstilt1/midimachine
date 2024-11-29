@@ -12,6 +12,7 @@ import {
 
 import Chord from "./Chord";
 import { Button } from "./ui/button";
+import SavedChords from "./SavedChords";
 
 const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, ref) => {
     const [chords, setChords] = useLocalStorage("chordProgressionBuilderChords", []);
@@ -21,6 +22,7 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
     const [downloadUrl, setDownloadUrl] = useState(null);
     const [isMidiUpToDate, setIsMidiUpToDate] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [savedChordsOpen, setSavedChordsOpen] = useState(false);
 
     const updateMidi = async () => {
         if (chords.length === 0) {
@@ -134,6 +136,13 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
         playerRef.current.stop();
     };
 
+    const handleLoadChordProgression = (loadedChords) => {
+        setChords(loadedChords);
+        setIsMidiUpToDate(false);
+        setIsPlaying(false);
+        playerRef.current.stop();
+    };
+
     return (
         <div className="fixed right-0 top-0 w-64 h-full flex flex-col">
             <midi-player
@@ -161,41 +170,47 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
                 </div>
             </div>
             <div className="bg-white border-t p-2 flex space-x-2">
-            <a href={downloadUrl} download="chordProgression.mid"><Button 
-                    variant="outline" 
+            <Button 
+                variant="outline" 
+                className="flex-grow"
+                onClick={() => setSavedChordsOpen(true)}
+            >
+                <Save className="mr-2 h-4 w-4" /> Save/Load
+            </Button>
+            {isLoading ? 
+                (<Button 
+                    variant="outline"
                     className="flex-grow"
                 >
-                    <Save className="mr-2 h-4 w-4" /> Save
-                </Button></a>
-                {isLoading ? 
-                    (<Button 
-                        variant="outline"
-                        className="flex-grow"
-                    >
-                        <LoaderPinwheel className="mr-2 h-4 w-4" /> Loading
-                    </Button>
-                    ) : (
-                        !isPlaying ? 
-                            (<Button 
-                                variant="outline" 
+                    <LoaderPinwheel className="mr-2 h-4 w-4" /> Loading
+                </Button>
+                ) : (
+                    !isPlaying ? 
+                        (<Button 
+                            variant="outline" 
+                            className="flex-grow"
+                            onClick={togglePlayOrPause}
+                        >
+                            <Play className="mr-2 h-4 w-4" /> Play 
+                        </Button>
+                        ) : (
+                            <Button
+                                variant="outline"
                                 className="flex-grow"
                                 onClick={togglePlayOrPause}
                             >
-                                <Play className="mr-2 h-4 w-4" /> Play 
+                            <Square className="mr-2 h-4 w-4" /> Stop
                             </Button>
-                            ) : (
-                                <Button
-                                    variant="outline"
-                                    className="flex-grow"
-                                    onClick={togglePlayOrPause}
-                                >
-                                <Square className="mr-2 h-4 w-4" /> Stop
-                                </Button>
-                            )
-                        
-                    )}
-                
-                
+                        )
+                    
+                )}
+            <SavedChords 
+                isOpen={savedChordsOpen}
+                onClose={() => setSavedChordsOpen(false)}
+                currentChords={chords}
+                onLoadProgression={handleLoadChordProgression}
+                filterType="chordProgression"
+            />
             </div>
         </div>
     );

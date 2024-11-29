@@ -8,6 +8,9 @@ import Selector from "./Selector";
 import NumberInput from "./NumberInput";
 import MultiSelect from "./MultiSelector";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { Button } from "@/components/ui/button";
+import { Save } from "lucide-react";
+import SavedChords from "./SavedChords";
 
 const MidiForm = ({ 
   wasmModule, 
@@ -35,8 +38,54 @@ const MidiForm = ({
   const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original');
   const [numUniqueChords, setNumUniqueChords] = useLocalStorage("numUniqueChords", 0);
   const [sanitizedNumUniqueChords, setSanitizedNumUniqueChords] = useLocalStorage("sanitizedNumUniqueChords", 0);
-
+  const [savedChordsOpen, setSavedChordsOpen] = useState(false);
   const fileInputRef = useRef(null);
+
+  // Function to save current form settings
+  const saveCurrentSettings = (name) => {
+    const settingsToSave = {
+      chosenKey,
+      chordGroup,
+      customChords,
+      scale,
+      textInput,
+      mode,
+      useSameChords,
+      sanitizedNumChords,
+      numChords,
+      vibe,
+      chord_picking_method,
+      numUniqueChords,
+      sanitizedNumUniqueChords
+    };
+  
+    // Use useLocalStorage to save
+    const savedProgressions = JSON.parse(localStorage.getItem('savedProgressions') || '{}');
+    savedProgressions[name] = {
+      type: 'generated',
+      contents: settingsToSave,
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem('savedProgressions', JSON.stringify(savedProgressions));
+  };
+
+  // Function to load saved settings
+  const handleLoadSettings = (settings) => {
+    // Update each state variable from the loaded settings
+    setKey(settings.chosenKey);
+    setChordGroup(settings.chordGroup);
+    handleChordTypeSelection(settings.customChords);
+    setScale(settings.scale);
+    setTextInput(settings.textInput);
+    setMode(settings.mode);
+    setUseSameChords(settings.useSameChords);
+    setNumChords(settings.numChords);
+    setSanitizedNumChords(settings.sanitizedNumChords);
+    setVibe(settings.vibe);
+    setChordPickingMethod(settings.chord_picking_method);
+    setNumUniqueChords(settings.numUniqueChords);
+    setSanitizedNumUniqueChords(settings.sanitizedNumUniqueChords);
+  };
 
   const handleTextChange = (event) => {
     setTextInput(event.target.value);
@@ -246,8 +295,42 @@ const MidiForm = ({
           textInput={textInput}
         ></MidiPlayer>
       )}
+      <div className="mb-4">
+          <Button 
+            type="button"
+            variant="outline" 
+            onClick={() => setSavedChordsOpen(true)}
+          >
+            <Save className="mr-2 h-4 w-4" /> Save/Load Settings
+          </Button>
+        </div>
         </div>
       )}
+      <SavedChords 
+        isOpen={savedChordsOpen}
+        onClose={() => setSavedChordsOpen(false)}
+        currentChords={(name) => {
+          // Create a function that returns the current settings
+          const settingsToSave = {
+            chosenKey,
+            chordGroup,
+            customChords,
+            scale,
+            textInput,
+            mode,
+            useSameChords,
+            sanitizedNumChords,
+            numChords,
+            vibe,
+            chord_picking_method,
+            numUniqueChords,
+            sanitizedNumUniqueChords
+          };
+          return settingsToSave;
+        }}
+        onLoadProgression={handleLoadSettings}
+        filterType="generated"
+      />
     </div>
   );
 };

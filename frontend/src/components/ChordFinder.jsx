@@ -132,7 +132,7 @@ const ChordFinder = ({
                 <Accordion type="multiple" collapsible>
                     <AccordionItem value="table">
                         <AccordionTrigger>Chord table</AccordionTrigger>
-                        <AccordionContent><ChordTable chordData={chords} chosenKey={chosenKey}/></AccordionContent>
+                        <AccordionContent><ChordTable chordData={chords} chosenKey={chosenKey} cpbRef={cpbRef}/></AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="list">
                         <AccordionTrigger>Chord list</AccordionTrigger>
