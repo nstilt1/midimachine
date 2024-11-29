@@ -7,6 +7,19 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "./ui/button";
+
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Trash, ArrowUp, ArrowDown, Plus } from "lucide-react";
@@ -51,16 +64,28 @@ const Chord = ({
                 </div>
                 {isInProgression ? (
                     <>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onDelete?.(index);
-                            }}
-                        >
-                            <Trash className="h-4 w-4" />
-                        </Button>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                            >
+                                <Trash className="h-4 w-4" />
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure you want to delete this chord?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete this chord.
+                            </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => {onDelete?.(index);}}>Continue</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                         <Button
                             variant="ghost"
                             size="sm"

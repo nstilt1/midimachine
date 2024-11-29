@@ -8,7 +8,7 @@ import {
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-  } from "@/components/ui/accordion";
+} from "@/components/ui/accordion";
 
 import Chord from "./Chord";
 import { Button } from "./ui/button";
@@ -23,16 +23,29 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
     const [isLoading, setIsLoading] = useState(false);
 
     const updateMidi = async () => {
+        if (chords.length === 0) {
+            console.warn("No chords to generate MIDI");
+            return;
+        }
+    
         try {
             console.time("generate_chord_progression_midi");
             let chordsArr = chords.map(chord => chord['note_vec']);
             const midiBinary = wasmModule.generate_midi_chord_progression(chordsArr);
             console.timeEnd("generate_chord_progression_midi");
+            
             const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
             const midiUrl = URL.createObjectURL(midiBlob);
+            
+            // Revoke previous URL to prevent memory leaks
+            if (midiFileUrl) {
+                URL.revokeObjectURL(midiFileUrl);
+            }
+            
             setMidiFileUrl(midiUrl);
         } catch (error) {
-            console.error("Error generating chord progression midi file");
+            console.error("Error generating chord progression MIDI file:", error);
+            throw error; // Rethrow to be caught in togglePlayOrPause
         }
     }
 
@@ -40,18 +53,30 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
         if (isPlaying) {
             playerRef.current.stop();
             console.log("Stopping playback");
+            setIsPlaying(false);
         } else {
             playerRef.current.loop = true;
-            if(!isMidiUpToDate) {
-                setIsLoading(true);
-                await updateMidi();
-                setIsMidiUpToDate(true);
-                playerRef.current.reload();
+            
+            // If MIDI is not up to date, generate it before playing
+            if (!isMidiUpToDate) {
+                try {
+                    setIsLoading(true);
+                    await updateMidi();
+                    setIsMidiUpToDate(true);
+                } catch (error) {
+                    console.error("Failed to generate MIDI", error);
+                    setIsLoading(false);
+                    return;
+                }
             }
+    
+            // Wait for a short moment to ensure the player is ready
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
             setIsLoading(false);
             playerRef.current.start();
+            setIsPlaying(true);
         }
-        setIsPlaying(!isPlaying);
     }
 
     useEffect(() => {
