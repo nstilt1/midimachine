@@ -201,4 +201,6 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
     );
 });
 
+ChordProgressionBuilder.displayName = 'ChordProgressionBuilder';
+
 export default ChordProgressionBuilder;

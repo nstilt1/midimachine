@@ -53,7 +53,7 @@ const Chord = ({
         return () => {
             URL.revokeObjectURL(url);
         };
-    }, [json['midi']]);
+    }, [json]);
 
     return (
         <AccordionItem value={index + '' + json['name']}>
