@@ -127,12 +127,7 @@ pub fn chord_finder(
     }
     let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale)?;
 
-    match table_scheme {
-        "contains_note" => musician.rotate_chords(key),
-        "highest_note" => musician.rearrange_by_highest_note(key),
-        "lowest_note" => musician.rearrange_by_lowest_note(key),
-        _ => return Err(JsError::new("table_scheme did not match"))
-    }
+    musician.rotate_chords(key);
 
     let mut intersected_chords: HashSet<Chord> = HashSet::from_iter(musician.chord_table[notes_vec[0]].iter().cloned());
     for note in notes_vec.iter().skip(1) {
@@ -143,6 +138,13 @@ pub fn chord_finder(
                     .cloned()
                 )
             ).to_set();
+    }
+
+    match table_scheme {
+        "contains_note" => (),
+        "highest_note" => musician.rearrange_by_highest_note(key),
+        "lowest_note" => musician.rearrange_by_lowest_note(key),
+        _ => return Err(JsError::new("table_scheme did not match"))
     }
 
     for chords in musician.chord_table.iter_mut() {

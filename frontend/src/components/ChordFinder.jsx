@@ -125,6 +125,12 @@ const ChordFinder = ({
                     selectedOptions={notes}
                     setSelectedOptions={handleNoteSelection}
                 />
+                <Selector 
+                    options={tableSchemes}
+                    selectedOption={tableScheme}
+                    onChange={setTableScheme}
+                    label="Chord table arranged by:"
+                />
 
             </div>
             <Button type="submit">Find Chords</Button>
