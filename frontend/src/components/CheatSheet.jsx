@@ -76,6 +76,12 @@ const CheatSheet = ({
                     onChange={setKey}
                     label="Choose a key:"
                 />
+                {chosenKey == "random" && 
+                <div className="w-full max-w-sm">
+                <p className="text-red-500">
+                    Sorry, but you must choose a key for the Chord Vocabulary to work.
+                </p>
+                </div>}
                 <Selector
                     options={chordGroups}
                     selectedOption={chordGroup}
