@@ -121,7 +121,7 @@ const MidiApp = ({ showExtraControls, cpbRef, wasmModule }) => {
             <TabsContent value="generator">
               <Card>
                 <CardHeader>
-                  <CardTitle><span className="blend">&quot;</span>AI<span className="blend">&quot;</span> MIDI File Generator</CardTitle>
+                  <CardTitle><span className="blend">&quot;</span>AI<span className="blend">&quot;</span> MIDI Machine</CardTitle>
                 </CardHeader>
                 <CardContent>
               <MidiForm
