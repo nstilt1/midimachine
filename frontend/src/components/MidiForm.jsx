@@ -6,24 +6,92 @@ import MidiPlayer from "./MidiPlayer";
 import ChatBar from "./ChatBar";
 import Selector from "./Selector";
 import NumberInput from "./NumberInput";
+import MultiSelect from "./MultiSelector";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { Button } from "@/components/ui/button";
+import { Save } from "lucide-react";
+import SavedChords from "./SavedChords";
 
-const MidiForm = ({ wasmModule, showExtraControls }) => {
-  const [textInput, setTextInput] = useState('');
-  const [selectedOption, setSelectedOption] = useState('melody');
-  const [useSameChords, setUseSameChords] = useState(false);
+const MidiForm = ({ 
+  wasmModule, 
+  showExtraControls, 
+  chosenKey, 
+  setKey,
+  chordGroup,
+  setChordGroup,
+  customChords,
+  scale,
+  setScale,
+  handleChordTypeSelection,
+  keys,
+  chordGroups,
+  customChordTypes,
+  scales
+}) => {
+  const [textInput, setTextInput] = useLocalStorage("textInput", '');
+  const [mode, setMode] = useLocalStorage("mode", "melody");
+  const [useSameChords, setUseSameChords] = useLocalStorage("useSameChords", false);
   const [midiFile, setMidiFile] = useState(null);
-  const [numChords, setNumChords] = useState(20);
-  const [key, setKey] = useState('random');
-  const [vibe, setVibe] = useState('default');
-
+  const [numChords, setNumChords] = useLocalStorage("numChords", 20);
+  const [sanitizedNumChords, setSanitizedNumChords] = useLocalStorage("sanitizedNumChords", 20);
+  const [vibe, setVibe] = useLocalStorage("vibe", 'default');
+  const [chord_picking_method, setChordPickingMethod] = useLocalStorage("chord_picking_method", 'original');
+  const [numUniqueChords, setNumUniqueChords] = useLocalStorage("numUniqueChords", 0);
+  const [sanitizedNumUniqueChords, setSanitizedNumUniqueChords] = useLocalStorage("sanitizedNumUniqueChords", 0);
+  const [savedChordsOpen, setSavedChordsOpen] = useState(false);
   const fileInputRef = useRef(null);
+  const [isRandom, setIsRandom] = useLocalStorage("isRandom", true);
+
+  // Function to save current form settings
+  const saveCurrentSettings = (name) => {
+    const settingsToSave = {
+      chosenKey,
+      chordGroup,
+      customChords,
+      scale,
+      textInput,
+      mode,
+      useSameChords,
+      sanitizedNumChords,
+      numChords,
+      vibe,
+      chord_picking_method,
+      numUniqueChords,
+      sanitizedNumUniqueChords,
+      isRandom
+    };
+  
+    // Use useLocalStorage to save
+    const savedProgressions = JSON.parse(localStorage.getItem('savedProgressions') || '{}');
+    savedProgressions[name] = {
+      type: 'generated',
+      contents: settingsToSave,
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem('savedProgressions', JSON.stringify(savedProgressions));
+  };
+
+  // Function to load saved settings
+  const handleLoadSettings = (settings) => {
+    // Update each state variable from the loaded settings
+    setKey(settings.chosenKey);
+    setChordGroup(settings.chordGroup);
+    handleChordTypeSelection(settings.customChords);
+    setScale(settings.scale);
+    setTextInput(settings.textInput);
+    setMode(settings.mode);
+    setUseSameChords(settings.useSameChords);
+    setNumChords(settings.numChords);
+    setSanitizedNumChords(settings.sanitizedNumChords);
+    setVibe(settings.vibe);
+    setChordPickingMethod(settings.chord_picking_method);
+    setNumUniqueChords(settings.numUniqueChords);
+    setSanitizedNumUniqueChords(settings.sanitizedNumUniqueChords);
+    setIsRandom(settings.isRandom);
+  };
 
   const handleTextChange = (event) => {
     setTextInput(event.target.value);
-  }
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
   }
 
   const handleUseSameChordsChange = (event) => {
@@ -32,9 +100,21 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
 
   const handleNumChordsChange = (value) => {
     // ensure the number stored in `numChords` is greater than 0
+    setNumChords(value);
     if (value > 0) {
-      setNumChords(Math.round(value));
+      setSanitizedNumChords(Math.round(value));
     }
+  }
+
+  const handleNumUniqueChordsChange = (value) => {
+    setNumUniqueChords(value);
+    if (value >= 0) {
+      setSanitizedNumUniqueChords(Math.round(value));
+    }
+  }
+
+  const handleIsRandomChange = (event) => {
+    setIsRandom(!isRandom);
   }
 
   const handleSubmit = async (event) => {
@@ -44,8 +124,9 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
       alert("Please provide an input.");
       return;
     }
-    if(!selectedOption) {
-      alert("Please select an option.");
+
+    if((chordGroup == "custom" || chordGroup == "custom_pruning") && customChords.length == 0) {
+      alert("Please choose some chord types");
       return;
     }
 
@@ -69,8 +150,22 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
       combinedBinary.set(textBinary, fileBinary.length);
 
       //console.log("useSameChords = " + useSameChords);
-      //console.log("key: " + key);
-      const midiBinary = wasmModule.generate_midi(combinedBinary, selectedOption, useSameChords, numChords, key);
+      //console.log("key: " + chosenKey);
+      console.time("generate_midi");
+      const midiBinary = wasmModule.generate_midi(
+        combinedBinary, 
+        mode, 
+        useSameChords, 
+        sanitizedNumChords, 
+        chosenKey, 
+        customChords, 
+        chordGroup,
+        chord_picking_method,
+        sanitizedNumUniqueChords,
+        scale,
+        !isRandom
+      );
+      console.timeEnd("generate_midi");
 
       const midiBlob = new Blob([midiBinary], { type: 'audio/midi' });
       const midiUrl = URL.createObjectURL(midiBlob);
@@ -81,34 +176,6 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
       alert("An error occurred while generating the MIDI file.");
     }
   };
-
-  const keys = [
-    { label: "Pick one for me", value: "random" },
-    { label: "C minor", value: "Cmin" },
-    { label: "C# minor", value: "C#min" },
-    { label: "D minor", value: "Dmin" },
-    { label: "D# minor", value: "D#min" },
-    { label: "E minor", value: "Emin" },
-    { label: "F minor", value: "Fmin" },
-    { label: "F# minor", value: "F#min" },
-    { label: "G minor", value: "Gmin" },
-    { label: "G# minor", value: "G#min" },
-    { label: "A minor", value: "Amin" },
-    { label: "A# minor", value: "A#min" },
-    { label: "B minor", value: "Bmin" },
-    { label: "C major", value: "Cmaj" },
-    { label: "C# major", value: "C#maj" },
-    { label: "D major", value: "Dmaj" },
-    { label: "D# major", value: "D#maj" },
-    { label: "E major", value: "Emaj" },
-    { label: "F major", value: "Fmaj" },
-    { label: "F# major", value: "F#maj" },
-    { label: "G major", value: "Gmaj" },
-    { label: "G# major", value: "G#maj" },
-    { label: "A major", value: "Amaj" },
-    { label: "A# major", value: "A#maj" },
-    { label: "B minor", value: "Bmaj" }
-  ];
 
   const vibes = [
     { label: "Default vibe", value: "default"},
@@ -124,49 +191,99 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
     { label: "Vibe 10", value: "10" }
   ];
 
+  const chordPickingMethods = [
+    { label: "Original - 2D", value: "original" },
+    { label: "1D", value: "1D" }
+  ];
+
+  const modes = [
+    { label: "Melody", value: "melody" },
+    { label: "Chords", value: "chords" },
+    { label: "Melody v2", value: "melody v2" },
+    { label: "Melody v3", value: "melody v3" },
+    { label: "Intended Placement", value: "intended" }
+  ];
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-        {showExtraControls && <div><label>Select an Option:</label>
+        {showExtraControls && <div>
           <div>
-            <input
-              type="radio"
-              value="melody"
-              checked={selectedOption === 'melody'}
-              onChange={handleOptionChange}
-              required
+            <Selector 
+              options={modes}
+              selectedOption={mode}
+              onChange={setMode}
+              label="Choose a mode:"
             />
-            Melody
-            <input
-              type="radio"
-              value="chords"
-              checked={selectedOption === 'chords'}
-              onChange={handleOptionChange}
-              required
-            />
-            Chords
-            <br/>
             <input 
               type="checkbox"
               id="useSameChords"
               checked={useSameChords}
               onChange={handleUseSameChordsChange}
             />
-            <label htmlFor="useSameChords">Use same chords for melody and chords?</label>
+            <label htmlFor="useSameChords">Use same chords for all modes?</label>
             <NumberInput
               value={numChords}
               onChange={handleNumChordsChange}
               id="numChords"
               labelText="# of chords:"
             />
-            Num Chords
+            <NumberInput
+              value={numUniqueChords}
+              onChange={handleNumUniqueChordsChange}
+              id="numUniqueChords"
+              labelText="# unique chords:"
+            />
             <Selector 
               options={keys} 
-              selectedOption={key}
+              selectedOption={chosenKey}
               onChange={setKey}
               label="Choose a key:"
             />
+            <Selector 
+              options={chordGroups}
+              selectedOption={chordGroup}
+              onChange={setChordGroup}
+              label="Choose a chord group:"
+            />
+            {chordGroup == "custom" || chordGroup == "custom_pruning" && <MultiSelect
+              options={customChordTypes}
+              selectedOptions={customChords}
+              setSelectedOptions={handleChordTypeSelection}
+            />}
+            <Selector
+              options={chordPickingMethods}
+              selectedOption={chord_picking_method}
+              onChange={setChordPickingMethod}
+              label="Choose a chord picking method:"
+            />
+            <Selector 
+              options={scales}
+              selectedOption={scale}
+              onChange={setScale}
+              label="Prune chords to fit this scale:"
+            />
+            {(scale == "all_notes" || scale == "disabled") && chordGroup == "custom_pruning" && 
+            <div className="w-full max-w-sm">
+              <p className="text-red-500">
+                The &quot;Custom (use pruning)&quot; chord group is intended to be used with pruning. 
+                You are welcome to try it without pruning, but it will likely be 
+                unsatisfactory because the chords will probably not be in a 
+                specific key.
+              </p>
+            </div>}
+            {scale != "disabled" && 
+            <div>
+              <input 
+              type="checkbox"
+              id="isReproducible"
+              checked={isRandom}
+              onChange={handleIsRandomChange}
+            />
+              <label htmlFor="isReproducible">Randomize output? (Not reproducible)</label>
+            </div>}
+
             </div>
             
           </div>}
@@ -182,6 +299,7 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
             onSubmit={handleSubmit} 
             onTextChange={handleTextChange}
             fileInputRef={fileInputRef}
+            textInput={textInput}
           />
         </div>
       </form>
@@ -192,10 +310,46 @@ const MidiForm = ({ wasmModule, showExtraControls }) => {
       {midiFile && (
         <MidiPlayer
           midiFileUrl={midiFile}
+          textInput={textInput}
         ></MidiPlayer>
       )}
+      <div className="mb-4">
+          <Button 
+            type="button"
+            variant="outline" 
+            onClick={() => setSavedChordsOpen(true)}
+          >
+            <Save className="mr-2 h-4 w-4" /> Save/Load Settings
+          </Button>
+        </div>
         </div>
       )}
+      <SavedChords 
+        isOpen={savedChordsOpen}
+        onClose={() => setSavedChordsOpen(false)}
+        currentChords={(name) => {
+          // Create a function that returns the current settings
+          const settingsToSave = {
+            chosenKey,
+            chordGroup,
+            customChords,
+            scale,
+            textInput,
+            mode,
+            useSameChords,
+            sanitizedNumChords,
+            numChords,
+            vibe,
+            chord_picking_method,
+            numUniqueChords,
+            sanitizedNumUniqueChords,
+            isRandom
+          };
+          return settingsToSave;
+        }}
+        onLoadProgression={handleLoadSettings}
+        filterType="generated"
+      />
     </div>
   );
 };

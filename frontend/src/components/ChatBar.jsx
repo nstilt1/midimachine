@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, textInput } from 'react';
 import '../styles/ChatBar.css';
 
-const ChatBar = ({ onSubmit, onTextChange, fileInputRef }) => {
-    const [text, setText] = useState('');
+const ChatBar = ({ onSubmit, onTextChange, fileInputRef, textInput }) => {
     const [fileAttached, setFileAttached] = useState(false);
     const textareaRef = useRef(null);
 
     const handleTextChange = (event) => {
-        setText(event.target.value);
         onTextChange(event);
     };
 
@@ -58,7 +56,7 @@ const ChatBar = ({ onSubmit, onTextChange, fileInputRef }) => {
             textareaRef.current.style.height = 'inherit';
             textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
         }
-    }, [text]);
+    }, [textInput]);
 
     return (
       <div className="flex items-center border rounded-lg p-2 bg-white">
@@ -91,7 +89,7 @@ const ChatBar = ({ onSubmit, onTextChange, fileInputRef }) => {
 
         {/* Text input area */}
         <textarea
-          value={text}
+          value={textInput}
           onChange={handleTextChange}
           onKeyDown={handleKeyDown}
           ref={textareaRef}

@@ -7,7 +7,7 @@ const Selector = ({ options, selectedOption, onChange, label }) => {
     };
   
     return (
-      <div className="w-full max-w-sm">
+      <div className="w-full rounded-lg p-2">
         <div className="mb-3">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="dropdown">
             {label}

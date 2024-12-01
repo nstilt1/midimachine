@@ -1,42 +1,50 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
 
-const MidiPlayerComponent = ({ midiFileUrl }) => {
+const MidiPlayerComponent = ({ midiFileUrl, textInput }) => {
   const playerRef = useRef(null);
   const visualizerRef = useRef(null);
   const [downloadUrl, setDownloadUrl] = useState(null);
 
-  useEffect(() => {
-    if (playerRef.current && visualizerRef.current) {
-      visualizerRef.current.player = playerRef.current;
-      //playerRef.current.addVisualizer(playerRef.current);
+  // Sanitizes filenames
+  const sanitizeFilename = (str) => {
+    const maxNameLength = 100;
+    let sanitized = str.replace(/[^a-z0-9_\-]/gi, '_');
+    if (sanitized.length > maxNameLength) {
+      sanitized = sanitized.substring(0, maxNameLength) + '-';
     }
-
-    if (midiFileUrl) {
-      fetch(midiFileUrl)
-        .then((response) => response.blob())
-        .then((blob) => {
-          const url = URL.createObjectURL(blob);
-          setDownloadUrl(url);
-        });
-    }
-  }, [midiFileUrl]);
-
-  // Cleanup the created URL
-  useEffect(() => {
-    return () => {
-      if (downloadUrl) {
-        URL.revokeObjectURL(downloadUrl);
-      }
-    };
-  }, [downloadUrl]);
+    return "midimachine-" + sanitized + ".mid";
+  };
 
   useEffect(() => {
     if (playerRef.current && visualizerRef.current) {
       playerRef.current.addVisualizer(visualizerRef.current);
     }
-  })
+  }, [playerRef, visualizerRef]);
+
+  useEffect(() => {
+    if (midiFileUrl) {
+      let currentDownloadUrl;
+  
+      fetch(midiFileUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          setDownloadUrl(url);
+          currentDownloadUrl = url;
+        });
+  
+      // Clean up the previous URL if it exists
+      return () => {
+        if (currentDownloadUrl) {
+          URL.revokeObjectURL(currentDownloadUrl);
+        }
+      };
+    }
+  }, [midiFileUrl]);
+  
 
   return (
     <div>
@@ -59,14 +67,13 @@ const MidiPlayerComponent = ({ midiFileUrl }) => {
             src={midiFileUrl}
             type="piano-roll"
             id="mainVisualizer"
-            //src={midiFileUrl}
-            style={{ width: '600px', height: '200px', border: '1px solid black' }}
+            style={{ width: '600px', border: '1px solid black' }}
           ></midi-visualizer>
 
           {/* MIDI Download Button */}
           {downloadUrl && (
-            <a href={downloadUrl} download="generated-midi-file.mid">
-              <button>Download MIDI</button>
+            <a href={downloadUrl} download={sanitizeFilename(textInput)}>
+              <Button>Download Midi</Button>
             </a>
           )}
         </div>

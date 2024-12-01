@@ -27,3 +27,29 @@ After building the Rust code, the `musicgen/pkg/musicgen_bg.wasm` file will need
 ```sh
 npm run dev
 ```
+
+## Generating test data
+
+To prevent breaking changes to the default configurations, we can generate MIDI files to test the output against. It's somewhat of a mutation test.
+
+Run this command to generate the midi files:
+
+```sh
+cargo run --bin generate_midi
+```
+
+Run this command to determine whether or not the output has changed:
+
+```sh
+cargo test
+```
+
+## Contributions
+
+Any contributions will be licensed under the MIT license, unless specified otherwise.
+
+PRs with breaking changes to the default configurations will not be merged. If you want to push breaking changes, either create a new:
+
+* chord placement method
+* chord group
+* `ChordType` definition(s) under the `custom` chord group

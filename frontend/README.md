@@ -12,6 +12,8 @@ yarn dev
 pnpm dev
 # or
 bun dev
+# or
+
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -19,13 +21,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-### Running this as a WSL Network Server
-
-Run the server on WSL:
-```sh
-npm run dev -- --hostname 0.0.0.0
-```
 
 ## Learn More
 
