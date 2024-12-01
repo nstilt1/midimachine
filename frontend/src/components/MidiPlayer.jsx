@@ -26,21 +26,25 @@ const MidiPlayerComponent = ({ midiFileUrl, textInput }) => {
 
   useEffect(() => {
     if (midiFileUrl) {
+      let currentDownloadUrl;
+  
       fetch(midiFileUrl)
         .then((response) => response.blob())
         .then((blob) => {
           const url = URL.createObjectURL(blob);
           setDownloadUrl(url);
+          currentDownloadUrl = url;
         });
-
+  
       // Clean up the previous URL if it exists
       return () => {
-        if (downloadUrl) {
-          URL.revokeObjectURL(downloadUrl);
+        if (currentDownloadUrl) {
+          URL.revokeObjectURL(currentDownloadUrl);
         }
       };
     }
-  }, [midiFileUrl, downloadUrl]);
+  }, [midiFileUrl]);
+  
 
   return (
     <div>
