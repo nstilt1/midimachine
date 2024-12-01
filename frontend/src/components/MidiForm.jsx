@@ -40,6 +40,7 @@ const MidiForm = ({
   const [sanitizedNumUniqueChords, setSanitizedNumUniqueChords] = useLocalStorage("sanitizedNumUniqueChords", 0);
   const [savedChordsOpen, setSavedChordsOpen] = useState(false);
   const fileInputRef = useRef(null);
+  const [isRandom, setIsRandom] = useLocalStorage("isRandom", true);
 
   // Function to save current form settings
   const saveCurrentSettings = (name) => {
@@ -56,7 +57,8 @@ const MidiForm = ({
       vibe,
       chord_picking_method,
       numUniqueChords,
-      sanitizedNumUniqueChords
+      sanitizedNumUniqueChords,
+      isRandom
     };
   
     // Use useLocalStorage to save
@@ -85,6 +87,7 @@ const MidiForm = ({
     setChordPickingMethod(settings.chord_picking_method);
     setNumUniqueChords(settings.numUniqueChords);
     setSanitizedNumUniqueChords(settings.sanitizedNumUniqueChords);
+    setIsRandom(settings.isRandom);
   };
 
   const handleTextChange = (event) => {
@@ -108,6 +111,10 @@ const MidiForm = ({
     if (value >= 0) {
       setSanitizedNumUniqueChords(Math.round(value));
     }
+  }
+
+  const handleIsRandomChange = (event) => {
+    setIsRandom(!isRandom);
   }
 
   const handleSubmit = async (event) => {
@@ -155,7 +162,8 @@ const MidiForm = ({
         chordGroup,
         chord_picking_method,
         sanitizedNumUniqueChords,
-        scale
+        scale,
+        !isRandom
       );
       console.timeEnd("generate_midi");
 
@@ -265,6 +273,16 @@ const MidiForm = ({
                 specific key.
               </p>
             </div>}
+            {scale != "disabled" && 
+            <div>
+              <input 
+              type="checkbox"
+              id="isReproducible"
+              checked={isRandom}
+              onChange={handleIsRandomChange}
+            />
+              <label htmlFor="isReproducible">Randomize output? (Not reproducible)</label>
+            </div>}
 
             </div>
             
@@ -324,7 +342,8 @@ const MidiForm = ({
             vibe,
             chord_picking_method,
             numUniqueChords,
-            sanitizedNumUniqueChords
+            sanitizedNumUniqueChords,
+            isRandom
           };
           return settingsToSave;
         }}

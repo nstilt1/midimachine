@@ -1,6 +1,6 @@
 //! Methods related to pruning chords from the chord table and chord list.
 
-use std::collections::HashSet;
+use std::{collections::HashSet, hash::{DefaultHasher, Hash, Hasher}};
 
 use super::{chord::{expand_chords, Chord}, utils::sets::SetOpsCollection};
 
@@ -33,7 +33,12 @@ fn get_good_notes_set(scale: &str) -> Option<(HashSet<i16>, Vec<usize>)> {
 /// * F# - 6
 /// * A  - 9
 /// * B - 11
-pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chord>, scale: &str) {
+pub fn prune_chords(
+    chord_table: &mut Vec<Vec<Chord>>, 
+    chord_list: &mut Vec<Chord>, 
+    scale: &str, 
+    is_reproducible: bool
+) {
     let (_good_notes_set, bad_notes) = match get_good_notes_set(scale) {
         Some(v) => v,
         None => { return; }
@@ -58,6 +63,23 @@ pub fn prune_chords(chord_table: &mut Vec<Vec<Chord>>, chord_list: &mut Vec<Chor
     }
 
     *chord_list = chord_set.difference(&bad_chords).cloned().collect();
+
+    // sort the chords by their hash to ensure that they will (nearly) always be
+    // in the same order for every run of this function
+    if is_reproducible {
+        chord_list.sort_by_key(|chord| {
+            let mut hasher = DefaultHasher::new();
+            chord.hash(&mut hasher);
+            hasher.finish()
+        });
+        for col in chord_table.iter_mut() {
+            col.sort_by_key(|chord| {
+                let mut hasher = DefaultHasher::new();
+                chord.hash(&mut hasher);
+                hasher.finish()
+            });
+        }
+    }
 }
 
 #[cfg(test)]
@@ -93,7 +115,8 @@ mod tests {
             "Cmin",
             &HashSet::new(),
             "default",
-            "pentatonic"
+            "pentatonic",
+            true
         ).unwrap();
 
         let mut chords = musician.chord_table[0].to_set();
@@ -111,7 +134,8 @@ mod tests {
             "Cmin",
             &HashSet::new(),
             "default",
-            "pentatonic"
+            "pentatonic",
+            true
         ).unwrap();
 
         assert!(musician.chord_table[CSHARP as usize].len() == 0, "C# had some chords in it");
@@ -204,7 +228,8 @@ mod tests {
             "Cmin",
             &HashSet::new(),
             "default",
-            "natural"
+            "natural",
+            true
         ).unwrap();
 
         assert!(musician.chord_table[CSHARP as usize].len() == 0, "C# had some chords in it");

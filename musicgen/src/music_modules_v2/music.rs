@@ -182,7 +182,8 @@ impl Music {
         chosen_key: &str, 
         chord_selections: &HashSet<String>, 
         chord_type_group: &str,
-        scale: &str
+        scale: &str,
+        is_reproducible: bool,
     ) -> Result<Music, Error> {
         let mut stash = [0u8; 32];
         stash.copy_from_slice(&hash);
@@ -332,7 +333,7 @@ impl Music {
             }
         }
 
-        prune_chords(&mut chord_table, &mut chord_list, scale);
+        prune_chords(&mut chord_table, &mut chord_list, scale, is_reproducible);
 
         return Ok(Music {
             math_magician,
@@ -619,7 +620,7 @@ mod tests {
 
     macro_rules! init_music {
         ($chosen_key:expr) => {
-            Music::smoke_hash(Default::default(), $chosen_key, &HashSet::new(), "default", "disabled").unwrap()
+            Music::smoke_hash(Default::default(), $chosen_key, &HashSet::new(), "default", "disabled", true).unwrap()
         };
     }
 

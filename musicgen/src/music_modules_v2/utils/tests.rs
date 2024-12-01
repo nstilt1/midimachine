@@ -27,7 +27,7 @@ impl Music {
             "dominant9",
             "add9"
         ].iter().map(|str| str.to_string()));
-        let mut musician = Music::smoke_hash(Default::default(), key, &chord_selection, "custom_pruning", scale).unwrap();
+        let mut musician = Music::smoke_hash(Default::default(), key, &chord_selection, "custom_pruning", scale, true).unwrap();
         musician
     }
 }
