@@ -33,6 +33,7 @@ const MidiPlayerComponent = ({ midiFileUrl, textInput }) => {
         .then((blob) => {
           const url = URL.createObjectURL(blob);
           setDownloadUrl(url);
+          console.log("fetched midiFileUrl");
           currentDownloadUrl = url;
         });
   

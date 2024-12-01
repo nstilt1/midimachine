@@ -99,22 +99,24 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
     }
 
     useEffect(() => {
-        if(midiFileUrl) {
+        if (midiFileUrl) {
+            let currentDownloadUrl;
+    
             fetch(midiFileUrl)
                 .then((response) => response.blob())
                 .then((blob) => {
                     const url = URL.createObjectURL(blob);
                     setDownloadUrl(url);
+                    currentDownloadUrl = url;
                 });
-
-            // clean up previous url if it exists
+    
             return () => {
-                if(downloadUrl) {
-                    URL.revokeObjectURL(downloadUrl);
+                if (currentDownloadUrl) {
+                    URL.revokeObjectURL(currentDownloadUrl);
                 }
             };
         }
-    }, [midiFileUrl, downloadUrl]);
+    }, [midiFileUrl]);
 
     // expose handleAddChord to parent component
     useImperativeHandle(ref, () => ({
