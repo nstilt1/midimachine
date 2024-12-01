@@ -311,7 +311,7 @@ mod tests {
     #[test]
     fn hashing_demo() {
         let file_input = "some file's contents";
-        let text_input = "write a chord progression about being lost at voodoo";
+        let text_input = "write a song about being lost at voodoo";
         let vibe_input = "4";
 
         let concatenated = format!("{}{}{}", file_input, text_input, vibe_input);
