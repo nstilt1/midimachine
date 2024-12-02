@@ -213,7 +213,7 @@ const SavedChords = ({
                   variant={saveMethod === 'everywhere' ? 'default' : 'outline'}
                   onClick={() => setSaveMethod('everywhere')}
                 >
-                  Everywhere
+                  Both
                 </Button>
               </div>
                 )}
