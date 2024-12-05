@@ -37,7 +37,7 @@ export default function Home() {
       <Navbar whenClickedLogo={() => setClickedLogo(!clickedLogo)} />
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <MidiApp showExtraControls={clickedLogo} cpbRef={cpbRef} wasmModule={wasmModule}></MidiApp>
+        <MidiApp showExtraControls={clickedLogo} toggleExtraControls={() => {setClickedLogo(!clickedLogo)}} cpbRef={cpbRef} wasmModule={wasmModule}></MidiApp>
       </main>
       {showBuilder && <ChordProgressionBuilder ref={cpbRef} wasmModule={wasmModule} />}
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center p-8">

@@ -14,6 +14,7 @@ import {
 import Chord from "./Chord";
 import { Checkbox } from "./ui/checkbox";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
 const CheatSheet = ({
     wasmModule,
@@ -70,67 +71,174 @@ const CheatSheet = ({
         <div>
             <form onSubmit={handleSubmit}>
             <div>
-                <Selector
-                    options={keys}
-                    selectedOption={chosenKey}
-                    onChange={setKey}
-                    label="Choose a key:"
-                />
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger className="w-full text-left">
+                            <Selector
+                                options={keys}
+                                selectedOption={chosenKey}
+                                onChange={setKey}
+                                label="Choose a key:"
+                            />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p className="text-lg max-w-md">
+                                This determines what key that the chord table should be in.
+                            </p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
                 {chosenKey == "random" && 
                 <div className="w-full max-w-sm">
                 <p className="text-red-500">
                     Sorry, but you must choose a key for the Chord Vocabulary to work.
                 </p>
                 </div>}
-                <Selector
-                    options={chordGroups}
-                    selectedOption={chordGroup}
-                    onChange={setChordGroup}
-                    label="Choose a chord group:"
-                />
-                {(chordGroup == "custom" || chordGroup == "custom_pruning") && <MultiSelect
-                    options={customChordTypes}
-                    selectedOptions={customChords}
-                    setSelectedOptions={handleChordTypeSelection}
-                />}
-                <Selector 
-                    options={scales}
-                    selectedOption={scale}
-                    onChange={setScale}
-                    label="Prune chords to fit this scale:"
-                />
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger className="w-full text-left">
+                            <Selector
+                                options={chordGroups}
+                                selectedOption={chordGroup}
+                                onChange={setChordGroup}
+                                label="Choose a chord group:"
+                            />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p className="text-lg max-w-md">
+                                These will be the chord types included in the initial vocabulary before 
+                                pruning. You can see the chords in each chord group in this vocabulary 
+                                menu by inspecting the generated Chord Table and Chord List.
+                            </p>
+                            <p className="text-lg max-w-md">
+                                The "Custom (hand-picked)" chord group should not need pruning, while 
+                                the "Custom (use pruning)" chord group will simply initialize the 
+                                vocabulary to use every possible chord with every root. Then, you can 
+                                prune chords that have notes outside of the scale to theoretically 
+                                obtain a list of chords that are inside the specified key.
+                            </p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                {(chordGroup == "custom" || chordGroup == "custom_pruning") && 
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger className="w-full text-left">
+                            <MultiSelect
+                                options={customChordTypes}
+                                selectedOptions={customChords}
+                                setSelectedOptions={handleChordTypeSelection}
+                            />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p className="text-lg max-w-md">
+                                These will be the chord types included in the initial vocabulary before 
+                                pruning. You can see the chords in each chord group in this vocabulary 
+                                menu by inspecting the generated Chord Table and Chord List.
+                            </p>
+                            <p className="text-lg max-w-md">
+                                The "Custom (hand-picked)" chord group should not need pruning, while 
+                                the "Custom (use pruning)" chord group will simply initialize the 
+                                vocabulary to use every possible chord with every root. Then, you can 
+                                prune chords that have notes outside of the scale to theoretically 
+                                obtain a list of chords that are inside the specified key.
+                            </p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                }
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger className="w-full text-left">
+                            <Selector 
+                                options={scales}
+                                selectedOption={scale}
+                                onChange={setScale}
+                                label="Prune chords to fit this scale:"
+                            />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p className="text-lg max-w-md">
+                                Pruning chords removes all chords from the chord table that contain 
+                                notes that are outside of the given scale. This theoretically can 
+                                ensure that the resulting chords will all be in key.
+                            </p>
+                            <p className="text-lg max-w-md">
+                                The "No pruning, but clone chords with optional notes" option copies 
+                                chords that were defined with optional notes so that different variations 
+                                of chords may show up in the chord table.
+                            </p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
                 {(scale == "all_notes" || scale == "disabled") && chordGroup == "custom_pruning" && 
                 <div className="w-full max-w-sm">
                     <p className="text-red-500">
-                        The &quot;Custom (use pruning)&quot; chord group is intended to be used with pruning. 
+                        The &quot;Custom (use pruning)&quot; chord group is intended to be used with pruning.
+                    </p>
+                    <p className="text-red-500">
                         You are welcome to try it without pruning, but it will likely be 
                         unsatisfactory because the chords will probably not be in a 
                         specific key.
                     </p>
                 </div>}
-                <Selector 
-                    options={tableSchemes}
-                    selectedOption={tableScheme}
-                    onChange={setTableScheme}
-                    label="Chord table arranged by:"
-                />
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger className="w-full text-left">
+                        <Selector 
+                            options={tableSchemes}
+                            selectedOption={tableScheme}
+                            onChange={setTableScheme}
+                            label="Chord table arranged by:"
+                        />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p className="text-lg max-w-md">
+                            Rearranges the Chord Table by this scheme.
+                        </p>
+                        <p className="text-lg max-w-md">
+                            "Contains note" arranges each column so that the chords in the "C" 
+                            column all contain the note C. Chords in the "D" column will contain the 
+                            note D.
+                        </p>
+                        <p className="text-lg max-w-md">
+                            "Highest note" arranges each column so that the chords in the "C" column 
+                            will all have C as their highest note. This is likewise for the "Lowest Note"
+                            arrangement.
+                        </p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
             </div>
-            <input 
-                type="checkbox"
-                id="showProbabilities" 
-                checked={showProbabilities} 
-                onChange={handleShowProbabilitiesChange} 
-            />
-            <label 
-                htmlFor="showProbabilities"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-                Show probabilities?
-            </label>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger>
+                    <input 
+                        type="checkbox"
+                        id="showProbabilities" 
+                        checked={showProbabilities} 
+                        onChange={handleShowProbabilitiesChange} 
+                    />
+                    <label 
+                        htmlFor="showProbabilities"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        Show probabilities?
+                    </label>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p className="text-lg max-w-md">
+                            Shows the probabilities of each chord getting picked from the table using 
+                            either one-dimensional or two-dimensional chord picking methods. The 2D 
+                            probabilities are only valid when the table is arranged by "Contains note."
+                        </p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
             <br />
             <Button type="submit">Get Chords</Button>
             {chords && <div>
-                <Accordion type="multiple" collapsible>
+                <Accordion type="multiple" defaultValue={["table", "list"]} collapsible>
                     <AccordionItem value="table">
                         <AccordionTrigger>Chord table</AccordionTrigger>
                         <AccordionContent><ChordTable chordData={chords} chosenKey={chosenKey} cpbRef={cpbRef}/></AccordionContent>

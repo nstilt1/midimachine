@@ -21,7 +21,7 @@ import MidiForm from './MidiForm';
 import CheatSheet from './CheatSheet';
 import ChordFinder from './ChordFinder';
 
-const MidiApp = ({ showExtraControls, cpbRef, wasmModule }) => {
+const MidiApp = ({ showExtraControls, cpbRef, wasmModule, toggleExtraControls }) => {
   const [key, setKey] = useLocalStorage("key", 'random');
   const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
   const [customChords, setCustomChords] = useLocalStorage("customChords", []);
@@ -127,6 +127,7 @@ const MidiApp = ({ showExtraControls, cpbRef, wasmModule }) => {
               <MidiForm
                 wasmModule={wasmModule}
                 showExtraControls={showExtraControls}
+                toggleExtraControls={toggleExtraControls}
                 chosenKey={key}
                 setKey={setKey}
                 chordGroup={chordGroup}

@@ -15,6 +15,7 @@ import SavedChords from "./SavedChords";
 const MidiForm = ({ 
   wasmModule, 
   showExtraControls, 
+  toggleExtraControls,
   chosenKey, 
   setKey,
   chordGroup,
@@ -208,6 +209,12 @@ const MidiForm = ({
     <div>
       <form onSubmit={handleSubmit}>
         <div>
+          {showExtraControls && 
+            <Button onClick={toggleExtraControls}>Hide advanced controls</Button>
+          }
+          {!showExtraControls && 
+            <Button onClick={toggleExtraControls}>Show advanced controls</Button>
+          }
         {showExtraControls && <div>
           <div>
             <Selector 
