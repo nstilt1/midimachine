@@ -78,14 +78,14 @@ const CheatSheet = ({
             <div>
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger className="w-full text-left">
+                        <TooltipTrigger asChild className="w-full text-left"><div>
                             <Selector
                                 options={keys}
                                 selectedOption={chosenKey}
                                 onChange={setKey}
                                 label="Choose a key:"
                             />
-                        </TooltipTrigger>
+                        </div></TooltipTrigger>
                         <TooltipContent>
                             <p className="text-lg max-w-md">
                                 This determines what key that the chord table should be in.
@@ -101,14 +101,14 @@ const CheatSheet = ({
                 </div>}
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger className="w-full text-left">
+                        <TooltipTrigger asChild className="w-full text-left"><div>
                             <Selector
                                 options={chordGroups}
                                 selectedOption={chordGroup}
                                 onChange={setChordGroup}
                                 label="Choose a chord group:"
                             />
-                        </TooltipTrigger>
+                        </div></TooltipTrigger>
                         <TooltipContent>
                             <p className="text-lg max-w-md">
                                 These will be the chord types included in the initial vocabulary before 
@@ -128,13 +128,13 @@ const CheatSheet = ({
                 {(chordGroup == "custom" || chordGroup == "custom_pruning") && 
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger className="w-full text-left">
+                        <TooltipTrigger asChild className="w-full text-left"><div>
                             <MultiSelect
                                 options={customChordTypes}
                                 selectedOptions={customChords}
                                 setSelectedOptions={handleChordTypeSelection}
                             />
-                        </TooltipTrigger>
+                        </div></TooltipTrigger>
                         <TooltipContent>
                             <p className="text-lg max-w-md">
                                 These will be the chord types included in the initial vocabulary before 
@@ -154,14 +154,14 @@ const CheatSheet = ({
                 }
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger className="w-full text-left">
+                        <TooltipTrigger asChild className="w-full text-left"><div>
                             <Selector 
                                 options={scales}
                                 selectedOption={scale}
                                 onChange={setScale}
                                 label="Prune chords to fit this scale:"
                             />
-                        </TooltipTrigger>
+                        </div></TooltipTrigger>
                         <TooltipContent>
                             <p className="text-lg max-w-md">
                                 Pruning chords removes all chords from the chord table that contain 
@@ -189,14 +189,14 @@ const CheatSheet = ({
                 </div>}
             <TooltipProvider>
                 <Tooltip>
-                    <TooltipTrigger className="w-full text-left">
+                    <TooltipTrigger asChild className="w-full text-left"><div>
                         <Selector 
                             options={tableSchemes}
                             selectedOption={tableScheme}
                             onChange={setTableScheme}
                             label="Chord table arranged by:"
                         />
-                    </TooltipTrigger>
+                    </div></TooltipTrigger>
                     <TooltipContent>
                         <p className="text-lg max-w-md">
                             Rearranges the Chord Table by this scheme.
@@ -217,7 +217,7 @@ const CheatSheet = ({
             </div>
             <TooltipProvider>
                 <Tooltip>
-                    <TooltipTrigger>
+                    <TooltipTrigger asChild><div>
                     <input 
                         type="checkbox"
                         id="showProbabilities" 
@@ -230,7 +230,7 @@ const CheatSheet = ({
                     >
                         Show probabilities?
                     </label>
-                    </TooltipTrigger>
+                    </div></TooltipTrigger>
                     <TooltipContent>
                         <p className="text-lg max-w-md">
                             Shows the probabilities of each chord getting picked from the table using 

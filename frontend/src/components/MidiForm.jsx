@@ -226,14 +226,14 @@ const MidiForm = ({
           <div>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="w-full text-left">
+                <TooltipTrigger asChild className="w-full text-left"><div>
                   <Selector 
                     options={modes}
                     selectedOption={mode}
                     onChange={setMode}
                     label="Choose a mode:"
                   />
-                </TooltipTrigger>
+                </div></TooltipTrigger>
                 <TooltipContent>
                   <p className="text-lg max-w-md">
                     The modes represent different chord placement algorithms.
@@ -243,7 +243,7 @@ const MidiForm = ({
             </TooltipProvider>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="w-full text-left">
+                <TooltipTrigger asChild className="w-full text-left"><div>
                   <input 
                     type="checkbox"
                     id="useSameChords"
@@ -251,7 +251,7 @@ const MidiForm = ({
                     onChange={handleUseSameChordsChange}
                   />
                   <label htmlFor="useSameChords">Use same chords for all modes?</label>
-                </TooltipTrigger>
+                </div></TooltipTrigger>
                 <TooltipContent>
                   <p className="text-lg max-w-md">
                     When checked, this ensures that the same exact set of chords 
@@ -267,14 +267,14 @@ const MidiForm = ({
             </TooltipProvider>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="w-full text-left">
+                <TooltipTrigger asChild className="w-full text-left"><div>
                 <NumberInput
                   value={numChords}
                   onChange={handleNumChordsChange}
                   id="numChords"
                   labelText="# of chords:"
                 />
-                </TooltipTrigger>
+                </div></TooltipTrigger>
                 <TooltipContent>
                   <p className="text-lg max-w-md">
                     Determines the number of chords that will be generated and 
@@ -285,14 +285,14 @@ const MidiForm = ({
             </TooltipProvider>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="w-full text-left">
+                <TooltipTrigger asChild className="w-full text-left"><div>
                   <NumberInput
                     value={numUniqueChords}
                     onChange={handleNumUniqueChordsChange}
                     id="numUniqueChords"
                     labelText="# unique chords:"
                   />
-                </TooltipTrigger>
+                </div></TooltipTrigger>
                 <TooltipContent>
                   <p className="text-lg max-w-md">
                     This setting attempts to ensure that the last N chords will 
@@ -305,14 +305,14 @@ const MidiForm = ({
             </TooltipProvider>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="w-full text-left">
+                <TooltipTrigger asChild className="w-full text-left"><div>
                   <Selector 
                     options={keys} 
                     selectedOption={chosenKey}
                     onChange={setKey}
                     label="Choose a key:"
                   />
-                </TooltipTrigger>
+                </div></TooltipTrigger>
                 <TooltipContent>
                   <p className="text-lg max-w-md">
                     This determines what key that the generated MIDI is supposed 
@@ -323,7 +323,7 @@ const MidiForm = ({
             </TooltipProvider>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="w-full text-left">
+                <TooltipTrigger asChild className="w-full text-left"><div>
                 <Selector 
                   options={chordGroups}
                   selectedOption={chordGroup}
@@ -335,7 +335,7 @@ const MidiForm = ({
                   selectedOptions={customChords}
                   setSelectedOptions={handleChordTypeSelection}
                 />}
-                </TooltipTrigger>
+                </div></TooltipTrigger>
                 <TooltipContent>
                   <p className="text-lg max-w-md">
                     The chord group determines which chords will be included in 
@@ -354,14 +354,14 @@ const MidiForm = ({
             </TooltipProvider>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="w-full text-left">
+                <TooltipTrigger asChild className="w-full text-left"><div>
                   <Selector
                     options={chordPickingMethods}
                     selectedOption={chord_picking_method}
                     onChange={setChordPickingMethod}
                     label="Choose a chord picking method:"
                   />
-                </TooltipTrigger>
+                </div></TooltipTrigger>
                 <TooltipContent>
                   <p className="text-lg max-w-md">
                     Test different chord picking methods. The 2D method picks a 
@@ -384,14 +384,14 @@ const MidiForm = ({
 
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="w-full text-left">
+                <TooltipTrigger asChild className="w-full text-left"><div>
                   <Selector 
                     options={scales}
                     selectedOption={scale}
                     onChange={setScale}
                     label="Prune chords to fit this scale:"
                   />
-                </TooltipTrigger>
+                </div></TooltipTrigger>
                 <TooltipContent>
                   <p className="text-lg max-w-md">
                     Pruning chords removes all chords from the chord table that contain 
@@ -419,7 +419,7 @@ const MidiForm = ({
             <div>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger className="w-full text-left">
+                  <TooltipTrigger asChild className="w-full text-left"><div>
                     <input 
                       type="checkbox"
                       id="isReproducible"
@@ -427,7 +427,7 @@ const MidiForm = ({
                       onChange={handleIsRandomChange}
                     />
                     <label htmlFor="isReproducible">Randomize output? (Not reproducible)</label>
-                  </TooltipTrigger>
+                  </div></TooltipTrigger>
                   <TooltipContent>
                     <p className="text-lg max-w-md">
                       This checkbox can partially randomize the output and is not 
@@ -445,14 +445,14 @@ const MidiForm = ({
           </div>}
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="w-full text-left">
+              <TooltipTrigger asChild className="w-full text-left"><div>
                 <Selector
                   options={vibes}
                   selectedOption={vibe}
                   onChange={setVibe}
                   label="Choose a vibe:"
                 />
-              </TooltipTrigger>
+              </div></TooltipTrigger>
               <TooltipContent>
                 <p className="text-lg max-w-md">
                   The vibe selector is a way to try to choose a completely different 
