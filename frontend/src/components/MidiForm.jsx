@@ -297,7 +297,7 @@ const MidiForm = ({
                   <p className="text-lg max-w-md">
                     This setting attempts to ensure that the last N chords will 
                     be unique. There are some situations where there will be duplicate 
-                    chords, such as when the value in the "# unique chords" 
+                    chords, such as when the value in the &quot;# unique chords&quot; 
                     is greater than the total amount of chords to pick from.
                   </p>
                 </TooltipContent>
@@ -340,7 +340,7 @@ const MidiForm = ({
                   <p className="text-lg max-w-md">
                     The chord group determines which chords will be included in 
                     the initial vocabulary before pruning. You can view the chords 
-                    in the vocabulary using the "Chord Vocabulary" menu.
+                    in the vocabulary using the &quot;Chord Vocabulary&quot; menu.
                   </p>
                   <p className="text-lg max-w-md">
                     The Custom chord groups require you to select which chord types 
@@ -374,9 +374,9 @@ const MidiForm = ({
                   <p className="text-lg max-w-md">
                     The probability of each chord being picked can be observed in 
                     the Chord Vocabulary menu. The Chord Table used by the MIDI 
-                    Machine is arranged by "Contains note" if you want to see the 
+                    Machine is arranged by &quot;Contains note&quot; if you want to see the 
                     same exact probabilities as the ones that are present in the 
-                    MIDI Machine's output.
+                    MIDI Machine&apos;s output.
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -399,7 +399,7 @@ const MidiForm = ({
                     ensure that the resulting chords will all be in key.
                   </p>
                   <p className="text-lg max-w-md">
-                    The "No pruning, but clone chords with optional notes" option copies 
+                    The &quot;No pruning, but clone chords with optional notes&quot; option copies 
                     chords that were defined with optional notes so that different variations 
                     of chords may show up in the chord table.
                   </p>
