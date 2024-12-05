@@ -73,7 +73,7 @@ const CheatSheet = ({
             <div>
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger className="w-full text-left">
                             <Selector
                                 options={keys}
                                 selectedOption={chosenKey}
@@ -96,7 +96,7 @@ const CheatSheet = ({
                 </div>}
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger className="w-full text-left">
                             <Selector
                                 options={chordGroups}
                                 selectedOption={chordGroup}
