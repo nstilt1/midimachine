@@ -91,14 +91,14 @@ const ChordFinder = ({
                 <div>
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger className="w-full text-left">
+                        <TooltipTrigger asChild className="w-full text-left"><div>
                             <Selector
                                 options={keys}
                                 selectedOption={chosenKey}
                                 onChange={setKey}
                                 label="Choose a key:"
                             />
-                        </TooltipTrigger>
+                        </div></TooltipTrigger>
                         <TooltipContent>
                             <p className="text-lg max-w-md">
                                 This determines what key the chord table should be in.
@@ -114,7 +114,7 @@ const ChordFinder = ({
                 </div>}
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger className="w-full text-left">
+                        <TooltipTrigger asChild className="w-full text-left"><div>
                             <Selector
                                 options={chordGroups}
                                 selectedOption={chordGroup}
@@ -126,6 +126,7 @@ const ChordFinder = ({
                                 selectedOptions={customChords}
                                 setSelectedOptions={handleChordTypeSelection}
                             />}
+                            </div>
                         </TooltipTrigger>
                         <TooltipContent>
                             <p className="text-lg max-w-md">
@@ -138,14 +139,14 @@ const ChordFinder = ({
                 
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger className="w-full text-left">
+                        <TooltipTrigger asChild className="w-full text-left"><div>
                             <Selector 
                                 options={scales}
                                 selectedOption={scale}
                                 onChange={setScale}
                                 label="Prune chords to fit this scale:"
                             />
-                        </TooltipTrigger>
+                        </div></TooltipTrigger>
                         <TooltipContent>
                             <p className="text-lg max-w-md">
                                 Pruning chords removes all chords from the chord table that contain 
@@ -171,7 +172,7 @@ const ChordFinder = ({
                 </div>}
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger className="w-full text-left">
+                        <TooltipTrigger asChild className="w-full text-left"><div>
                         <label htmlFor="noteSelector" className="block text-gray-700 text-sm font-bold mb-2">Select Notes:</label>
                         <MultiSelect
                             id="noteSelector"
@@ -179,7 +180,7 @@ const ChordFinder = ({
                             selectedOptions={notes}
                             setSelectedOptions={handleNoteSelection}
                         />
-                        </TooltipTrigger>
+                        </div></TooltipTrigger>
                         <TooltipContent>
                             <p className="text-lg max-w-md">
                                 The notes that you want to find chords for.
@@ -189,14 +190,14 @@ const ChordFinder = ({
                 </TooltipProvider>
             <TooltipProvider>
                 <Tooltip>
-                    <TooltipTrigger className="w-full text-left">
+                    <TooltipTrigger asChild className="w-full text-left"><div>
                         <Selector 
                             options={tableSchemes}
                             selectedOption={tableScheme}
                             onChange={setTableScheme}
                             label="Chord table arranged by:"
                         />
-                    </TooltipTrigger>
+                    </div></TooltipTrigger>
                     <TooltipContent>
                         <p className="text-lg max-w-md">
                             Rearranges the Chord Table by this scheme.

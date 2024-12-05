@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 const Selector = ({ options, selectedOption, onChange, label }) => {
   
     const handleChange = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
       onChange(event.target.value);
     };
   
