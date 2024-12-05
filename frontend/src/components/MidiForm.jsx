@@ -12,6 +12,13 @@ import { Button } from "@/components/ui/button";
 import { Save } from "lucide-react";
 import SavedChords from "./SavedChords";
 
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipProvider, 
+  TooltipTrigger 
+} from "./ui/tooltip";
+
 const MidiForm = ({ 
   wasmModule, 
   showExtraControls, 
@@ -217,60 +224,188 @@ const MidiForm = ({
           }
         {showExtraControls && <div>
           <div>
-            <Selector 
-              options={modes}
-              selectedOption={mode}
-              onChange={setMode}
-              label="Choose a mode:"
-            />
-            <input 
-              type="checkbox"
-              id="useSameChords"
-              checked={useSameChords}
-              onChange={handleUseSameChordsChange}
-            />
-            <label htmlFor="useSameChords">Use same chords for all modes?</label>
-            <NumberInput
-              value={numChords}
-              onChange={handleNumChordsChange}
-              id="numChords"
-              labelText="# of chords:"
-            />
-            <NumberInput
-              value={numUniqueChords}
-              onChange={handleNumUniqueChordsChange}
-              id="numUniqueChords"
-              labelText="# unique chords:"
-            />
-            <Selector 
-              options={keys} 
-              selectedOption={chosenKey}
-              onChange={setKey}
-              label="Choose a key:"
-            />
-            <Selector 
-              options={chordGroups}
-              selectedOption={chordGroup}
-              onChange={setChordGroup}
-              label="Choose a chord group:"
-            />
-            {chordGroup == "custom" || chordGroup == "custom_pruning" && <MultiSelect
-              options={customChordTypes}
-              selectedOptions={customChords}
-              setSelectedOptions={handleChordTypeSelection}
-            />}
-            <Selector
-              options={chordPickingMethods}
-              selectedOption={chord_picking_method}
-              onChange={setChordPickingMethod}
-              label="Choose a chord picking method:"
-            />
-            <Selector 
-              options={scales}
-              selectedOption={scale}
-              onChange={setScale}
-              label="Prune chords to fit this scale:"
-            />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="w-full text-left">
+                  <Selector 
+                    options={modes}
+                    selectedOption={mode}
+                    onChange={setMode}
+                    label="Choose a mode:"
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-lg max-w-md">
+                    The modes represent different chord placement algorithms.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="w-full text-left">
+                  <input 
+                    type="checkbox"
+                    id="useSameChords"
+                    checked={useSameChords}
+                    onChange={handleUseSameChordsChange}
+                  />
+                  <label htmlFor="useSameChords">Use same chords for all modes?</label>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-lg max-w-md">
+                    When checked, this ensures that the same exact set of chords 
+                    will be used when generating chords with different modes. 
+                    Otherwise, the chords will likely be different.
+                  </p>
+                  <p className="text-lg max-w-md">
+                    This is primarily useful for comparing the different chord 
+                    placement algorithms (modes).
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="w-full text-left">
+                <NumberInput
+                  value={numChords}
+                  onChange={handleNumChordsChange}
+                  id="numChords"
+                  labelText="# of chords:"
+                />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-lg max-w-md">
+                    Determines the number of chords that will be generated and 
+                    placed into the MIDI file.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="w-full text-left">
+                  <NumberInput
+                    value={numUniqueChords}
+                    onChange={handleNumUniqueChordsChange}
+                    id="numUniqueChords"
+                    labelText="# unique chords:"
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-lg max-w-md">
+                    This setting attempts to ensure that the last N chords will 
+                    be unique. There are some situations where there will be duplicate 
+                    chords, such as when the value in the "# unique chords" 
+                    is greater than the total amount of chords to pick from.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="w-full text-left">
+                  <Selector 
+                    options={keys} 
+                    selectedOption={chosenKey}
+                    onChange={setKey}
+                    label="Choose a key:"
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-lg max-w-md">
+                    This determines what key that the generated MIDI is supposed 
+                    to be in.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="w-full text-left">
+                <Selector 
+                  options={chordGroups}
+                  selectedOption={chordGroup}
+                  onChange={setChordGroup}
+                  label="Choose a chord group:"
+                />
+                {chordGroup == "custom" || chordGroup == "custom_pruning" && <MultiSelect
+                  options={customChordTypes}
+                  selectedOptions={customChords}
+                  setSelectedOptions={handleChordTypeSelection}
+                />}
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-lg max-w-md">
+                    The chord group determines which chords will be included in 
+                    the initial vocabulary before pruning. You can view the chords 
+                    in the vocabulary using the "Chord Vocabulary" menu.
+                  </p>
+                  <p className="text-lg max-w-md">
+                    The Custom chord groups require you to select which chord types 
+                    to be included. The Custom (use pruning) chord group initializes 
+                    the vocabulary to have every possible chord with all roots. This 
+                    is supposed to be pruned to a specific scale so as to find the 
+                    potential chords of a key.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="w-full text-left">
+                  <Selector
+                    options={chordPickingMethods}
+                    selectedOption={chord_picking_method}
+                    onChange={setChordPickingMethod}
+                    label="Choose a chord picking method:"
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-lg max-w-md">
+                    Test different chord picking methods. The 2D method picks a 
+                    random column in the Chord Table, then picks a random chord in 
+                    that column.
+                  </p>
+                  <p className="text-lg max-w-md">
+                    The 1D method simply picks a random chord from the Chord List.
+                  </p>
+                  <p className="text-lg max-w-md">
+                    The probability of each chord being picked can be observed in 
+                    the Chord Vocabulary menu. The Chord Table used by the MIDI 
+                    Machine is arranged by "Contains note" if you want to see the 
+                    same exact probabilities as the ones that are present in the 
+                    MIDI Machine's output.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="w-full text-left">
+                  <Selector 
+                    options={scales}
+                    selectedOption={scale}
+                    onChange={setScale}
+                    label="Prune chords to fit this scale:"
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-lg max-w-md">
+                    Pruning chords removes all chords from the chord table that contain 
+                    notes that are outside of the given scale. This theoretically can 
+                    ensure that the resulting chords will all be in key.
+                  </p>
+                  <p className="text-lg max-w-md">
+                    The "No pruning, but clone chords with optional notes" option copies 
+                    chords that were defined with optional notes so that different variations 
+                    of chords may show up in the chord table.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             {(scale == "all_notes" || scale == "disabled") && chordGroup == "custom_pruning" && 
             <div className="w-full max-w-sm">
               <p className="text-red-500">
@@ -282,24 +417,50 @@ const MidiForm = ({
             </div>}
             {scale != "disabled" && 
             <div>
-              <input 
-              type="checkbox"
-              id="isReproducible"
-              checked={isRandom}
-              onChange={handleIsRandomChange}
-            />
-              <label htmlFor="isReproducible">Randomize output? (Not reproducible)</label>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="w-full text-left">
+                    <input 
+                      type="checkbox"
+                      id="isReproducible"
+                      checked={isRandom}
+                      onChange={handleIsRandomChange}
+                    />
+                    <label htmlFor="isReproducible">Randomize output? (Not reproducible)</label>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-lg max-w-md">
+                      This checkbox can partially randomize the output and is not 
+                      very reproducible. This works by <b>not</b> sorting an array 
+                      created from a Hash Set, which is in a random order.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              
             </div>}
 
             </div>
             
           </div>}
-            <Selector
-              options={vibes}
-              selectedOption={vibe}
-              onChange={setVibe}
-              label="Choose a vibe:"
-            />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className="w-full text-left">
+                <Selector
+                  options={vibes}
+                  selectedOption={vibe}
+                  onChange={setVibe}
+                  label="Choose a vibe:"
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-lg max-w-md">
+                  The vibe selector is a way to try to choose a completely different 
+                  vibe and set of chords.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
         <div>
           <ChatBar  

@@ -14,7 +14,12 @@ import {
 import Chord from "./Chord";
 import { Checkbox } from "./ui/checkbox";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import { 
+    Tooltip, 
+    TooltipContent, 
+    TooltipProvider, 
+    TooltipTrigger 
+} from "./ui/tooltip";
 
 const CheatSheet = ({
     wasmModule,
