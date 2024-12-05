@@ -58,7 +58,8 @@ const MidiPlayerComponent = ({ midiFileUrl, textInput }) => {
             id="player"
             visualizer="#mainVisualizer"
             sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus"
-            style={{ width: '600px', height: '100px' }}
+            style={{height: '100px' }}
+            className="w-full"
           ></midi-player>
 
           {/* MIDI Visualizer */}
@@ -67,7 +68,8 @@ const MidiPlayerComponent = ({ midiFileUrl, textInput }) => {
             src={midiFileUrl}
             type="piano-roll"
             id="mainVisualizer"
-            style={{ width: '600px', border: '1px solid black' }}
+            style={{ border: '1px solid black' }}
+            className="w-full"
           ></midi-visualizer>
 
           {/* MIDI Download Button */}
