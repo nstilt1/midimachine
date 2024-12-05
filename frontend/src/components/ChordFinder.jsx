@@ -130,7 +130,7 @@ const ChordFinder = ({
                         <TooltipContent>
                             <p className="text-lg max-w-md">
                                 These will be the chord types that are included in the lookup. 
-                                You can see a list of all the chords in each group in the "Chord Vocabulary" menu.
+                                You can see a list of all the chords in each group in the &quot;Chord Vocabulary&quot; menu.
                             </p>
                         </TooltipContent>
                     </Tooltip>
@@ -153,7 +153,7 @@ const ChordFinder = ({
                                 ensure that the resulting chords will all be in key.
                             </p>
                             <p className="text-lg max-w-md">
-                                The "No pruning, but clone chords with optional notes" option copies 
+                                The &quot;No pruning, but clone chords with optional notes&quot; option copies 
                                 chords that were defined with optional notes so that different variations 
                                 of chords may show up in the chord table.
                             </p>
@@ -202,13 +202,13 @@ const ChordFinder = ({
                             Rearranges the Chord Table by this scheme.
                         </p>
                         <p className="text-lg max-w-md">
-                            "Contains note" arranges each column so that the chords in the "C" 
-                            column all contain the note C. Chords in the "D" column will contain the 
+                        &quot;Contains note&quot; arranges each column so that the chords in the &quot;C&quot; 
+                            column all contain the note C. Chords in the &quot;D&quot; column will contain the 
                             note D.
                         </p>
                         <p className="text-lg max-w-md">
-                            "Highest note" arranges each column so that the chords in the "C" column 
-                            will all have C as their highest note. This is likewise for the "Lowest Note"
+                        &quot;Highest note&quot; arranges each column so that the chords in the &quot;C&quot; column 
+                            will all have C as their highest note. This is likewise for the &quot;Lowest Note&quot;
                             arrangement.
                         </p>
                     </TooltipContent>

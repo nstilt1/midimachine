@@ -14,7 +14,12 @@ import {
 import Chord from "./Chord";
 import { Checkbox } from "./ui/checkbox";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import { 
+    Tooltip, 
+    TooltipContent, 
+    TooltipProvider, 
+    TooltipTrigger 
+} from "./ui/tooltip";
 
 const CheatSheet = ({
     wasmModule,
@@ -111,8 +116,8 @@ const CheatSheet = ({
                                 menu by inspecting the generated Chord Table and Chord List.
                             </p>
                             <p className="text-lg max-w-md">
-                                The "Custom (hand-picked)" chord group should not need pruning, while 
-                                the "Custom (use pruning)" chord group will simply initialize the 
+                                The Custom (hand-picked) chord group should not need pruning, while 
+                                the Custom (use pruning) chord group will simply initialize the 
                                 vocabulary to use every possible chord with every root. Then, you can 
                                 prune chords that have notes outside of the scale to theoretically 
                                 obtain a list of chords that are inside the specified key.
@@ -137,8 +142,8 @@ const CheatSheet = ({
                                 menu by inspecting the generated Chord Table and Chord List.
                             </p>
                             <p className="text-lg max-w-md">
-                                The "Custom (hand-picked)" chord group should not need pruning, while 
-                                the "Custom (use pruning)" chord group will simply initialize the 
+                                The Custom (hand-picked) chord group should not need pruning, while 
+                                the Custom (use pruning) chord group will simply initialize the 
                                 vocabulary to use every possible chord with every root. Then, you can 
                                 prune chords that have notes outside of the scale to theoretically 
                                 obtain a list of chords that are inside the specified key.
@@ -164,7 +169,7 @@ const CheatSheet = ({
                                 ensure that the resulting chords will all be in key.
                             </p>
                             <p className="text-lg max-w-md">
-                                The "No pruning, but clone chords with optional notes" option copies 
+                                The &quot;No pruning, but clone chords with optional notes&quot; option copies 
                                 chords that were defined with optional notes so that different variations 
                                 of chords may show up in the chord table.
                             </p>
@@ -197,13 +202,13 @@ const CheatSheet = ({
                             Rearranges the Chord Table by this scheme.
                         </p>
                         <p className="text-lg max-w-md">
-                            "Contains note" arranges each column so that the chords in the "C" 
-                            column all contain the note C. Chords in the "D" column will contain the 
+                        &quot;Contains note&quot; arranges each column so that the chords in the &quot;C&quot; 
+                            column all contain the note C. Chords in the &quot;D&quot; column will contain the 
                             note D.
                         </p>
                         <p className="text-lg max-w-md">
-                            "Highest note" arranges each column so that the chords in the "C" column 
-                            will all have C as their highest note. This is likewise for the "Lowest Note"
+                        &quot;Highest note&quot; arranges each column so that the chords in the &quot;C&quot; column 
+                            will all have C as their highest note. This is likewise for the &quot;Lowest Note&quot;
                             arrangement.
                         </p>
                     </TooltipContent>
@@ -230,7 +235,7 @@ const CheatSheet = ({
                         <p className="text-lg max-w-md">
                             Shows the probabilities of each chord getting picked from the table using 
                             either one-dimensional or two-dimensional chord picking methods. The 2D 
-                            probabilities are only valid when the table is arranged by "Contains note."
+                            probabilities are only valid when the table is arranged by &quot;Contains note.&quot;
                         </p>
                     </TooltipContent>
                 </Tooltip>
