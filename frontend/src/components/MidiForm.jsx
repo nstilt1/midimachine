@@ -213,7 +213,7 @@ const MidiForm = ({
   ];
 
   return (
-    <div>
+    <div className="max-w-md">
       <form onSubmit={handleSubmit}>
         <div>
           {showExtraControls && 
