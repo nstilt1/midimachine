@@ -130,7 +130,7 @@ const CheatSheet = ({
             <br />
             <Button type="submit">Get Chords</Button>
             {chords && <div>
-                <Accordion type="multiple" collapsible>
+                <Accordion type="multiple" defaultValue={["table", "list"]} collapsible>
                     <AccordionItem value="table">
                         <AccordionTrigger>Chord table</AccordionTrigger>
                         <AccordionContent><ChordTable chordData={chords} chosenKey={chosenKey} cpbRef={cpbRef}/></AccordionContent>
