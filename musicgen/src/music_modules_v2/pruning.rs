@@ -116,7 +116,8 @@ mod tests {
             &HashSet::new(),
             "default",
             "pentatonic",
-            true
+            true,
+            false
         ).unwrap();
 
         let mut chords = musician.chord_table[0].to_set();
@@ -135,7 +136,8 @@ mod tests {
             &HashSet::new(),
             "default",
             "pentatonic",
-            true
+            true,
+            false
         ).unwrap();
 
         assert!(musician.chord_table[CSHARP as usize].len() == 0, "C# had some chords in it");
@@ -229,7 +231,8 @@ mod tests {
             &HashSet::new(),
             "default",
             "natural",
-            true
+            true,
+            false
         ).unwrap();
 
         assert!(musician.chord_table[CSHARP as usize].len() == 0, "C# had some chords in it");

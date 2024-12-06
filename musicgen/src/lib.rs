@@ -60,7 +60,7 @@ impl From<Error> for JsError {
 #[wasm_bindgen]
 #[cfg(target_arch="wasm32")]
 pub fn get_chords_of_key(
-    key: &str,
+    mut key: &str,
     chord_selection: Array,
     chord_type_group: &str,
     scale: &str,
@@ -69,10 +69,14 @@ pub fn get_chords_of_key(
 ) -> Result<String, JsError> {
     use serde_json::json;
 
+    let use_all_roots = key.eq("random");
+    if use_all_roots {
+        key = "Cmin";
+    }
     let chord_selection_hashset: HashSet<String> = chord_selection.iter()
         .map(|js_val| js_val.as_string().unwrap_or_default())
         .collect();
-    let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale, false)?;
+    let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale, false, use_all_roots)?;
 
     match table_scheme {
         "contains_note" => musician.rotate_chords(key),
@@ -105,7 +109,7 @@ pub fn get_chords_of_key(
 #[wasm_bindgen]
 #[cfg(target_arch="wasm32")]
 pub fn chord_finder(
-    key: &str,
+    mut key: &str,
     chord_selection: Array,
     chord_type_group: &str,
     scale: &str,
@@ -114,7 +118,10 @@ pub fn chord_finder(
 ) -> Result<String, JsError> {
     use music_modules_v2::{chord::Chord, utils::{parse_key, sets::{SetMath, SetOpsCollection}}};
     use serde_json::json;
-
+    let use_all_roots = key.eq("random");
+    if use_all_roots {
+        key = "Cmin";
+    }
     let chord_selection_hashset: HashSet<String> = chord_selection.iter()
         .map(|js_val| js_val.as_string().unwrap_or_default())
         .collect();
@@ -125,7 +132,7 @@ pub fn chord_finder(
     if notes_vec.is_empty() {
         return Ok(json!({}).to_string())
     }
-    let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale, false)?;
+    let mut musician = Music::smoke_hash(Default::default(), "Cmin", &chord_selection_hashset, chord_type_group, scale, false, use_all_roots)?;
 
     musician.rotate_chords(key);
 
@@ -190,7 +197,7 @@ pub fn generate_midi(
         .map(|js_val| js_val.as_string().unwrap_or_default())
         .collect();
     // smoke the hash
-    let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group, scale, is_reproducible)?;
+    let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group, scale, is_reproducible, false)?;
     let track = musician.make_music(num_chords, generation_mode, should_use_same_chords, chord_picking_method, min_number_of_unique_chords)?;
 
     let smf = Smf {
@@ -251,7 +258,7 @@ pub mod test_utils {
         
         let chord_selection_hashset: HashSet<String> = HashSet::new();
         // smoke the hash
-        let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group, "disabled", true).unwrap();
+        let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group, "disabled", true, false).unwrap();
         let track = musician.make_music(num_chords as usize, generation_mode, should_use_same_chords, chord_picking_method, min_number_of_unique_chords).unwrap();
 
         let smf = Smf {

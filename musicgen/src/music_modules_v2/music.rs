@@ -184,6 +184,7 @@ impl Music {
         chord_type_group: &str,
         scale: &str,
         is_reproducible: bool,
+        use_all_roots: bool,
     ) -> Result<Music, Error> {
         let mut stash = [0u8; 32];
         stash.copy_from_slice(&hash);
@@ -196,7 +197,7 @@ impl Music {
             key = parse_key(chosen_key);
         }
 
-        let chord_types = match chord_type_group {
+        let mut chord_types = match chord_type_group {
             "default" => {
                 default_chord_types()
             },
@@ -319,6 +320,8 @@ impl Music {
             },
             _ => vec![ChordType::default()]
         };
+
+        chord_types.iter_mut().for_each(|chord_type| chord_type.use_all_roots(use_all_roots));
 
         let mut chord_table: Vec<Vec<Chord>> = (0..12).map(|_| Vec::new()).collect();
         let mut chord_list: Vec<Chord> = Vec::new();
@@ -620,7 +623,7 @@ mod tests {
 
     macro_rules! init_music {
         ($chosen_key:expr) => {
-            Music::smoke_hash(Default::default(), $chosen_key, &HashSet::new(), "default", "disabled", true).unwrap()
+            Music::smoke_hash(Default::default(), $chosen_key, &HashSet::new(), "default", "disabled", true, false).unwrap()
         };
     }
 

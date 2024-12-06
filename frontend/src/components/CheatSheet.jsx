@@ -52,11 +52,6 @@ const CheatSheet = ({
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if(chosenKey == "random") {
-            alert("Please choose a key to view the chords of.");
-            return;
-        }
-
         try {
             console.time("get_vocabulary");
             const json = wasmModule.get_chords_of_key(chosenKey, customChords, chordGroup, scale, tableScheme, showProbabilities);
@@ -96,7 +91,9 @@ const CheatSheet = ({
                 {chosenKey == "random" && 
                 <div className="w-full max-w-sm">
                 <p className="text-red-500">
-                    Sorry, but you must choose a key for the Chord Vocabulary to work.
+                    This is a valid setting, but be aware that the chords in the 
+                    chord table will not be in a specific key. This means that 
+                    there will be 12 times as many chords in the chord table.
                 </p>
                 </div>}
                 <TooltipProvider>

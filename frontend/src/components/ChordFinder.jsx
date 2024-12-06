@@ -50,11 +50,6 @@ const ChordFinder = ({
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if(chosenKey == "random") {
-            alert("Please choose a key.");
-            return;
-        }
-
         try {
             console.time("chord_finder");
             const json = wasmModule.chord_finder(chosenKey, customChords, chordGroup, scale, notes, tableScheme);
@@ -101,17 +96,12 @@ const ChordFinder = ({
                         </div></TooltipTrigger>
                         <TooltipContent>
                             <p className="text-lg max-w-md">
-                                This determines what key the chord table should be in.
+                                This determines what key the chord table should be in. Leaving it set to "any" will check every 
+                                possible chord.
                             </p>
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
-                {chosenKey == "random" && 
-                <div className="w-full max-w-sm">
-                <p className="text-red-500">
-                    Sorry, but you must choose a key for the Chord Finder to work.
-                </p>
-                </div>}
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild className="w-full text-left"><div>
