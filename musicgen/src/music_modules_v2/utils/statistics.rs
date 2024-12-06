@@ -74,7 +74,7 @@ mod tests {
     fn set_probabilities_test() {
         let key = "Cmin";
         let scale = "disabled";
-        let mut musician = Music::smoke_hash(Default::default(), &key, &HashSet::new(), "default", &scale, true).unwrap();
+        let mut musician = Music::smoke_hash(Default::default(), &key, &HashSet::new(), "default", &scale, true, false).unwrap();
         //let mut musician = Music::smoke_hash_all_pruning_chords(key, &scale);
         
         let table_scheme = "contains_note";

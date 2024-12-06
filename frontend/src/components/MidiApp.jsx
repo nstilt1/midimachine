@@ -37,7 +37,7 @@ const MidiApp = ({ showExtraControls, cpbRef, wasmModule, toggleExtraControls })
   };
 
   const keys = [
-    { label: "Pick one for me", value: "random" },
+    { label: "Any key", value: "random" },
     { label: "C minor", value: "Cmin" },
     { label: "C# minor", value: "C#min" },
     { label: "D minor", value: "Dmin" },

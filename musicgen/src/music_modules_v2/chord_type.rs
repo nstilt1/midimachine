@@ -39,6 +39,12 @@ impl ChordType {
             optional_notes: opt_notes,
         }
     }
+    /// Sets this chord type to use all roots.
+    pub fn use_all_roots(&mut self, should_use_all_roots: bool) {
+        if should_use_all_roots {
+            self.roots = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        }
+    }
 }
 
 impl Default for ChordType {
