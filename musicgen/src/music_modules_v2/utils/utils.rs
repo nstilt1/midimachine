@@ -18,7 +18,7 @@ pub fn add_octaves(n: i16, octaves: i16) -> u8 {
     return (n + octaves * 12) as u8;
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MathMagician {
     noggin: StdRng
 }

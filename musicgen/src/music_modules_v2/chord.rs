@@ -156,6 +156,14 @@ impl Chord {
         result.iter_mut().for_each(|note| *note = *note + 12 * 4);
         result
     }
+
+    pub fn get_notes_u16(&self) -> u16 {
+        let mut result = 0u16;
+        for note in self.get_notes() {
+            result |= 1 << (note % 12);
+        }
+        result
+    }
 }
 
 /// Expands chords into new chords based on their optional notes, adding them

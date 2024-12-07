@@ -1,3 +1,5 @@
+#![feature(const_trait_impl)]
+#![feature(effects)]
 use std::{collections::HashSet, fmt::Display};
 
 #[cfg(target_arch = "wasm32")]

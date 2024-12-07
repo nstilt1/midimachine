@@ -41,7 +41,7 @@ define_consts!(
 
 use notes::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Music {
     math_magician: MathMagician,
     midi_file: MidiFile,
