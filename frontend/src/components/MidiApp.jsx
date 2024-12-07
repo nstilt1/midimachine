@@ -99,6 +99,8 @@ const MidiApp = ({ showExtraControls, cpbRef, wasmModule, toggleExtraControls })
     { label: "Pentatonic", value: "pentatonic" },
     { label: "Romanian", value: "romanian" },
     { label: "Hungarian", value: "hungarian" },
+    { label: "Half-Whole", value: "half_whole" },
+    { label: "Whole-Half", value: "whole_half" },
     { label: "No pruning, but clone chords with optional notes", value: "all_notes" }
   ];
 
