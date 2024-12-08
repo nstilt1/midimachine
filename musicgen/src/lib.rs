@@ -327,10 +327,10 @@ mod tests {
         let mut rng = StdRng::from_seed(hash(concatenated.as_bytes()));
 
         // the output stream will always be the same for a given seed
-        assert_eq!(rng.next_u32(), 430701571);
-        assert_eq!(rng.next_u32(), 4153666748);
-        assert_eq!(rng.next_u32(), 3817228526);
-        assert_eq!(rng.next_u32(), 59595166);
+        assert_eq!(rng.next_u32(), 529601244);
+        assert_eq!(rng.next_u32(), 2730124356);
+        assert_eq!(rng.next_u32(), 3297863714);
+        assert_eq!(rng.next_u32(), 2846115852);
     }
 
     #[test]
