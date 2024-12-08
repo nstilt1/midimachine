@@ -8,6 +8,10 @@ edition = "2021"
 [lib]
 crate-type = ["cdylib", "rlib"]
 
+[[bench]]
+name = "pruning"
+harness = false
+
 [dependencies]
 base64 = "0.22.1"
 getrandom = { version = "0.2", features = ["js"] }
@@ -20,12 +24,18 @@ serde-wasm-bindgen = "0.6"
 sha2 = "0.10"
 wasm-bindgen = { version = "0.2" }
 
+[dev-dependencies]
+criterion = "0.5"
+
 [profile.release]
 opt-level = 'z'     # optimize for size
 lto = true          # enable link time optimization
 panic = 'abort'     # reduce binary size by not including panic messages
 codegen-units = 1   # fewer codegen units for better optimization
 strip = true        # strip debug symbols
+
+[profile.bench]
+panic = 'abort'
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = ['-Oz']

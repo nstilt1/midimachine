@@ -2,7 +2,7 @@
 
 use std::{collections::HashSet, hash::{DefaultHasher, Hash, Hasher}};
 
-use super::{chord::{expand_chords, Chord}, utils::sets::SetOpsCollection, music::notes::*};
+use super::{chord::{expand_chords, expand_chords_into_vec, Chord}, music::notes::*, utils::sets::SetOpsCollection};
 
 const fn slice_i16_to_u16<const N: usize>(slice: [i16; N]) -> u16 {
     const fn helper(slice: &[i16], acc: u16) -> u16 {
@@ -93,16 +93,34 @@ pub fn prune_chords_u16(
         None => { return; }
     };
 
-    let mut result: Vec<Chord> = Vec::with_capacity(chord_list.len());
-    for chord in chord_list.iter() {
+    expand_chords_into_vec(chord_list);
+
+    //let mut result: Vec<Chord> = Vec::with_capacity(chord_list.len());
+
+    chord_list.retain(|chord| {
         let notes = chord.get_notes_u16();
-        if notes & good_notes == notes {
-            result.push(chord.clone());
+        notes & good_notes == notes
+    });
+    // for chord in chord_list.iter() {
+    //     let notes = chord.get_notes_u16();
+    //     if notes & good_notes == notes {
+    //         result.push(chord.clone());
+    //     }
+    // }
+
+    *chord_table = vec![Vec::with_capacity(20); 12];
+    for chord in chord_list.iter() {
+        for note in chord.get_notes() {
+            chord_table[note as usize % 12].push(chord.clone());
         }
     }
 
+    // This is required to maintain compatibility with the original prune_chords
+    // function. However, there is some incompatibility. The order of these 
+    // lists before sorting are not random, so a feature would be lost by using 
+    // bit ops instead of hash sets
     if is_reproducible {
-        result.sort_by_key(|chord| {
+        chord_list.sort_by_key(|chord| {
             let mut hasher = DefaultHasher::new();
             chord.hash(&mut hasher);
             hasher.finish()
@@ -116,7 +134,7 @@ pub fn prune_chords_u16(
         }
     }
 
-    *chord_list = result;
+    //*chord_list = result;
 }
 
 /// Removes chords that have notes outside of the chosen scale
@@ -370,13 +388,32 @@ mod tests {
     fn equivalence_of_prune_functions() {
         let mut musician = Music::smoke_hash_all_pruning_chords(
             "Cmin", 
-            "all_notes"
+            "disabled"
         );
         let mut musician_2 = musician.clone();
         prune_chords(&mut musician.chord_table, &mut musician.chord_list, "natural", true);
 
         prune_chords_u16(&mut musician_2.chord_table, &mut musician_2.chord_list, "natural", true);
 
-        assert_eq!(musician.chord_list, musician_2.chord_list)
+        let original_prune_set = musician.chord_list.to_set();
+        let u16_prune_set = musician_2.chord_list.to_set();
+
+        assert!(original_prune_set.eq(&u16_prune_set), "Set mismatch. Missing chord types = {:?}\n\nExtra chord types: {:?}", original_prune_set.difference(&u16_prune_set).to_set(), u16_prune_set.difference(&original_prune_set).to_set());
+
+        let mut original_prune_set_vec: Vec<HashSet<Chord>> = vec![HashSet::with_capacity(20); 12];
+        let mut u16_prune_set_vec: Vec<HashSet<Chord>> = vec![HashSet::with_capacity(20); 12];
+        for (i, vec) in musician.chord_table.iter().enumerate() {
+            original_prune_set_vec[i] = vec.to_set();
+        }
+        for (i, vec) in musician_2.chord_table.iter().enumerate() {
+            u16_prune_set_vec[i] = vec.to_set();
+        }
+        
+        assert_eq!(original_prune_set_vec, u16_prune_set_vec);
+
+        // If these tests fail, the order of the elements in the lists are 
+        // different
+        assert_eq!(musician.chord_list, musician_2.chord_list);
+        assert_eq!(musician.chord_table, musician_2.chord_table);
     }
 }
