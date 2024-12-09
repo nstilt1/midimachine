@@ -96,7 +96,7 @@ const ChordFinder = ({
                         </div></TooltipTrigger>
                         <TooltipContent>
                             <p className="text-lg max-w-md">
-                                This determines what key the chord table should be in. Leaving it set to "any" will check every 
+                                This determines what key the chord table should be in. Leaving it set to &quot;any&quot; will check every 
                                 possible chord.
                             </p>
                         </TooltipContent>
