@@ -28,11 +28,11 @@ pub struct MidiNote {
 }
 
 impl MidiFile {
-
+    #[inline(always)]
     pub fn new() -> Self {
         MidiFile{notes: Vec::new()}
     }
-
+    #[inline(always)]
     pub fn add_note_beats(
         &mut self,
         pitch: u8,
@@ -46,6 +46,7 @@ impl MidiFile {
     /**
      * Add a note to the midi file
      */
+    #[inline(always)]
     fn add_note(
         &mut self, 
         pitch: u8,
@@ -70,6 +71,7 @@ impl MidiFile {
     /**
      * A little helper function to finish creating the Vec<TrackEvent>, aka the Track
      */
+    #[inline(always)]
     pub fn finalize(&mut self) -> Track {
         self.notes.sort_by(|a, b| a.partial_cmp(b).unwrap());
         let mut result: Track = Vec::new();
@@ -128,6 +130,7 @@ trait TrackEventVecUtils {
 }
 
 impl TrackEventVecUtils for Vec<TrackEvent<'_>> {
+    #[inline(always)]
     fn push_track_event(&mut self, start_time: u32, last_time: u32, pitch: u8, velocity: u8, is_on: bool) {
         self.push(TrackEvent { 
             delta: (start_time - last_time).into(), 
