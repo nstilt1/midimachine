@@ -9,11 +9,13 @@ use crate::music_modules_v2::{chord::Chord, music::KEYS};
 /**
  * Convert beats to ticks
  */
+#[inline(always)]
 pub fn beats(amount: f64) -> u32 {
     return (amount * (PPQ as f64)).round() as u32;
 }
 
 #[allow(unused)]
+#[inline(always)]
 pub fn add_octaves(n: i16, octaves: i16) -> u8 {
     return (n + octaves * 12) as u8;
 }
@@ -26,6 +28,7 @@ pub struct MathMagician {
 impl MathMagician {
     /// Shares hash with the math magician. The math magician's calculations 
     /// will be influenced by the hash.
+    #[inline(always)]
     pub fn share_hash(hash: [u8; 32]) -> Self {
         return MathMagician { noggin: StdRng::from_seed(hash.try_into().unwrap_or([0; 32])) };
     }
@@ -35,6 +38,7 @@ impl MathMagician {
     /// alias of `gen_range` where `0..=11` could be a valid input. However, 
     /// changing this would be a breaking change and would cause all outputs to 
     /// be different.
+    #[inline(always)]
     pub fn big_decision(&mut self, min: u16, max: u16) -> u16
     {
         return self.noggin.gen_range(min..=max);
@@ -42,11 +46,13 @@ impl MathMagician {
     /**
      * Math magician picks a note between 0 and 11, inclusive
      */
+    #[inline(always)]
     pub fn pick_note(&mut self) -> i16 {
         return self.noggin.gen_range(0..=11);
     }
 
     /// Math magician picks a column that is not empty.
+    #[inline(always)]
     pub fn pick_column(&mut self, chord_table: &Vec<Vec<Chord>>) -> usize {
         let mut columns: Vec<usize> = Vec::with_capacity(12);
         for (col_index, col) in chord_table.iter().enumerate() {
@@ -82,6 +88,7 @@ pub fn time_ms() -> u128 {
 /// 
 /// i = 2 * note_lengths(i) - 1
 /// ```
+#[inline(always)]
 pub fn get_max_note_length_index(total_time: f64) -> u16 {
     let max_value = 4f64 - total_time;
     return (max_value * 2f64 - 1f64) as u16;
@@ -96,6 +103,7 @@ pub fn get_max_note_length_index(total_time: f64) -> u16 {
 /// ```
 /// 
 /// The keys cannot be flat, such as `Bb` or `Eb`.
+#[inline(always)]
 pub fn parse_key(key: &str) -> i16 {
     if key.ne("random") {
         let is_sharp = key.chars().nth(1).unwrap_or(' ') == '#';

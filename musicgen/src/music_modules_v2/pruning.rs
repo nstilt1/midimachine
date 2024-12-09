@@ -2,7 +2,7 @@
 
 use std::{collections::HashSet, hash::{DefaultHasher, Hash, Hasher}};
 
-use super::{chord::{expand_chords, Chord}, utils::sets::SetOpsCollection};
+use super::{chord::{expand_chords, Chord}, utils::sets::SetOpsCollection, music::notes::*};
 
 /// Returns the good notes set and the bad notes set for a given scale in the 
 /// key of C minor.
@@ -20,6 +20,8 @@ fn get_good_notes_set(scale: &str) -> Option<(HashSet<i16>, Vec<usize>)> {
         // "all_notes" restructures `chord_table` and `chord_list` with the
         // optional notes vecs getting converted to new chords
         "all_notes" => HashSet::from([0,1,2,3,4,5,6,7,8,9,10,11]),
+        "half_whole" => HashSet::from_iter([C, CSHARP, DSHARP, E, FSHARP, G, A, ASHARP].iter().map(|note| *note as i16)),
+        "whole_half" => HashSet::from_iter([C, D, DSHARP, F, FSHARP, GSHARP, A, B].iter().map(|note| *note as i16)),
         _ => return None
     };
     let bad_notes = HashSet::from_iter(0..12).difference(&good_notes_set).map(|v| *v as usize).collect();
@@ -84,7 +86,7 @@ pub fn prune_chords(
 
 #[cfg(test)]
 mod tests {
-    use crate::music_modules_v2::{music::notes::*, utils::{parse_key, sets::ToSet}, Music};
+    use crate::music_modules_v2::{utils::{parse_key, sets::ToSet}, Music};
 
     use super::*;
 

@@ -102,3 +102,52 @@ pub fn default_chord_types() -> Vec<ChordType> {
         major7flat9
     ]
 }
+
+#[cfg(not(target_arch="wasm32"))]
+#[allow(unused)]
+pub fn all_custom_chord_types_handpicked() -> Vec<ChordType> {
+    let minor7 = ChordType::new("minor 7", &[0, 10, 15, 19], &[C, D, F, FSHARP, ASHARP], None);
+    let major7 = ChordType::new("major 7", &[0, 11, 16, 19], &[DSHARP, GSHARP], None);
+    let diminished = ChordType::new("diminished", &[0, 3, 6], &[DSHARP, FSHARP], None);
+    let augmented = ChordType::new("augmented", &[0,4,8], &[D, FSHARP, ASHARP], Some(&[12]));
+    //let major6 = ChordType::new(&[0, 4, 7, 9], &[3, 10], None);
+    let major6 = ChordType::new("major 6", &[0, 9, 16, 19], &[DSHARP, GSHARP, ASHARP], Some(&[23]));
+
+    let minor6 = ChordType::new("minor 6", &[0, 9, 15, 19], &[C, D, F, G], None);
+    let major9 = ChordType::new("major 9", &[0, 4, 10, 14], &[C, F, G], None);
+    let major7sharp9 = ChordType::new("major 7#9", &[0, 4, 10, 15], &[C, D, G, A], None);
+    let major7flat5sharp9 = ChordType::new("major 7b5#9", &[0, 4, 10, 15, 18], &[C, A], None);
+    let major9flat5 = ChordType::new("major 9b5", &[0, 4, 10, 15, 17], &[C, A], None);
+    let major7flat9 = ChordType::new("major 7b9", &[0, 4, 10, 13], &[C, D], None);
+
+    // extra chord types
+    let major = ChordType::new("major", &[0, 4, 7], &[DSHARP, GSHARP, ASHARP], None);
+    let minor = ChordType::new("minor", &[0, 3, 7], &[C, D, F, G], None);
+
+    let minor9 = ChordType::new("minor 9", &[0, 3, 7, 10, 14], &[G], None);
+
+    let major13 = ChordType::new("major 13", &[0, 5, 10, 21, 26, 31], &[C], Some(&[0, 5]));
+    let dominant9 = ChordType::new("dominant 9", &[0, 4, 9, 14, 18], &[CSHARP], None);
+    
+    let add9 = ChordType::new("add 9", &[0, 4, 7, 14], &[DSHARP, ASHARP], None);
+
+    vec![
+        minor7,
+        major7,
+        diminished,
+        augmented,
+        major6,
+        minor6,
+        major9,
+        major7sharp9,
+        major7flat5sharp9,
+        major9flat5,
+        major7flat9,
+        major,
+        minor,
+        minor9,
+        major13,
+        dominant9,
+        add9
+    ]
+}
