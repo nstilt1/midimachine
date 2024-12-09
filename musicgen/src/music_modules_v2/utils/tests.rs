@@ -2,6 +2,8 @@
 
 use std::collections::HashSet;
 
+use sha2::{digest::Output, Sha256};
+
 use crate::music_modules_v2::{chord::Chord, Music};
 
 impl Music {
@@ -30,11 +32,37 @@ impl Music {
         let mut musician = Music::smoke_hash(Default::default(), key, &chord_selection, "custom_pruning", scale, true, false).unwrap();
         musician
     }
+
+    #[allow(unused)]
+    pub fn smoke_hash_all_custom_handpicked_chords(hash: Output<Sha256>, key: &str) -> Self {
+        let chord_selection = HashSet::from_iter([
+            "minor7",
+            "major7",
+            "diminished",
+            "augmented",
+            "major6",
+            "minor6",
+            "major9",
+            "major7sharp9",
+            "major7flat5sharp9",
+            "major9flat5",
+            "major7flat9",
+            "major",
+            "minor",
+            "minor9",
+            "major13",
+            "dominant9",
+            "add9"
+        ].iter().map(|str| str.to_string()));
+        let mut musician = Music::smoke_hash(hash, key, &chord_selection, "custom", "disabled", true, false);
+        musician.unwrap()
+    }
 }
 
 impl Chord {
     /// Gets a hashset of the notes in this chord. The notes will be between 
     /// 0 and 12.
+    #[allow(unused)]
     pub fn get_notes_set(&self) -> HashSet<i16> {
         self.get_notes().iter().map(|n| *n % 12).collect()
     }

@@ -273,6 +273,32 @@ pub mod test_utils {
         Ok(output)
     }
 
+    pub fn generate_midi_all_chord_types(
+        text_input: &str,
+        generation_mode: &str,
+        num_chords: usize,
+        key: &str,
+        chord_picking_method: &str,
+        min_number_of_unique_chords: u32,
+    ) -> Vec<u8> {
+        let hash = Sha256::digest(text_input.as_bytes());
+        let mut musician = Music::smoke_hash_all_custom_handpicked_chords(hash, key);
+        let track = musician.make_music(num_chords, generation_mode, false, chord_picking_method, min_number_of_unique_chords).unwrap();
+
+        let smf = Smf {
+            header: midly::Header {
+                format: midly::Format::SingleTrack,
+                timing: midly::Timing::Metrical(96.into())
+            },
+            tracks: vec![track]
+        };
+
+        let mut output = vec![];
+        smf.write(&mut output).unwrap();
+
+        output
+    }
+
     /// A shorthand way to create a MIDI file for a test.
     pub fn generate_midi_shorthand(generation_mode: &str, should_use_same_chords: bool, min_number_of_unique_chords: u32) -> Vec<u8> {
         generate_midi(
