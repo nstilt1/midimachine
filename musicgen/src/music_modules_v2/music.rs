@@ -376,6 +376,33 @@ impl Music {
         return Ok(self.midi_file.finalize());
     }
 
+    /// For benchmarking the finalize function
+    #[cfg(not(target_arch="wasm32"))]
+    #[allow(unused)]
+    pub fn make_music_no_finalize(
+        &mut self,
+        num_chords: usize,
+        generation_mode: &str,
+        should_use_same_chords: bool,
+        chord_picking_method: &str,
+        minimum_number_of_unique_chords: u32,
+    ) -> MidiFile {
+        pick_chord_placement_method!(
+            self,
+            generation_mode,
+            num_chords,
+            should_use_same_chords,
+            chord_picking_method,
+            minimum_number_of_unique_chords,
+            ("melody", original_placement_algorithm),
+            ("chords", place_chord_regular),
+            ("melody v2", place_chord_bug_v2),
+            ("melody v3", place_chord_bug_v3),
+            ("intended", place_variable_len_fixed)
+        );
+        return self.midi_file.clone();
+    }
+
     /// Rotates the chords in the chord table.
     #[allow(unused)]
     pub fn rotate_chords(&mut self, key: &str) {
