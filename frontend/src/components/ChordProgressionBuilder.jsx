@@ -66,7 +66,7 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
         if (isWasmReady && !isMidiUpToDate) {
             updateMidi();
         }
-    }, [chords, isWasmReady]);
+    }, [chords, isWasmReady, isMidiUpToDate, updateMidi]);
 
     const togglePlayOrPause = async () => {
         if (isPlaying) {
