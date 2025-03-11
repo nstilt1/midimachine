@@ -32,7 +32,7 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
         }
     }, [wasmModule]);
 
-    const updateMidi = async () => {
+    const updateMidi = useCallback(async () => {
         if (!isWasmReady) {
             console.error("WASM module not ready yet.");
             return;
@@ -59,7 +59,7 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
         } catch (error) {
             console.error("Error generating chord progression MIDI file:", error);
         }
-    };
+    }, [isWasmReady, chords, midiFileUrl, wasmModule]);
 
     useEffect(() => {
         // Automatically update MIDI when chords change and WASM is ready
