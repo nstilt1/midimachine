@@ -6,7 +6,7 @@ use midly::{TrackEvent, TrackEventKind, MidiMessage};
 
 use super::utils::beats;
 
-type Track<'a> = Vec<TrackEvent<'a>>;
+pub type Track<'a> = Vec<TrackEvent<'a>>;
 
 /**
  * Goal: have an object with a method addNote(pitch, startTime, duration, volume)
@@ -14,12 +14,12 @@ type Track<'a> = Vec<TrackEvent<'a>>;
  * startTime, while keeping all of the other values
  * There will be duplicate startTimes
  */
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MidiFile {
     notes: Vec<MidiNote>
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MidiNote {
     pitch: u8,
     note_on: bool,

@@ -3,11 +3,12 @@ use std::{collections::HashSet, fmt::Display};
 #[cfg(target_arch = "wasm32")]
 use js_sys::Array;
 use midly::Smf;
+#[allow(unused)]
 use music_modules_v2::{midi::MidiFile, Music};
 use wasm_bindgen::prelude::*;
 use sha2::{Digest, Sha256};
 
-mod music_modules_v2;
+pub mod music_modules_v2;
 
 #[derive(Debug)]
 pub enum Error {
