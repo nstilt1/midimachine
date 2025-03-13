@@ -479,6 +479,7 @@ const MidiForm = ({
         <MidiPlayer
           midiFileUrl={midiFile}
           textInput={textInput}
+          vibe={vibe}
         ></MidiPlayer>
       )}
       <div className="mb-4">

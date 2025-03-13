@@ -3,19 +3,19 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
-const MidiPlayerComponent = ({ midiFileUrl, textInput }) => {
+const MidiPlayerComponent = ({ midiFileUrl, textInput, vibe }) => {
   const playerRef = useRef(null);
   const visualizerRef = useRef(null);
   const [downloadUrl, setDownloadUrl] = useState(null);
 
   // Sanitizes filenames
-  const sanitizeFilename = (str) => {
+  const sanitizeFilename = (str, vibe) => {
     const maxNameLength = 100;
     let sanitized = str.replace(/[^a-z0-9_\-]/gi, '_');
     if (sanitized.length > maxNameLength) {
       sanitized = sanitized.substring(0, maxNameLength) + '-';
     }
-    return "midimachine-" + sanitized + ".mid";
+    return "midimachine-" + sanitized + " vibe " + vibe + ".mid";
   };
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const MidiPlayerComponent = ({ midiFileUrl, textInput }) => {
 
           {/* MIDI Download Button */}
           {downloadUrl && (
-            <a href={downloadUrl} download={sanitizeFilename(textInput)}>
+            <a href={downloadUrl} download={sanitizeFilename(textInput, vibe)}>
               <Button>Download Midi</Button>
             </a>
           )}
