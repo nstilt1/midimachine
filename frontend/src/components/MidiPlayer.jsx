@@ -75,7 +75,7 @@ const MidiPlayerComponent = ({ midiFileUrl, textInput, vibe }) => {
           {/* MIDI Download Button */}
           {downloadUrl && (
             <a href={downloadUrl} download={sanitizeFilename(textInput, vibe)}>
-              <Button>Download Midi</Button>
+              <Button className="my-2">Download Midi</Button>
             </a>
           )}
         </div>

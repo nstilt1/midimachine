@@ -12,6 +12,7 @@ export default function DropdownWithNavigation({
   setOptions,
   id,
   labelText,
+  enabled,
 }) {
   const [showDialog, setShowDialog] = useState(false)
   const [newPatternInput, setNewPatternInput] = useState("")
@@ -58,13 +59,20 @@ export default function DropdownWithNavigation({
 
   return (
     <>
-      <div>
+      <div className={`w-full p-4 rounded-lg transition-all duration-300 border ${enabled ? "bg-white border-gray-300": "bg-gray-100 border-gray-200 opacity-70"}`}>
+        {!enabled && (
+            <div className="text-sm text-gray-500 italic">
+                Set mode to <strong>Chords</strong> and enable <strong>
+                    &quot;Use same chords for all modes&quot;</strong> setting 
+                to use this feature.
+            </div>
+        )}
         <label htmlFor={id} className="mr-2 whitespace-nowrap">
           {labelText}
         </label>
 
         <div className="w-full mb-2">
-            <Select value={value} onValueChange={setValue} className="w-full">
+            <Select disabled={!enabled} value={value} onValueChange={setValue} className="w-full">
             <SelectTrigger>
                 <SelectValue placeholder="Select pattern" />
             </SelectTrigger>
@@ -79,7 +87,7 @@ export default function DropdownWithNavigation({
         </div>
 
         <div className="flex gap-2 w-full">
-            <Button variant="outline" className="flex-1" size="icon" onClick={addPattern}>
+            <Button disabled={!enabled} variant="outline" className="flex-1" size="icon" onClick={addPattern}>
                 <Plus className="h-4 w-4" />
             </Button>
         
@@ -89,16 +97,16 @@ export default function DropdownWithNavigation({
                 size="icon"
                 className="flex-1"
                 onClick={removePattern}
-                disabled={options.length <= 1}
+                disabled={options.length <= 1 || !enabled}
             >
                 <Trash className="h-4 w-4" />
             </Button>
 
-            <Button variant="outline" className="flex-1" size="icon" onClick={moveLeft}>
+            <Button disabled={!enabled} variant="outline" className="flex-1" size="icon" onClick={moveLeft}>
                 <ChevronLeft className="h-4 w-4" />
             </Button>
 
-            <Button variant="outline" className="flex-1" size="icon" onClick={moveRight}>
+            <Button disabled={!enabled} variant="outline" className="flex-1" size="icon" onClick={moveRight}>
                 <ChevronRight className="h-4 w-4" />
             </Button>
         </div>

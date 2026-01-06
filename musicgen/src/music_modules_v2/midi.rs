@@ -76,7 +76,7 @@ impl MidiFile {
     #[inline(always)]
     pub fn finalize(&mut self) -> Track {
         console_log!("In finalize()");
-        self.notes.sort_by(|a, b| a.partial_cmp(b).unwrap_or(a.start_time.cmp(&b.start_time)));
+        self.notes.sort_unstable_by(|a, b| a.start_time.cmp(&b.start_time));
         console_log!("Successfully sorted notes");
         let mut result: Track = Vec::new();
         let mut last_time = 0;

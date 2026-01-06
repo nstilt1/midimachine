@@ -59,7 +59,7 @@ const ChatBar = ({ onSubmit, onTextChange, fileInputRef, textInput }) => {
     }, [textInput]);
 
     return (
-      <div className="flex items-center border rounded-lg p-2 bg-white">
+      <div className="flex items-center border rounded-lg p-2 bg-white mb-4">
         {/* File upload/attach icon */}
         <div className="relative">
           <input

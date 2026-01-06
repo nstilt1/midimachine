@@ -39,7 +39,7 @@ const MidiForm = ({
 }) => {
   const [textInput, setTextInput] = useLocalStorage("textInput", '');
   const [mode, setMode] = useLocalStorage("mode", "melody");
-  const [useSameChords, setUseSameChords] = useLocalStorage("useSameChords", false);
+  const [useSameChords, setUseSameChords] = useLocalStorage("useSameChords", true);
   const [midiFile, setMidiFile] = useState(null);
   const [numChords, setNumChords] = useLocalStorage("numChords", 20);
   const [sanitizedNumChords, setSanitizedNumChords] = useLocalStorage("sanitizedNumChords", 20);
@@ -486,17 +486,6 @@ const MidiForm = ({
               </Tooltip>
             </TooltipProvider>
             )}
-            { useSameChords && mode === "chords" && ( 
-                <DropdownWithNavigation
-                  value={patternToUse}
-                  setValue={setPatternToUse}
-                  options={patterns}
-                  setOptions={setPatterns}
-                  id="pattern"
-                  labelText="The pattern/sequence to use:"
-                />
-            )}
-
             </div>
             
           </div>}
@@ -527,6 +516,15 @@ const MidiForm = ({
             textInput={textInput}
           />
         </div>
+        <DropdownWithNavigation
+              value={patternToUse}
+              setValue={setPatternToUse}
+              options={patterns}
+              setOptions={setPatterns}
+              id="pattern"
+              labelText="The pattern/sequence to use:"
+              enabled={useSameChords && mode === "chords"}
+            />
       </form>
 
       {midiFile && (
