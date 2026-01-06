@@ -6,3 +6,4 @@ pub mod midi;
 pub mod error;
 pub mod pruning;
 pub use music::Music;
+pub mod patterns;

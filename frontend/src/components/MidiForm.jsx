@@ -18,6 +18,7 @@ import {
   TooltipProvider, 
   TooltipTrigger 
 } from "./ui/tooltip";
+import DropdownWithNavigation from "./DropdownWithNavigation";
 
 const MidiForm = ({ 
   wasmModule, 
@@ -49,6 +50,9 @@ const MidiForm = ({
   const [savedChordsOpen, setSavedChordsOpen] = useState(false);
   const fileInputRef = useRef(null);
   const [isRandom, setIsRandom] = useLocalStorage("isRandom", true);
+  const [patternToUse, setPatternToUse] = useLocalStorage("patternToUse", "--");
+  const [duration, setDuration] = useLocalStorage("duration", 4);
+  const [patterns, setPatterns] = useLocalStorage("patterns", ["--", "1-2-3-4", "1-1-2-3"]);
 
   // Function to save current form settings
   const saveCurrentSettings = (name) => {
@@ -66,7 +70,9 @@ const MidiForm = ({
       chord_picking_method,
       numUniqueChords,
       sanitizedNumUniqueChords,
-      isRandom
+      isRandom,
+      patternToUse,
+      duration,
     };
   
     // Use useLocalStorage to save
@@ -96,6 +102,16 @@ const MidiForm = ({
     setNumUniqueChords(settings.numUniqueChords);
     setSanitizedNumUniqueChords(settings.sanitizedNumUniqueChords);
     setIsRandom(settings.isRandom);
+    if(settings.pattern) {
+      setPatternToUse(settings.pattern);
+    } else {
+      setPatternToUse("");
+    }
+    if(settings.duration) {
+      setDuration(settings.duration);
+    } else {
+      setDuration(4);
+    }
   };
 
   const handleTextChange = (event) => {
@@ -118,6 +134,13 @@ const MidiForm = ({
     setNumUniqueChords(value);
     if (value >= 0) {
       setSanitizedNumUniqueChords(Math.round(value));
+    }
+  }
+
+  const handleDurationChange = (value) => {
+    setDuration(value);
+    if (value > 0) {
+      setDuration(Math.round(value));
     }
   }
 
@@ -171,7 +194,9 @@ const MidiForm = ({
         chord_picking_method,
         sanitizedNumUniqueChords,
         scale,
-        !isRandom
+        !isRandom,
+        patternToUse,
+        duration,
       );
       console.timeEnd("generate_midi");
 
@@ -439,6 +464,38 @@ const MidiForm = ({
               </TooltipProvider>
               
             </div>}
+            {/* Duration and Patterns/sequences */}
+            {false && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild className="w-full text-left"><div>
+                <NumberInput
+                  value={duration}
+                  onChange={handleDurationChange}
+                  id="duration"
+                  labelText="Max duration of each chord (in beats):"
+                />
+                </div></TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-lg max-w-md">
+                    Determines the maximum amount of beats for each bar&apos;s 
+                    chord. This should be less than 4, and the played chord will 
+                    only last for 1 bar before it switches to the next chord.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            )}
+            { useSameChords && mode === "chords" && ( 
+                <DropdownWithNavigation
+                  value={patternToUse}
+                  setValue={setPatternToUse}
+                  options={patterns}
+                  setOptions={setPatterns}
+                  id="pattern"
+                  labelText="The pattern/sequence to use:"
+                />
+            )}
 
             </div>
             

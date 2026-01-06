@@ -1,0 +1,2276 @@
+warning: `panic` setting is ignored for `bench` profile
+   0.047775556s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="musicgen"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("musicgen", ["cdylib", "rlib"], "/home/coding/rust/school/csc4610/project1/musicgen/src/lib.rs", Edition2021) }
+   0.047815798s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="musicgen"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/musicgen-3fb368386e14717b/lib-musicgen`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.051611362s  INFO prepare_target{force=false package_id=getrandom v0.2.15 target="getrandom"}: cargo::core::compiler::fingerprint: fingerprint error for getrandom v0.2.15/Check { test: false }/TargetInner { ..: lib_target("getrandom", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.2.15/src/lib.rs", Edition2018) }
+   0.051637169s  INFO prepare_target{force=false package_id=getrandom v0.2.15 target="getrandom"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/getrandom-a04b1862029cea70/lib-getrandom`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.051769162s  INFO prepare_target{force=false package_id=js-sys v0.3.72 target="js_sys"}: cargo::core::compiler::fingerprint: fingerprint error for js-sys v0.3.72/Check { test: false }/TargetInner { tested: false, doctest: false, ..: lib_target("js_sys", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.72/src/lib.rs", Edition2021) }
+   0.051836787s  INFO prepare_target{force=false package_id=js-sys v0.3.72 target="js_sys"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/js-sys-64e20b0ee88c608a/lib-js_sys`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.051930311s  INFO prepare_target{force=false package_id=wasm-bindgen v0.2.95 target="wasm_bindgen"}: cargo::core::compiler::fingerprint: fingerprint error for wasm-bindgen v0.2.95/Check { test: false }/TargetInner { tested: false, ..: lib_target("wasm_bindgen", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wasm-bindgen-0.2.95/src/lib.rs", Edition2021) }
+   0.051934388s  INFO prepare_target{force=false package_id=wasm-bindgen v0.2.95 target="wasm_bindgen"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/wasm-bindgen-d96954b955117c9c/lib-wasm_bindgen`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: <cargo::cli::Exec>::exec
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  16: std::rt::lang_start::<()>::{closure#0}
+  17: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  18: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  19: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  20: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  21: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  22: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  23: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  24: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  25: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  26: main
+  27: <unknown>
+  28: __libc_start_main
+  29: <unknown>
+   0.052103743s  INFO prepare_target{force=false package_id=wasm-bindgen-macro v0.2.95 target="wasm_bindgen_macro"}: cargo::core::compiler::fingerprint: fingerprint error for wasm-bindgen-macro v0.2.95/Build/TargetInner { for_host: true, proc_macro: true, ..: lib_target("wasm_bindgen_macro", ["proc-macro"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wasm-bindgen-macro-0.2.95/src/lib.rs", Edition2021) }
+   0.052119307s  INFO prepare_target{force=false package_id=wasm-bindgen-macro v0.2.95 target="wasm_bindgen_macro"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/debug/.fingerprint/wasm-bindgen-macro-8066ed350b2d4dfd/lib-wasm_bindgen_macro`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: <cargo::cli::Exec>::exec
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  17: std::rt::lang_start::<()>::{closure#0}
+  18: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  23: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  24: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  25: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  26: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  27: main
+  28: <unknown>
+  29: __libc_start_main
+  30: <unknown>
+   0.052298202s  INFO prepare_target{force=false package_id=wasm-bindgen-macro-support v0.2.95 target="wasm_bindgen_macro_support"}: cargo::core::compiler::fingerprint: fingerprint error for wasm-bindgen-macro-support v0.2.95/Build/TargetInner { ..: lib_target("wasm_bindgen_macro_support", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wasm-bindgen-macro-support-0.2.95/src/lib.rs", Edition2021) }
+   0.052311594s  INFO prepare_target{force=false package_id=wasm-bindgen-macro-support v0.2.95 target="wasm_bindgen_macro_support"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/debug/.fingerprint/wasm-bindgen-macro-support-0268a753818beeb6/lib-wasm_bindgen_macro_support`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  11: cargo::ops::cargo_compile::compile_ws
+  12: cargo::ops::cargo_compile::compile_with_exec
+  13: cargo::ops::cargo_compile::compile
+  14: cargo::commands::check::exec
+  15: <cargo::cli::Exec>::exec
+  16: cargo::main
+  17: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  18: std::rt::lang_start::<()>::{closure#0}
+  19: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  24: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  25: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  26: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  27: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  28: main
+  29: <unknown>
+  30: __libc_start_main
+  31: <unknown>
+   0.052413050s  INFO prepare_target{force=false package_id=syn v2.0.87 target="syn"}: cargo::core::compiler::fingerprint: fingerprint error for syn v2.0.87/Build/TargetInner { doc_scrape_examples: Disabled, ..: lib_target("syn", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.87/src/lib.rs", Edition2021) }
+   0.052424890s  INFO prepare_target{force=false package_id=syn v2.0.87 target="syn"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/debug/.fingerprint/syn-e6e0b0e6c0ec91a2/lib-syn`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: cargo::core::compiler::compile
+  11: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  12: cargo::ops::cargo_compile::compile_ws
+  13: cargo::ops::cargo_compile::compile_with_exec
+  14: cargo::ops::cargo_compile::compile
+  15: cargo::commands::check::exec
+  16: <cargo::cli::Exec>::exec
+  17: cargo::main
+  18: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  19: std::rt::lang_start::<()>::{closure#0}
+  20: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  25: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  26: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  27: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  28: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  29: main
+  30: <unknown>
+  31: __libc_start_main
+  32: <unknown>
+   0.052510880s  INFO prepare_target{force=false package_id=wasm-bindgen-backend v0.2.95 target="wasm_bindgen_backend"}: cargo::core::compiler::fingerprint: fingerprint error for wasm-bindgen-backend v0.2.95/Build/TargetInner { ..: lib_target("wasm_bindgen_backend", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wasm-bindgen-backend-0.2.95/src/lib.rs", Edition2021) }
+   0.052522300s  INFO prepare_target{force=false package_id=wasm-bindgen-backend v0.2.95 target="wasm_bindgen_backend"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/debug/.fingerprint/wasm-bindgen-backend-a625179e2efcb852/lib-wasm_bindgen_backend`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: cargo::core::compiler::compile
+  11: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  12: cargo::ops::cargo_compile::compile_ws
+  13: cargo::ops::cargo_compile::compile_with_exec
+  14: cargo::ops::cargo_compile::compile
+  15: cargo::commands::check::exec
+  16: <cargo::cli::Exec>::exec
+  17: cargo::main
+  18: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  19: std::rt::lang_start::<()>::{closure#0}
+  20: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  25: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  26: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  27: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  28: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  29: main
+  30: <unknown>
+  31: __libc_start_main
+  32: <unknown>
+   0.052709623s  INFO prepare_target{force=false package_id=midly v0.5.3 target="midly"}: cargo::core::compiler::fingerprint: fingerprint error for midly v0.5.3/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("midly", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/midly-0.5.3/src/lib.rs", Edition2018) }
+   0.052722839s  INFO prepare_target{force=false package_id=midly v0.5.3 target="midly"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/midly-b9b89b66156f7c75/lib-midly`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.052809540s  INFO prepare_target{force=false package_id=rayon v1.7.0 target="rayon"}: cargo::core::compiler::fingerprint: fingerprint error for rayon v1.7.0/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("rayon", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rayon-1.7.0/src/lib.rs", Edition2021) }
+   0.052822078s  INFO prepare_target{force=false package_id=rayon v1.7.0 target="rayon"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/rayon-9df4b1f4b360c766/lib-rayon`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.053271404s  INFO prepare_target{force=false package_id=rand v0.8.5 target="rand"}: cargo::core::compiler::fingerprint: fingerprint error for rand v0.8.5/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("rand", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rand-0.8.5/src/lib.rs", Edition2018) }
+   0.053288294s  INFO prepare_target{force=false package_id=rand v0.8.5 target="rand"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/rand-c223d0585f551849/lib-rand`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.053393413s  INFO prepare_target{force=false package_id=rand_chacha v0.3.1 target="rand_chacha"}: cargo::core::compiler::fingerprint: fingerprint error for rand_chacha v0.3.1/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("rand_chacha", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rand_chacha-0.3.1/src/lib.rs", Edition2018) }
+   0.053406379s  INFO prepare_target{force=false package_id=rand_chacha v0.3.1 target="rand_chacha"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/rand_chacha-c2e3b5ea5f67ab01/lib-rand_chacha`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.053497267s  INFO prepare_target{force=false package_id=ppv-lite86 v0.2.20 target="ppv_lite86"}: cargo::core::compiler::fingerprint: fingerprint error for ppv-lite86 v0.2.20/Check { test: false }/TargetInner { ..: lib_target("ppv_lite86", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.20/src/lib.rs", Edition2021) }
+   0.053509443s  INFO prepare_target{force=false package_id=ppv-lite86 v0.2.20 target="ppv_lite86"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/ppv-lite86-714ca7d0d8fb4a6a/lib-ppv_lite86`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: <cargo::cli::Exec>::exec
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  16: std::rt::lang_start::<()>::{closure#0}
+  17: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  18: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  19: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  20: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  21: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  22: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  23: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  24: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  25: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  26: main
+  27: <unknown>
+  28: __libc_start_main
+  29: <unknown>
+   0.053589205s  INFO prepare_target{force=false package_id=zerocopy v0.7.35 target="zerocopy"}: cargo::core::compiler::fingerprint: fingerprint error for zerocopy v0.7.35/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("zerocopy", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.7.35/src/lib.rs", Edition2018) }
+   0.053620380s  INFO prepare_target{force=false package_id=zerocopy v0.7.35 target="zerocopy"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/zerocopy-f6b7e21880282f21/lib-zerocopy`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: <cargo::cli::Exec>::exec
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  17: std::rt::lang_start::<()>::{closure#0}
+  18: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  23: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  24: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  25: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  26: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  27: main
+  28: <unknown>
+  29: __libc_start_main
+  30: <unknown>
+   0.053725383s  INFO prepare_target{force=false package_id=zerocopy-derive v0.7.35 target="zerocopy_derive"}: cargo::core::compiler::fingerprint: fingerprint error for zerocopy-derive v0.7.35/Build/TargetInner { name_inferred: true, for_host: true, proc_macro: true, ..: lib_target("zerocopy_derive", ["proc-macro"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-derive-0.7.35/src/lib.rs", Edition2018) }
+   0.053738294s  INFO prepare_target{force=false package_id=zerocopy-derive v0.7.35 target="zerocopy_derive"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/debug/.fingerprint/zerocopy-derive-e39e0befbbc6b7ab/lib-zerocopy_derive`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  11: cargo::ops::cargo_compile::compile_ws
+  12: cargo::ops::cargo_compile::compile_with_exec
+  13: cargo::ops::cargo_compile::compile
+  14: cargo::commands::check::exec
+  15: <cargo::cli::Exec>::exec
+  16: cargo::main
+  17: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  18: std::rt::lang_start::<()>::{closure#0}
+  19: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  24: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  25: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  26: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  27: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  28: main
+  29: <unknown>
+  30: __libc_start_main
+  31: <unknown>
+   0.053823525s  INFO prepare_target{force=false package_id=rand_core v0.6.4 target="rand_core"}: cargo::core::compiler::fingerprint: fingerprint error for rand_core v0.6.4/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("rand_core", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rand_core-0.6.4/src/lib.rs", Edition2018) }
+   0.053834785s  INFO prepare_target{force=false package_id=rand_core v0.6.4 target="rand_core"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/rand_core-3aa51ee9deff35bd/lib-rand_core`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: <cargo::cli::Exec>::exec
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  16: std::rt::lang_start::<()>::{closure#0}
+  17: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  18: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  19: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  20: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  21: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  22: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  23: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  24: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  25: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  26: main
+  27: <unknown>
+  28: __libc_start_main
+  29: <unknown>
+   0.053915199s  INFO prepare_target{force=false package_id=serde v1.0.215 target="serde"}: cargo::core::compiler::fingerprint: fingerprint error for serde v1.0.215/Check { test: false }/TargetInner { doc_scrape_examples: Disabled, ..: lib_target("serde", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.215/src/lib.rs", Edition2018) }
+   0.053926869s  INFO prepare_target{force=false package_id=serde v1.0.215 target="serde"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/serde-1baa6ef5e55c6727/lib-serde`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.054063693s  INFO prepare_target{force=false package_id=serde_derive v1.0.215 target="serde_derive"}: cargo::core::compiler::fingerprint: fingerprint error for serde_derive v1.0.215/Build/TargetInner { for_host: true, proc_macro: true, ..: lib_target("serde_derive", ["proc-macro"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_derive-1.0.215/src/lib.rs", Edition2015) }
+   0.054076474s  INFO prepare_target{force=false package_id=serde_derive v1.0.215 target="serde_derive"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/debug/.fingerprint/serde_derive-add519bdae6a15b2/lib-serde_derive`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.054154727s  INFO prepare_target{force=false package_id=serde-wasm-bindgen v0.6.5 target="serde_wasm_bindgen"}: cargo::core::compiler::fingerprint: fingerprint error for serde-wasm-bindgen v0.6.5/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("serde_wasm_bindgen", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-wasm-bindgen-0.6.5/src/lib.rs", Edition2018) }
+   0.054166147s  INFO prepare_target{force=false package_id=serde-wasm-bindgen v0.6.5 target="serde_wasm_bindgen"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/serde-wasm-bindgen-160b30c849e5a1ef/lib-serde_wasm_bindgen`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.054252697s  INFO prepare_target{force=false package_id=serde_json v1.0.132 target="serde_json"}: cargo::core::compiler::fingerprint: fingerprint error for serde_json v1.0.132/Check { test: false }/TargetInner { doc_scrape_examples: Disabled, ..: lib_target("serde_json", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.132/src/lib.rs", Edition2021) }
+   0.054264467s  INFO prepare_target{force=false package_id=serde_json v1.0.132 target="serde_json"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/serde_json-8ce762eb0a379de1/lib-serde_json`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.054906051s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="musicgen"}: cargo::core::compiler::fingerprint: dependency on `regex_syntax` is newer than we are 1762122870.053768619s > 1747774501.575788327s "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.9"
+   0.055002510s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="musicgen"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("musicgen", ["cdylib", "rlib"], "/home/coding/rust/school/csc4610/project1/musicgen/src/lib.rs", Edition2021) }
+   0.055018516s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="musicgen"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/musicgen-fc038fcbb89e3a1a/test-lib-musicgen`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.055247167s  INFO prepare_target{force=false package_id=criterion v0.5.1 target="criterion"}: cargo::core::compiler::fingerprint: fingerprint error for criterion v0.5.1/Check { test: false }/TargetInner { name_inferred: true, benched: false, ..: lib_target("criterion", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/criterion-0.5.1/src/lib.rs", Edition2018) }
+   0.055261740s  INFO prepare_target{force=false package_id=criterion v0.5.1 target="criterion"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/criterion-92a2f3f3f6b77890/lib-criterion`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.055480885s  INFO prepare_target{force=false package_id=ciborium v0.2.2 target="ciborium"}: cargo::core::compiler::fingerprint: fingerprint error for ciborium v0.2.2/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("ciborium", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ciborium-0.2.2/src/lib.rs", Edition2021) }
+   0.055493360s  INFO prepare_target{force=false package_id=ciborium v0.2.2 target="ciborium"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/ciborium-e931f4f2f0a4a111/lib-ciborium`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.055730172s  INFO prepare_target{force=false package_id=plotters v0.3.7 target="plotters"}: cargo::core::compiler::fingerprint: fingerprint error for plotters v0.3.7/Check { test: false }/TargetInner { ..: lib_target("plotters", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/plotters-0.3.7/src/lib.rs", Edition2018) }
+   0.055743466s  INFO prepare_target{force=false package_id=plotters v0.3.7 target="plotters"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/plotters-542d194bfd4bc9dd/lib-plotters`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.055860016s  INFO prepare_target{force=false package_id=web-sys v0.3.72 target="web_sys"}: cargo::core::compiler::fingerprint: fingerprint error for web-sys v0.3.72/Check { test: false }/TargetInner { tested: false, doctest: false, ..: lib_target("web_sys", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/web-sys-0.3.72/src/lib.rs", Edition2021) }
+   0.055871950s  INFO prepare_target{force=false package_id=web-sys v0.3.72 target="web_sys"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/web-sys-d446fbdd6addff59/lib-web_sys`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: <cargo::cli::Exec>::exec
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  16: std::rt::lang_start::<()>::{closure#0}
+  17: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  18: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  19: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  20: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  21: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  22: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  23: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  24: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  25: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  26: main
+  27: <unknown>
+  28: __libc_start_main
+  29: <unknown>
+   0.056014521s  INFO prepare_target{force=false package_id=regex v1.11.1 target="regex"}: cargo::core::compiler::fingerprint: fingerprint dirty for regex v1.11.1/Check { test: false }/TargetInner { ..: lib_target("regex", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/regex-1.11.1/src/lib.rs", Edition2021) }
+   0.056027185s  INFO prepare_target{force=false package_id=regex v1.11.1 target="regex"}: cargo::core::compiler::fingerprint:     dirty: RustcChanged
+   0.056098410s  INFO prepare_target{force=false package_id=regex-automata v0.4.9 target="regex_automata"}: cargo::core::compiler::fingerprint: fingerprint dirty for regex-automata v0.4.9/Check { test: false }/TargetInner { benched: false, ..: lib_target("regex_automata", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.9/src/lib.rs", Edition2021) }
+   0.056110172s  INFO prepare_target{force=false package_id=regex-automata v0.4.9 target="regex_automata"}: cargo::core::compiler::fingerprint:     dirty: RustcChanged
+   0.056162959s  INFO prepare_target{force=false package_id=tinytemplate v1.2.1 target="tinytemplate"}: cargo::core::compiler::fingerprint: fingerprint error for tinytemplate v1.2.1/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("tinytemplate", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/lib.rs", Edition2015) }
+   0.056175751s  INFO prepare_target{force=false package_id=tinytemplate v1.2.1 target="tinytemplate"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/tinytemplate-ec2b7c1b897b3589/lib-tinytemplate`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.056707175s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="musicgen"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("musicgen", ["cdylib", "rlib"], "/home/coding/rust/school/csc4610/project1/musicgen/src/lib.rs", Edition2021) }
+   0.056724166s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="musicgen"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/musicgen-161f61a408faaed2/lib-musicgen`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.056985324s  INFO prepare_target{force=false package_id=js-sys v0.3.72 target="js_sys"}: cargo::core::compiler::fingerprint: fingerprint error for js-sys v0.3.72/Check { test: false }/TargetInner { tested: false, doctest: false, ..: lib_target("js_sys", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.72/src/lib.rs", Edition2021) }
+   0.056998404s  INFO prepare_target{force=false package_id=js-sys v0.3.72 target="js_sys"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/js-sys-5d442550e46cc98e/lib-js_sys`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.057078111s  INFO prepare_target{force=false package_id=wasm-bindgen v0.2.95 target="wasm_bindgen"}: cargo::core::compiler::fingerprint: fingerprint error for wasm-bindgen v0.2.95/Check { test: false }/TargetInner { tested: false, ..: lib_target("wasm_bindgen", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wasm-bindgen-0.2.95/src/lib.rs", Edition2021) }
+   0.057089629s  INFO prepare_target{force=false package_id=wasm-bindgen v0.2.95 target="wasm_bindgen"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/wasm-bindgen-20975b1a0e8ec009/lib-wasm_bindgen`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.057260466s  INFO prepare_target{force=false package_id=midly v0.5.3 target="midly"}: cargo::core::compiler::fingerprint: fingerprint error for midly v0.5.3/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("midly", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/midly-0.5.3/src/lib.rs", Edition2018) }
+   0.057272722s  INFO prepare_target{force=false package_id=midly v0.5.3 target="midly"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/midly-5ee212e7d002ca3e/lib-midly`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.057350915s  INFO prepare_target{force=false package_id=rayon v1.7.0 target="rayon"}: cargo::core::compiler::fingerprint: fingerprint error for rayon v1.7.0/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("rayon", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rayon-1.7.0/src/lib.rs", Edition2021) }
+   0.057362070s  INFO prepare_target{force=false package_id=rayon v1.7.0 target="rayon"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/rayon-464fb55589f6163f/lib-rayon`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.057721373s  INFO prepare_target{force=false package_id=rand v0.8.5 target="rand"}: cargo::core::compiler::fingerprint: fingerprint error for rand v0.8.5/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("rand", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rand-0.8.5/src/lib.rs", Edition2018) }
+   0.057738663s  INFO prepare_target{force=false package_id=rand v0.8.5 target="rand"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/rand-cb00c9300309d0c6/lib-rand`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.057835517s  INFO prepare_target{force=false package_id=rand_chacha v0.3.1 target="rand_chacha"}: cargo::core::compiler::fingerprint: fingerprint error for rand_chacha v0.3.1/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("rand_chacha", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rand_chacha-0.3.1/src/lib.rs", Edition2018) }
+   0.057848177s  INFO prepare_target{force=false package_id=rand_chacha v0.3.1 target="rand_chacha"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/rand_chacha-bef426d1be788b30/lib-rand_chacha`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.057929674s  INFO prepare_target{force=false package_id=ppv-lite86 v0.2.20 target="ppv_lite86"}: cargo::core::compiler::fingerprint: fingerprint error for ppv-lite86 v0.2.20/Check { test: false }/TargetInner { ..: lib_target("ppv_lite86", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.20/src/lib.rs", Edition2021) }
+   0.057933415s  INFO prepare_target{force=false package_id=ppv-lite86 v0.2.20 target="ppv_lite86"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/ppv-lite86-d37094ce6ca27b3c/lib-ppv_lite86`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: <cargo::cli::Exec>::exec
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  16: std::rt::lang_start::<()>::{closure#0}
+  17: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  18: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  19: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  20: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  21: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  22: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  23: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  24: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  25: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  26: main
+  27: <unknown>
+  28: __libc_start_main
+  29: <unknown>
+   0.058004362s  INFO prepare_target{force=false package_id=zerocopy v0.7.35 target="zerocopy"}: cargo::core::compiler::fingerprint: fingerprint error for zerocopy v0.7.35/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("zerocopy", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.7.35/src/lib.rs", Edition2018) }
+   0.058015510s  INFO prepare_target{force=false package_id=zerocopy v0.7.35 target="zerocopy"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/zerocopy-7ebc039afb09bc4b/lib-zerocopy`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: <cargo::cli::Exec>::exec
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  17: std::rt::lang_start::<()>::{closure#0}
+  18: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  23: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  24: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  25: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  26: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  27: main
+  28: <unknown>
+  29: __libc_start_main
+  30: <unknown>
+   0.058113235s  INFO prepare_target{force=false package_id=serde v1.0.215 target="serde"}: cargo::core::compiler::fingerprint: fingerprint error for serde v1.0.215/Check { test: false }/TargetInner { doc_scrape_examples: Disabled, ..: lib_target("serde", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.215/src/lib.rs", Edition2018) }
+   0.058125443s  INFO prepare_target{force=false package_id=serde v1.0.215 target="serde"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/serde-34349e5b728e73e0/lib-serde`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.058255638s  INFO prepare_target{force=false package_id=serde-wasm-bindgen v0.6.5 target="serde_wasm_bindgen"}: cargo::core::compiler::fingerprint: fingerprint error for serde-wasm-bindgen v0.6.5/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("serde_wasm_bindgen", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-wasm-bindgen-0.6.5/src/lib.rs", Edition2018) }
+   0.058268670s  INFO prepare_target{force=false package_id=serde-wasm-bindgen v0.6.5 target="serde_wasm_bindgen"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/serde-wasm-bindgen-105f6baf5967016a/lib-serde_wasm_bindgen`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.058361276s  INFO prepare_target{force=false package_id=serde_json v1.0.132 target="serde_json"}: cargo::core::compiler::fingerprint: fingerprint error for serde_json v1.0.132/Check { test: false }/TargetInner { doc_scrape_examples: Disabled, ..: lib_target("serde_json", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.132/src/lib.rs", Edition2021) }
+   0.058380859s  INFO prepare_target{force=false package_id=serde_json v1.0.132 target="serde_json"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/serde_json-ce43f6580032f58f/lib-serde_json`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.058924300s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="musicgen"}: cargo::core::compiler::fingerprint: dependency on `regex_syntax` is newer than we are 1762122870.093379829s > 1747774501.530788326s "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.9"
+   0.059012756s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="musicgen"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("musicgen", ["cdylib", "rlib"], "/home/coding/rust/school/csc4610/project1/musicgen/src/lib.rs", Edition2021) }
+   0.059026888s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="musicgen"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/musicgen-7d3a2fad8be93774/test-lib-musicgen`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.059247154s  INFO prepare_target{force=false package_id=criterion v0.5.1 target="criterion"}: cargo::core::compiler::fingerprint: fingerprint error for criterion v0.5.1/Check { test: false }/TargetInner { name_inferred: true, benched: false, ..: lib_target("criterion", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/criterion-0.5.1/src/lib.rs", Edition2018) }
+   0.059260045s  INFO prepare_target{force=false package_id=criterion v0.5.1 target="criterion"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/criterion-bae131b788fa50a0/lib-criterion`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  16: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  17: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  18: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  20: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  21: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  22: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  24: main
+  25: <unknown>
+  26: __libc_start_main
+  27: <unknown>
+   0.059450778s  INFO prepare_target{force=false package_id=ciborium v0.2.2 target="ciborium"}: cargo::core::compiler::fingerprint: fingerprint error for ciborium v0.2.2/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("ciborium", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ciborium-0.2.2/src/lib.rs", Edition2021) }
+   0.059464127s  INFO prepare_target{force=false package_id=ciborium v0.2.2 target="ciborium"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/ciborium-bb1d4704ccd0bdc4/lib-ciborium`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.059724808s  INFO prepare_target{force=false package_id=regex v1.11.1 target="regex"}: cargo::core::compiler::fingerprint: fingerprint dirty for regex v1.11.1/Check { test: false }/TargetInner { ..: lib_target("regex", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/regex-1.11.1/src/lib.rs", Edition2021) }
+   0.059739333s  INFO prepare_target{force=false package_id=regex v1.11.1 target="regex"}: cargo::core::compiler::fingerprint:     dirty: RustcChanged
+   0.059820548s  INFO prepare_target{force=false package_id=regex-automata v0.4.9 target="regex_automata"}: cargo::core::compiler::fingerprint: fingerprint dirty for regex-automata v0.4.9/Check { test: false }/TargetInner { benched: false, ..: lib_target("regex_automata", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.9/src/lib.rs", Edition2021) }
+   0.059833116s  INFO prepare_target{force=false package_id=regex-automata v0.4.9 target="regex_automata"}: cargo::core::compiler::fingerprint:     dirty: RustcChanged
+   0.059887463s  INFO prepare_target{force=false package_id=tinytemplate v1.2.1 target="tinytemplate"}: cargo::core::compiler::fingerprint: fingerprint error for tinytemplate v1.2.1/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("tinytemplate", ["lib"], "/home/coding/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/lib.rs", Edition2015) }
+   0.059899157s  INFO prepare_target{force=false package_id=tinytemplate v1.2.1 target="tinytemplate"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/tinytemplate-ef665e67a3386e76/lib-tinytemplate`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  18: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  19: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  22: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  23: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  25: main
+  26: <unknown>
+  27: __libc_start_main
+  28: <unknown>
+   0.060019494s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generate_midi"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: false }/TargetInner { name: "generate_midi", doc: true, ..: with_path("/home/coding/rust/school/csc4610/project1/musicgen/src/bin/generate_midi.rs", Edition2021) }
+   0.060032399s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generate_midi"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/musicgen-1c64315c96deb3f1/bin-generate_midi`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.060224935s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generate_midi"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: true }/TargetInner { name: "generate_midi", doc: true, ..: with_path("/home/coding/rust/school/csc4610/project1/musicgen/src/bin/generate_midi.rs", Edition2021) }
+   0.060237356s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generate_midi"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/musicgen-c25924c838b527e8/test-bin-generate_midi`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.060431299s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generate_midi"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: false }/TargetInner { name: "generate_midi", doc: true, ..: with_path("/home/coding/rust/school/csc4610/project1/musicgen/src/bin/generate_midi.rs", Edition2021) }
+   0.060443593s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generate_midi"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/musicgen-9c7347854d66318b/bin-generate_midi`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.060611657s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generate_midi"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: true }/TargetInner { name: "generate_midi", doc: true, ..: with_path("/home/coding/rust/school/csc4610/project1/musicgen/src/bin/generate_midi.rs", Edition2021) }
+   0.060623164s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generate_midi"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/musicgen-f2de3cb2b6062f50/test-bin-generate_midi`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.060811965s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="mutation_tests"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: true }/TargetInner { kind: "test", name: "mutation_tests", benched: false, ..: with_path("/home/coding/rust/school/csc4610/project1/musicgen/tests/mutation_tests.rs", Edition2021) }
+   0.060825570s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="mutation_tests"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/musicgen-f0110ca6ea0a32a7/test-integration-test-mutation_tests`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.061029757s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="mutation_tests"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: true }/TargetInner { kind: "test", name: "mutation_tests", benched: false, ..: with_path("/home/coding/rust/school/csc4610/project1/musicgen/tests/mutation_tests.rs", Edition2021) }
+   0.061043004s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="mutation_tests"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/musicgen-aaaeeb211eb60b85/test-integration-test-mutation_tests`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.061247489s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generation"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: true }/TargetInner { kind: "bench", name: "generation", tested: false, harness: false, ..: with_path("/home/coding/rust/school/csc4610/project1/musicgen/benches/generation.rs", Edition2021) }
+   0.061261331s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generation"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/wasm32-unknown-unknown/debug/.fingerprint/musicgen-54ecab82771b6b9f/test-bench-generation`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   0.061521453s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generation"}: cargo::core::compiler::fingerprint: fingerprint error for musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)/Check { test: true }/TargetInner { kind: "bench", name: "generation", tested: false, harness: false, ..: with_path("/home/coding/rust/school/csc4610/project1/musicgen/benches/generation.rs", Edition2021) }
+   0.061544714s  INFO prepare_target{force=false package_id=musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen) target="generation"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/coding/rust/school/csc4610/project1/musicgen/target/x86_64-unknown-linux-gnu/debug/.fingerprint/musicgen-748156f1618d87d7/test-bench-generation`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/975e6c8fec280816d24fbde6b8dfe19620f2efe6/library/std/src/rt.rs:171:5
+  23: main
+  24: <unknown>
+  25: __libc_start_main
+  26: <unknown>
+   Compiling syn v2.0.87
+    Checking regex-automata v0.4.9
+    Checking rayon v1.7.0
+    Checking regex v1.11.1
+    Checking midly v0.5.3
+   Compiling wasm-bindgen-backend v0.2.95
+   Compiling serde_derive v1.0.215
+   Compiling zerocopy-derive v0.7.35
+   Compiling wasm-bindgen-macro-support v0.2.95
+   Compiling wasm-bindgen-macro v0.2.95
+    Checking zerocopy v0.7.35
+    Checking wasm-bindgen v0.2.95
+    Checking ppv-lite86 v0.2.20
+    Checking rand_chacha v0.3.1
+    Checking rand v0.8.5
+    Checking js-sys v0.3.72
+    Checking serde v1.0.215
+    Checking serde_json v1.0.132
+    Checking serde-wasm-bindgen v0.6.5
+    Checking ciborium v0.2.2
+    Checking tinytemplate v1.2.1
+    Checking musicgen v0.1.0 (/home/coding/rust/school/csc4610/project1/musicgen)
+    Checking getrandom v0.2.15
+    Checking web-sys v0.3.72
+    Checking criterion v0.5.1
+    Checking rand_core v0.6.4
+    Checking plotters v0.3.7
+error: could not compile `criterion` (lib) due to 1 previous error

@@ -1,4 +1,4 @@
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use midly::Smf;
 use musicgen::{music_modules_v2::midi::MidiFile, test_utils::generate_midi_all_chord_types};
 use sha2::{digest::Output, Digest, Sha256};
@@ -15,7 +15,7 @@ fn generate_melodies(c: &mut Criterion) {
                 NUM_CHORDS, 
                 KEY, 
                 "original", 
-                0
+                0,
             ))
         })
     });
@@ -30,7 +30,7 @@ fn generate_chords(c: &mut Criterion) {
                 NUM_CHORDS, 
                 KEY, 
                 "original", 
-                0
+                0,
             ))
         })
     });
@@ -44,7 +44,8 @@ fn setup_chord_choices() -> MidiFile {
         "chords", 
         false, 
         "original", 
-        0
+        0,
+        4
     )
 }
 

@@ -1,3 +1,5 @@
+#![allow(incomplete_features)]
+#![feature(generic_const_exprs)]
 use std::{collections::HashSet, fmt::Display};
 
 #[cfg(target_arch = "wasm32")]
@@ -9,6 +11,34 @@ use wasm_bindgen::prelude::*;
 use sha2::{Digest, Sha256};
 
 pub mod music_modules_v2;
+
+#[wasm_bindgen]
+#[cfg(target_arch = "wasm32")]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    pub fn log(s: &str);
+}
+
+#[cfg(target_arch = "wasm32")]
+#[macro_export]
+macro_rules! console_log {
+    ($($arg:tt)*) => {
+        if true {
+            let x = format!($($arg)*);
+            crate::log(&x);
+        }
+    };
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+#[macro_export]
+macro_rules! console_log {
+    ($($arg:tt)*) => {
+        if true {
+            println!($($arg)*);
+        }
+    };
+}
 
 #[derive(Debug)]
 pub enum Error {
@@ -191,22 +221,42 @@ pub fn generate_midi(
     min_number_of_unique_chords: u32,
     scale: &str,
     is_reproducible: bool,
+    pattern_to_use: &str,
+    duration: u32,
 ) -> Result<Vec<u8>, Error> {
     let hash = Sha256::digest(file_content);
     
     let chord_selection_hashset: HashSet<String> = chord_selection.iter()
         .map(|js_val| js_val.as_string().unwrap_or_default())
         .collect();
+    let pattern_to_use: Vec<u8> = match generation_mode {
+        "chords" => {
+            use crate::music_modules_v2::patterns::validation::validate_pattern;
+
+            let (is_valid, pattern) = validate_pattern(pattern_to_use);
+            if !is_valid {
+                Vec::new()
+            } else {
+                pattern
+            }
+        },
+        _ => Vec::new(),
+    };
+    let mut max_chords = num_chords;
+    for chord_idx in pattern_to_use.iter() {
+        max_chords = max_chords.max(*chord_idx as usize);
+    }
+    let num_chords = max_chords;
     // smoke the hash
     let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group, scale, is_reproducible, false)?;
-    let track = musician.make_music(num_chords, generation_mode, should_use_same_chords, chord_picking_method, min_number_of_unique_chords)?;
+    let track = musician.make_music(num_chords, generation_mode, should_use_same_chords, chord_picking_method, min_number_of_unique_chords, &pattern_to_use, duration)?;
 
     let smf = Smf {
         header: midly::Header { format: midly::Format::SingleTrack, timing: midly::Timing::Metrical(96.into()) },
         tracks: vec![track]
     };
 
-    let mut output = vec![];
+    let mut output = Vec::new();
 
     smf.write(&mut output)?;
 
@@ -231,7 +281,7 @@ pub fn generate_midi_chord_progression(chords: JsValue) -> Result<Vec<u8>, JsErr
         header: midly::Header { format: midly::Format::SingleTrack, timing: midly::Timing::Metrical(96.into()) },
         tracks: vec![track]
     };
-    let mut output = vec![];
+    let mut output = Vec::new();
     smf.write(&mut output).expect("Should be valid");
     Ok(output)
 }
@@ -260,14 +310,14 @@ pub mod test_utils {
         let chord_selection_hashset: HashSet<String> = HashSet::new();
         // smoke the hash
         let mut musician = Music::smoke_hash(hash, key, &chord_selection_hashset, chord_type_group, "disabled", true, false).unwrap();
-        let track = musician.make_music(num_chords as usize, generation_mode, should_use_same_chords, chord_picking_method, min_number_of_unique_chords).unwrap();
+        let track = musician.make_music(num_chords as usize, generation_mode, should_use_same_chords, chord_picking_method, min_number_of_unique_chords, &Vec::new(), 4).unwrap();
 
         let smf = Smf {
             header: midly::Header { format: midly::Format::SingleTrack, timing: midly::Timing::Metrical(96.into()) },
             tracks: vec![track]
         };
 
-        let mut output = vec![];
+        let mut output = Vec::new();
 
         smf.write(&mut output)?;
 
@@ -284,7 +334,7 @@ pub mod test_utils {
     ) -> Vec<u8> {
         let hash = Sha256::digest(text_input.as_bytes());
         let mut musician = Music::smoke_hash_all_custom_handpicked_chords(hash, key);
-        let track = musician.make_music(num_chords, generation_mode, false, chord_picking_method, min_number_of_unique_chords).unwrap();
+        let track = musician.make_music(num_chords, generation_mode, false, chord_picking_method, min_number_of_unique_chords, &Vec::new(), 4).unwrap();
 
         let smf = Smf {
             header: midly::Header {
@@ -294,7 +344,7 @@ pub mod test_utils {
             tracks: vec![track]
         };
 
-        let mut output = vec![];
+        let mut output = Vec::new();
         smf.write(&mut output).unwrap();
 
         output
@@ -311,7 +361,7 @@ pub mod test_utils {
             "",
             "default",
             "original",
-            min_number_of_unique_chords
+            min_number_of_unique_chords,
         ).unwrap()
     }
 

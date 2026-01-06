@@ -1,8 +1,10 @@
 // use midly::
 
-use std::collections::HashMap;
+use std::{cmp, collections::HashMap};
 
 use midly::{TrackEvent, TrackEventKind, MidiMessage};
+
+use crate::console_log;
 
 use super::utils::beats;
 
@@ -73,7 +75,9 @@ impl MidiFile {
      */
     #[inline(always)]
     pub fn finalize(&mut self) -> Track {
-        self.notes.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        console_log!("In finalize()");
+        self.notes.sort_by(|a, b| a.partial_cmp(b).unwrap_or(a.start_time.cmp(&b.start_time)));
+        console_log!("Successfully sorted notes");
         let mut result: Track = Vec::new();
         let mut last_time = 0;
 
@@ -132,6 +136,9 @@ trait TrackEventVecUtils {
 impl TrackEventVecUtils for Vec<TrackEvent<'_>> {
     #[inline(always)]
     fn push_track_event(&mut self, start_time: u32, last_time: u32, pitch: u8, velocity: u8, is_on: bool) {
+        if start_time < last_time {
+            console_log!("Start time: {} - last time: {}", start_time, last_time);
+        }
         self.push(TrackEvent { 
             delta: (start_time - last_time).into(), 
             kind: TrackEventKind::Midi {
