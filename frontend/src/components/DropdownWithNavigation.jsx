@@ -24,8 +24,9 @@ export default function DropdownWithNavigation({
   }, [])
 
   const confirmAddPattern = () => {
-    if (!newPatternInput.trim()) return
-    if (options.contains(newInputPattern.trim())) return;
+    let newInput = newPatternInput.trim();
+    if (!newInput) return
+    if (options.includes(newInput)) return;
 
     const updated = [...options, newPatternInput.trim()]
     setOptions(updated)
