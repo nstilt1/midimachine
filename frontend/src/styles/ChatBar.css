@@ -1,7 +1,7 @@
 /* Custom scrollbar styles */
 .thin-scrollbar {
     scrollbar-width: thin; /* Firefox */
-    scrollbar-color: #4A5568 #E2E8F0; /* Firefox */
+    scrollbar-color: #52525b #27272a; /* Firefox */
 }
 
 .thin-scrollbar::-webkit-scrollbar {
@@ -9,10 +9,10 @@
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #4A5568; /* Customize thumb color */
+    background-color: #52525b; /* Customize thumb color */
     border-radius: 8px;
 }
 
 .thin-scrollbar::-webkit-scrollbar-track {
-    background-color: #E2E8F0; /* Customize track color */
+    background-color: #27272a; /* Customize track color */
 }

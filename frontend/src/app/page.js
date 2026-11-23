@@ -4,9 +4,8 @@ import Image from "next/image";
 import MidiApp from "@/components/MidiApp";
 import { useEffect, useRef, useState } from "react";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import Navbar from "@/components/NavbarMainSite";
+import { LOGO_CLICK_EVENT } from "@/components/NavbarResponsive";
 import ChordProgressionBuilder from "@/components/ChordProgressionBuilder";
-import { useSearchParams } from "next/navigation";
 
 export default function Home() {
   const [clickedLogo, setClickedLogo] = useLocalStorage("clickedLogo", false);
@@ -14,8 +13,11 @@ export default function Home() {
   const [buttonText, setButtonText] = useState(clickedLogo);
   const [wasmModule, setWasmModule] = useState(null);
   const [showBuilder, setShowBuilder] = useLocalStorage("showBuilder", false);
-  const searchParams = useSearchParams();
-  const isEmbed = searchParams.get("embed") === "1";
+  useEffect(() => {
+    const toggle = () => setClickedLogo((v) => !v);
+    window.addEventListener(LOGO_CLICK_EVENT, toggle);
+    return () => window.removeEventListener(LOGO_CLICK_EVENT, toggle);
+  }, [setClickedLogo]);
   useEffect(() => {
     setButtonText(clickedLogo ? "Hide advanced controls" : "Show advanced controls")
   }, [clickedLogo]);
@@ -36,7 +38,6 @@ export default function Home() {
 
   return (
     <div>
-      {!isEmbed && <Navbar whenClickedLogo={() => setClickedLogo(!clickedLogo)} />}
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <MidiApp showExtraControls={clickedLogo} toggleExtraControls={() => {setClickedLogo(!clickedLogo)}} cpbRef={cpbRef} wasmModule={wasmModule}></MidiApp>

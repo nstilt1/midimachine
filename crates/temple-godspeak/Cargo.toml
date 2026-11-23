@@ -1,0 +1,14 @@
+[package]
+name = "temple-godspeak"
+version = "0.1.0"
+edition = "2021"
+description = "Terry Davis's HolyC oracle core compiled to WebAssembly, with a reusable Rust host"
+license = "MIT"
+include = ["src/**", "assets/**", "holyc/**", "tools/**", "vendor/**", "build_wasm.sh", "README.md", "LICENSE", "PROVENANCE.md"]
+
+[features]
+default = ["runtime"]
+runtime = ["dep:wasmi"]
+
+[dependencies]
+wasmi = { version = "0.40", optional = true }

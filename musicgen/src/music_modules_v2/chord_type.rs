@@ -3,7 +3,7 @@ use std::hash::Hash;
 use crate::music_modules_v2::music::notes::*;
 
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
 pub struct ChordType {
     pub note_intervals: Vec<u8>,
     pub name: String,
@@ -150,4 +150,21 @@ pub fn all_custom_chord_types_handpicked() -> Vec<ChordType> {
         dominant9,
         add9
     ]
+}
+thread_local! {
+    pub static CUSTOM_TYPES: std::cell::RefCell<Vec<ChordType>> = const { std::cell::RefCell::new(Vec::new()) };
+}
+
+pub fn set_custom_types(json: &str) -> Result<(), String> {
+    let types: Vec<ChordType> = serde_json::from_str(json).map_err(|e| e.to_string())?;
+    if types.len() > 128 || types.iter().any(|t| t.name.trim().is_empty() || t.name.len() > 80
+        || t.note_intervals.is_empty() || t.note_intervals.len() > 12 || t.optional_notes.len() > 8
+        || t.roots.len() != 1 || t.roots.iter().any(|r| *r > 11)
+        || t.note_intervals.iter().chain(&t.optional_notes).any(|n| *n as u16 + t.roots[0] as u16 > 68)) {
+        return Err("Invalid chord type: use 1–12 notes, up to 8 optional notes, one root 0–11, intervals within the MIDI register".into());
+    }
+    let names: std::collections::HashSet<_> = types.iter().map(|t| &t.name).collect();
+    if names.len() != types.len() { return Err("Chord names must be unique".into()); }
+    CUSTOM_TYPES.with(|store| *store.borrow_mut() = types);
+    Ok(())
 }

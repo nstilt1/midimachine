@@ -42,7 +42,7 @@ const ChordTable = ({
                     {chordData && chordData.map((chords, columnIndex) => (
                         <TableCell key={columnIndex}>
                             <div className="flex items-start">
-                            <Accordion type="multiple" collapsible>
+                            <Accordion type="multiple">
                                 {chords.map((chord, chordIndex) => (
                                     <div key={chordIndex} className="flex items-start">
                                     <Chord

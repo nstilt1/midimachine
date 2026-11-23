@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import {
@@ -19,9 +19,28 @@ import {
 } from "@/components/ui/card"
 import MidiForm from './MidiForm';
 import CheatSheet from './CheatSheet';
+import DrumGenerator from './DrumGenerator';
+import ChordTypeEditor from './ChordTypeEditor';
 import ChordFinder from './ChordFinder';
 
-const MidiApp = ({ showExtraControls, cpbRef, wasmModule, toggleExtraControls }) => {
+const MidiApp = ({ showExtraControls, cpbRef, wasmModule: rawWasmModule, toggleExtraControls }) => {
+  const [chordTypes, setChordTypes] = useLocalStorage("userChordTypes", []);
+  const wasmModule = useMemo(() => {
+    if (!rawWasmModule) return null;
+    const wrapped = { ...rawWasmModule };
+    for (const name of ["generate_midi", "get_chords_of_key", "chord_finder"]) {
+      wrapped[name] = (...args) => {
+        rawWasmModule.set_custom_chord_types(JSON.stringify(chordTypes));
+        return rawWasmModule[name](...args);
+      };
+    }
+    return wrapped;
+  }, [rawWasmModule, chordTypes]);
+  const [chordTypeError, setChordTypeError] = useState("");
+  useEffect(() => {
+    if (wasmModule) try { wasmModule.set_custom_chord_types(JSON.stringify(chordTypes)); setChordTypeError(""); }
+    catch (e) { setChordTypeError(String(e)); }
+  }, [wasmModule, chordTypes]);
   const [key, setKey] = useLocalStorage("key", 'random');
   const [chordGroup, setChordGroup] = useLocalStorage("chordGroup", 'default');
   const [customChords, setCustomChords] = useLocalStorage("customChords", []);
@@ -29,6 +48,7 @@ const MidiApp = ({ showExtraControls, cpbRef, wasmModule, toggleExtraControls })
   const [tableScheme, setTableScheme] = useLocalStorage("tableScheme", "contains_note");
 
   const handleChordTypeSelection = (option) => {
+    if (Array.isArray(option)) { setCustomChords(option); return; }
     if (customChords.includes(option)) {
       setCustomChords(customChords.filter((item) => item !== option));
     } else {
@@ -88,12 +108,14 @@ const MidiApp = ({ showExtraControls, cpbRef, wasmModule, toggleExtraControls })
     "major7flat9",
     "major13",
     "dominant9",
-    "add9"
+    "add9",
+    ...chordTypes.map(t => t.name)
   ];
 
   const scales = [
     { label: "Disable chord pruning", value: "disabled" },
     { label: "Natural", value: "natural" },
+    { label: "Natural + blues", value: "natural_blues" },
     { label: "Melodic", value: "melodic" },
     { label: "Harmonic", value: "harmonic" },
     { label: "Pentatonic", value: "pentatonic" },
@@ -114,9 +136,11 @@ const MidiApp = ({ showExtraControls, cpbRef, wasmModule, toggleExtraControls })
     <div>
       {wasmModule ? 
         <div>
+          {chordTypeError && <p role="alert">{chordTypeError}</p>}
           <Tabs defaultValue="generator">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="generator">Generator</TabsTrigger>
+              <TabsTrigger value="drums">Drums</TabsTrigger>
               <TabsTrigger value="cheat-sheet">Chord Vocabulary</TabsTrigger>
               <TabsTrigger value="chord-finder">Chord Finder</TabsTrigger>
             </TabsList>
@@ -146,12 +170,14 @@ const MidiApp = ({ showExtraControls, cpbRef, wasmModule, toggleExtraControls })
               </CardContent>
               </Card>
             </TabsContent>
+            <TabsContent value="drums"><Card><CardContent><DrumGenerator wasmModule={wasmModule}/></CardContent></Card></TabsContent>
             <TabsContent value="cheat-sheet">
               <Card>
                 <CardHeader>
                   <CardTitle>Chord Vocabulary</CardTitle>
                 </CardHeader>
                 <CardContent>
+              <ChordTypeEditor types={chordTypes} onChange={setChordTypes} wasmModule={wasmModule}/>
               <CheatSheet
                 wasmModule={wasmModule}
                 chosenKey={key}

@@ -68,7 +68,7 @@ const MidiPlayerComponent = ({ midiFileUrl, textInput, vibe }) => {
             src={midiFileUrl}
             type="piano-roll"
             id="mainVisualizer"
-            style={{ border: '1px solid black' }}
+            style={{ border: '1px solid hsl(var(--border))' }}
             className="w-full"
           ></midi-visualizer>
 

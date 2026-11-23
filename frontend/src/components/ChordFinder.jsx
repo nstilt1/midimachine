@@ -163,7 +163,7 @@ const ChordFinder = ({
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild className="w-full text-left"><div>
-                        <label htmlFor="noteSelector" className="block text-gray-700 text-sm font-bold mb-2">Select Notes:</label>
+                        <label htmlFor="noteSelector" className="block text-muted-foreground text-sm font-bold mb-2">Select Notes:</label>
                         <MultiSelect
                             id="noteSelector"
                             options={noteChoices}
@@ -209,7 +209,7 @@ const ChordFinder = ({
             </div>
             <Button type="submit">Find Chords</Button>
             {chords && <div>
-                <Accordion type="multiple" defaultValue={["table", "list"]} collapsible>
+                <Accordion type="multiple" defaultValue={["table", "list"]}>
                     <AccordionItem value="table">
                         <AccordionTrigger>Chord table</AccordionTrigger>
                         <AccordionContent><ChordTable chordData={chords} chosenKey={chosenKey} cpbRef={cpbRef}/></AccordionContent>
@@ -217,7 +217,7 @@ const ChordFinder = ({
                     <AccordionItem value="list">
                         <AccordionTrigger>Chord list</AccordionTrigger>
                         <AccordionContent>
-                            <Accordion type="multiple" collapsible>
+                            <Accordion type="multiple">
                             {allChords.map((chord, index) => (
                                 <Chord
                                     key={index}

@@ -139,7 +139,7 @@ const SavedChords = ({
             </Button>
 
             {savedItems.length === 0 ? (
-              <p className="text-center text-gray-500 mt-4">
+              <p className="text-center text-muted-foreground mt-4">
                 No saved {filterType === 'generated' ? 'settings' : 'chord progressions'}
               </p>
             ) : (

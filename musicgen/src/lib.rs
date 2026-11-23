@@ -11,6 +11,7 @@ use wasm_bindgen::prelude::*;
 use sha2::{Digest, Sha256};
 
 pub mod music_modules_v2;
+pub mod drums;
 
 #[wasm_bindgen]
 #[cfg(target_arch = "wasm32")]
@@ -49,7 +50,7 @@ pub enum Error {
 
 impl Into<JsValue> for Error {
     fn into(self) -> JsValue {
-        JsValue::from_str("Error")
+        js_sys::Error::new(&self.to_string()).into()
     }
 }
 
@@ -420,4 +421,60 @@ mod tests {
         seed.copy_from_slice(&hash);
         let mut _rng = StdRng::from_seed(seed);
     }
+}
+#[wasm_bindgen]
+pub fn generate_drum_midi(config_json: &str) -> Result<Vec<u8>, JsError> {
+    let config: drums::Config =
+        serde_json::from_str(config_json).map_err(|e| JsError::new(&e.to_string()))?;
+    drums::Pattern::generate(config)
+        .and_then(|p| p.midi(None))
+        .map_err(|e| JsError::new(&e))
+}
+
+#[wasm_bindgen]
+pub fn preview_drum_pattern(config_json: &str) -> Result<String, JsError> {
+    let config: drums::Config =
+        serde_json::from_str(config_json).map_err(|e| JsError::new(&e.to_string()))?;
+    drums::Pattern::generate(config)
+        .map(|p| p.preview())
+        .map_err(|e| JsError::new(&e))
+}
+
+#[wasm_bindgen]
+pub fn vary_drum_midi(config_json: &str, variation_seed_text: &str) -> Result<Vec<u8>, JsError> {
+    let config: drums::Config = serde_json::from_str(config_json).map_err(|e| JsError::new(&e.to_string()))?;
+    drums::Pattern::generate(config).and_then(|p| p.variation(variation_seed_text)).and_then(|p| p.midi(None)).map_err(|e| JsError::new(&e))
+}
+
+#[wasm_bindgen]
+pub fn generate_drum_instrument(config_json: &str, instrument: usize) -> Result<Vec<u8>, JsError> {
+    if instrument >= drums::NAMES.len() { return Err(JsError::new("Invalid instrument")); }
+    let config: drums::Config = serde_json::from_str(config_json).map_err(|e| JsError::new(&e.to_string()))?;
+    drums::Pattern::generate(config).and_then(|p| p.midi(Some(instrument))).map_err(|e| JsError::new(&e))
+}
+
+#[wasm_bindgen]
+pub fn vary_drum_instrument(config_json: &str, variation_seed_text: &str, instrument: usize) -> Result<Vec<u8>, JsError> {
+    if instrument >= drums::NAMES.len() { return Err(JsError::new("Invalid instrument")); }
+    let config: drums::Config = serde_json::from_str(config_json).map_err(|e| JsError::new(&e.to_string()))?;
+    drums::Pattern::generate(config).and_then(|p| p.variation(variation_seed_text)).and_then(|p| p.midi(Some(instrument))).map_err(|e| JsError::new(&e))
+}
+
+#[wasm_bindgen]
+pub fn preview_drum_variation(config_json: &str, variation_seed_text: &str) -> Result<String, JsError> {
+    let config: drums::Config = serde_json::from_str(config_json).map_err(|e| JsError::new(&e.to_string()))?;
+    drums::Pattern::generate(config).and_then(|p| p.variation(variation_seed_text)).map(|p| p.preview()).map_err(|e| JsError::new(&e))
+}
+
+#[wasm_bindgen]
+pub fn set_custom_chord_types(json: &str) -> Result<(), JsError> {
+    music_modules_v2::chord_type::set_custom_types(json).map_err(|e| JsError::new(&e))
+}
+
+#[wasm_bindgen]
+pub fn drum_pattern_json(config_json: &str, variation: &str) -> Result<String, JsError> {
+    let config = serde_json::from_str(config_json).map_err(|e| JsError::new(&format!("{e}")))?;
+    let mut pattern = drums::Pattern::generate(config).map_err(|e| JsError::new(&e))?;
+    if !variation.is_empty() { pattern = pattern.variation(variation).map_err(|e| JsError::new(&e))?; }
+    serde_json::to_string(&pattern).map_err(|e| JsError::new(&e.to_string()))
 }

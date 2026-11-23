@@ -12,6 +12,8 @@ fn get_good_notes_set(scale: &str) -> Option<(HashSet<i16>, Vec<usize>)> {
     let good_notes_set: HashSet<i16> = match scale {
         "disabled" => return None,
         "natural" => HashSet::from([0, 2, 3, 5, 7, 8, 10]),
+        "natural_blues" => HashSet::from([0, 2, 3, 5, 7, 8, 10])
+            .union(&HashSet::from([0, 3, 5, 6, 7, 10])).copied().collect(),
         "melodic" => HashSet::from([0, 2, 3, 5, 7, 9, 11]),
         "harmonic" => HashSet::from([0, 2, 3, 5, 7, 8, 11]),
         "pentatonic" => HashSet::from([0, 3, 5, 7, 10]),
@@ -58,7 +60,7 @@ pub fn prune_chords(
         chord_table_sets[bad_note] = HashSet::new();
     }
 
-    for note in 0..11 {
+    for note in 0..12 {
         chord_table[note] = chord_table_sets[note]
             .difference(&bad_chords)
             .to_vec()
@@ -98,6 +100,88 @@ mod tests {
                 println!("{}: {}", col_index, col.len());
             }
         };
+    }
+
+    #[test]
+    fn natural_blues_is_union() {
+        let (natural, _) = get_good_notes_set("natural").unwrap();
+        let (combined, bad) = get_good_notes_set("natural_blues").unwrap();
+        assert_eq!(combined, natural.union(&HashSet::from([0, 3, 5, 6, 7, 10])).copied().collect());
+        assert_eq!(combined.len(), 8);
+        assert!(!bad.contains(&6));
+    }
+
+    #[test]
+    fn custom_root_optional_notes_and_pruning() {
+        use crate::music_modules_v2::chord_type::set_custom_types;
+        set_custom_types(r#"[{"name":"test custom","note_intervals":[0,3,7],"optional_notes":[6],"roots":[0]}]"#).unwrap();
+        let selected = HashSet::from(["test custom".to_string()]);
+        let expanded = Music::smoke_hash(Default::default(), "Cmin", &selected, "custom_pruning", "natural_blues", true, true).unwrap();
+        assert!(expanded.chord_list.iter().any(|c| c.root != 0));
+        assert!(expanded.chord_list.iter().any(|c| c.get_notes().contains(&6)));
+        let pruned = Music::smoke_hash(Default::default(), "Cmin", &selected, "custom_pruning", "natural", true, false).unwrap();
+        assert!(pruned.chord_list.iter().all(|c| c.get_notes().iter().all(|n| [0,2,3,5,7,8,10].contains(&(n % 12)))));
+        let handpicked = Music::smoke_hash(Default::default(), "Cmin", &selected, "custom", "disabled", true, true).unwrap();
+        assert!(handpicked.chord_list.iter().all(|c| c.root == 0));
+        set_custom_types("[]").unwrap();
+    }
+
+    #[test]
+    fn custom_guitar_shape_transposes_before_pruning() {
+        use crate::music_modules_v2::chord_type::set_custom_types;
+        set_custom_types(r#"[{"name":"guitar shape","note_intervals":[0,9,15,19],"optional_notes":[23],"roots":[0]}]"#).unwrap();
+        let selected = HashSet::from(["guitar shape".to_string()]);
+        for picker in ["original", "1D"] {
+            let mut m = Music::smoke_hash(Default::default(), "random", &selected, "custom_pruning", "natural_blues", true, false).unwrap();
+            assert!(!m.chord_list.is_empty());
+            assert!(m.chord_list.iter().all(|c| c.root != 0));
+            assert!(m.make_music(20, "chords", true, picker, 0, &vec![], 4).is_ok());
+        }
+        set_custom_types("[]").unwrap();
+    }
+
+    #[test]
+    fn optional_variants_deduplicate_before_sampling() {
+        use crate::music_modules_v2::chord_type::set_custom_types;
+        set_custom_types(r#"[
+          {"name":"first","note_intervals":[0,3,7],"optional_notes":[10],"roots":[0]},
+          {"name":"second","note_intervals":[7,0,3],"optional_notes":[14],"roots":[0]},
+          {"name":"different root label","note_intervals":[2,6,11],"optional_notes":[],"roots":[1]}
+        ]"#).unwrap();
+        let selected = HashSet::from(["first".to_string(), "second".to_string(), "different root label".to_string()]);
+        let m = Music::smoke_hash(Default::default(), "Cmin", &selected, "custom", "disabled", true, false).unwrap();
+        // Cm is shared; Cm7 and Cm(add9) are distinct. The third root label
+        // produces [3,7,12], a distinct octave voicing, and must survive.
+        assert_eq!(m.chord_list.len(), 4);
+        assert_eq!(m.chord_list.iter().filter(|c| {
+            let mut n = c.get_notes(); n.sort_unstable(); n == vec![0,3,7]
+        }).count(), 1);
+        for column in &m.chord_table {
+            assert_eq!(column.len(), column.iter().cloned().collect::<HashSet<_>>().len());
+        }
+        set_custom_types("[]").unwrap();
+    }
+
+    #[test]
+    fn deduplicated_custom_sampling_is_reproducible() {
+        use crate::music_modules_v2::chord_type::set_custom_types;
+        set_custom_types(r#"[
+          {"name":"first","note_intervals":[0,9,15,19],"optional_notes":[23],"roots":[0]},
+          {"name":"second","note_intervals":[0,9,15,19],"optional_notes":[24],"roots":[0]}
+        ]"#).unwrap();
+        let selected = HashSet::from(["first".to_string(), "second".to_string()]);
+        for picker in ["original", "1D"] {
+            let mut expected = None;
+            for _ in 0..12 {
+                let mut m = Music::smoke_hash(Default::default(), "random", &selected, "custom_pruning", "natural_blues", true, false).unwrap();
+                let order = m.chord_list.iter().map(|c| c.get_notes()).collect::<Vec<_>>();
+                let track = format!("{:?}", m.make_music(20, "chords", true, picker, 0, &vec![], 4).unwrap());
+                let result = (order, track);
+                if let Some(previous) = &expected { assert_eq!(&result, previous); }
+                else { expected = Some(result); }
+            }
+        }
+        set_custom_types("[]").unwrap();
     }
 
     #[test]

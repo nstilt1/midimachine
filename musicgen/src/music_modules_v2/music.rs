@@ -123,8 +123,8 @@ macro_rules! pick_chord_placement_method {
                 $(
                     $chord_placement_str => {
                         let order = match $order.len() == 0 {
-                            true => &(1..=$num_chords as u8).collect(),
-                            false => $order
+                            true => (1..=$num_chords).collect::<Vec<usize>>(),
+                            false => $order.iter().map(|i| *i as usize).collect(),
                         };
                         for (i, chord_idx) in order.iter().enumerate() {
                             assert!(*chord_idx > 0);
@@ -329,7 +329,16 @@ impl Music {
             _ => vec![ChordType::default()]
         };
 
-        chord_types.iter_mut().for_each(|chord_type| chord_type.use_all_roots(use_all_roots));
+        if chord_type_group == "custom" || chord_type_group == "custom_pruning" {
+            super::chord_type::CUSTOM_TYPES.with(|store| {
+                chord_types.extend(store.borrow().iter().filter(|t| chord_selections.contains(&t.name)).cloned());
+            });
+        }
+        chord_types.iter_mut().for_each(|chord_type| {
+            let custom = super::chord_type::CUSTOM_TYPES.with(|s| s.borrow().iter().any(|t| t.name == chord_type.name));
+            if custom { chord_type.use_all_roots(chord_type_group == "custom_pruning"); }
+            else { chord_type.use_all_roots(use_all_roots); }
+        });
 
         let mut chord_table: Vec<Vec<Chord>> = (0..12).map(|_| Vec::new()).collect();
         let mut chord_list: Vec<Chord> = Vec::new();
@@ -344,7 +353,16 @@ impl Music {
             }
         }
 
-        prune_chords(&mut chord_table, &mut chord_list, scale, is_reproducible);
+        prune_chords(&mut chord_table, &mut chord_list, if scale == "disabled" && (chord_type_group == "custom" || chord_type_group == "custom_pruning") { "all_notes" } else { scale }, is_reproducible);
+
+        // Preserve the first representative without changing the order of unique
+        // voicings. Repeated pitch classes within a voicing get one table entry.
+        let mut seen = HashSet::new();
+        chord_list.retain(|chord| seen.insert(chord.clone()));
+        for column in &mut chord_table {
+            seen.clear();
+            column.retain(|chord| seen.insert(chord.clone()));
+        }
 
         return Ok(Music {
             math_magician,
@@ -369,6 +387,18 @@ impl Music {
         pattern_to_use: &Vec<u8>,
         duration: u32,
     ) -> Result<Vec<TrackEvent<'_>>, Error> {
+        if self.chord_list.is_empty() || self.chord_table.iter().all(Vec::is_empty) {
+            return Err(Error::from("No chords remain for this selection and scale. Choose more chord types or disable chord pruning."));
+        }
+        if num_chords == 0 || num_chords > 10000 || duration == 0 || duration > 1024 {
+            return Err(Error::from("Use 1–10000 chords and a duration of 1–1024 beats."));
+        }
+        if !matches!(chord_picking_method, "original" | "1D") {
+            return Err(Error::from("Unknown chord picking method."));
+        }
+        if pattern_to_use.iter().any(|i| *i == 0 || *i as usize > num_chords) {
+            return Err(Error::from("Pattern references a chord outside the generated selection."));
+        }
         console_log!("In make_music");
         pick_chord_placement_method!(
             self,
@@ -679,6 +709,25 @@ mod tests {
         ($chosen_key:expr) => {
             Music::smoke_hash(Default::default(), $chosen_key, &HashSet::new(), "default", "disabled", true, false).unwrap()
         };
+    }
+
+    #[test]
+    fn empty_pruned_selection_returns_error() {
+        let selected = HashSet::from(["augmented".to_string()]);
+        for picker in ["original", "1D"] {
+            let mut m = Music::smoke_hash(Default::default(), "Cmin", &selected, "custom_pruning", "pentatonic", true, false).unwrap();
+            assert!(m.chord_list.is_empty());
+            let error = m.make_music(4, "chords", true, picker, 0, &vec![], 4).unwrap_err();
+            assert!(error.to_string().contains("No chords remain"));
+        }
+    }
+
+    #[test]
+    fn more_than_255_chords_keeps_all_events() {
+        let mut m = init_music!("Cmin");
+        let track = m.make_music(256, "chords", true, "original", 0, &vec![], 4).unwrap();
+        assert!(track.iter().any(|event| matches!(event.kind, midly::TrackEventKind::Midi { .. })));
+        assert!(track.iter().map(|e| e.delta.as_int()).sum::<u32>() >= 255 * 4 * 96);
     }
 
     #[test]

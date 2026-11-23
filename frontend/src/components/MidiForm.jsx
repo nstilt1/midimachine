@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useRef, useState } from 'react';
 import MidiPlayer from "./MidiPlayer";
 import ChatBar from "./ChatBar";
+import OracleSeed from "./OracleSeed";
 import Selector from "./Selector";
 import NumberInput from "./NumberInput";
 import MultiSelect from "./MultiSelector";
@@ -40,6 +41,7 @@ const MidiForm = ({
   const [textInput, setTextInput] = useLocalStorage("textInput", '');
   const [mode, setMode] = useLocalStorage("mode", "melody");
   const [useSameChords, setUseSameChords] = useLocalStorage("useSameChords", true);
+  const [selectionNotice, setSelectionNotice] = useState("");
   const [midiFile, setMidiFile] = useState(null);
   const [numChords, setNumChords] = useLocalStorage("numChords", 20);
   const [sanitizedNumChords, setSanitizedNumChords] = useLocalStorage("sanitizedNumChords", 20);
@@ -182,6 +184,11 @@ const MidiForm = ({
 
       //console.log("useSameChords = " + useSameChords);
       //console.log("key: " + chosenKey);
+      const vocabulary = JSON.parse(wasmModule.get_chords_of_key(chosenKey === "random" ? "Cmin" : chosenKey, customChords, chordGroup, scale, "contains_note", false));
+      const missing = (chordGroup === "custom" || chordGroup === "custom_pruning")
+        ? customChords.filter(type => JSON.parse(wasmModule.get_chords_of_key(chosenKey === "random" ? "Cmin" : chosenKey, [type], chordGroup, scale, "contains_note", false)).chord_list.length === 0)
+        : [];
+      setSelectionNotice(`${vocabulary.chord_list.length} playable voicings.${missing.length ? ` No playable voicings for: ${missing.join(", ")}. Try disabling pruning or changing the scale.` : ""}`);
       console.time("generate_midi");
       const midiBinary = wasmModule.generate_midi(
         combinedBinary, 
@@ -206,7 +213,7 @@ const MidiForm = ({
       setMidiFile(midiUrl);
     } catch (error) {
       console.error("Error processing file", error);
-      alert("An error occurred while generating the MIDI file.");
+      alert(error instanceof Error ? error.message : String(error));
     }
   };
 
@@ -239,6 +246,7 @@ const MidiForm = ({
 
   return (
     <div className="max-w-md">
+      {selectionNotice && <p role="status" className="my-3">{selectionNotice}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           {showExtraControls && 
@@ -509,6 +517,7 @@ const MidiForm = ({
           </TooltipProvider>
         </div>
         <div>
+          <OracleSeed onSeed={setTextInput}/>
           <ChatBar  
             onSubmit={handleSubmit} 
             onTextChange={handleTextChange}

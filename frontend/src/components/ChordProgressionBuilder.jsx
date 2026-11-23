@@ -173,7 +173,7 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
             <div className="flex-grow overflow-y-auto">
                 <div className="p-4">
                     <h2 className="text-xl font-bold mb-4">Chord Progression</h2>
-                    <Accordion type="multiple" collapsible>
+                    <Accordion type="multiple">
                         {chords.map((chord, index) => (
                             <Chord
                                 key={index}
@@ -188,7 +188,7 @@ const ChordProgressionBuilder = forwardRef(({ initialChordTable, wasmModule }, r
                     </Accordion>
                 </div>
             </div>
-            <div className="bg-white border-t p-2 flex space-x-2">
+            <div className="bg-card border-t p-2 flex space-x-2">
             <Button 
                 variant="outline" 
                 className="flex-grow"

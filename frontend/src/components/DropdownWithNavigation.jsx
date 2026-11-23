@@ -60,9 +60,9 @@ export default function DropdownWithNavigation({
 
   return (
     <>
-      <div className={`w-full p-4 rounded-lg transition-all duration-300 border ${enabled ? "bg-white border-gray-300": "bg-gray-100 border-gray-200 opacity-70"}`}>
+      <div className={`w-full p-4 rounded-lg transition-all duration-300 border ${enabled ? "bg-card border-border": "bg-muted border-border opacity-70"}`}>
         {!enabled && (
-            <div className="text-sm text-gray-500 italic">
+            <div className="text-sm text-muted-foreground italic">
                 Set mode to <strong>Chords</strong> and enable <strong>
                     &quot;Use same chords for all modes&quot;</strong> setting 
                 to use this feature.

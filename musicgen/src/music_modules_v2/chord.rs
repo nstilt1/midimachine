@@ -35,9 +35,7 @@ impl Default for Chord {
 
 impl PartialEq for Chord {
     fn eq(&self, other: &Self) -> bool {
-        self.root.eq(&other.root) 
-            && self.chord_type.note_intervals.eq(&other.chord_type.note_intervals)
-            && self.chord_type.optional_notes.eq(&other.chord_type.optional_notes)
+        self.sampling_notes() == other.sampling_notes()
     }
 }
 
@@ -45,9 +43,7 @@ impl Eq for Chord {}
 
 impl Hash for Chord {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.root.hash(state);
-        self.chord_type.note_intervals.hash(state);
-        self.chord_type.optional_notes.hash(state);
+        self.sampling_notes().hash(state);
     }
 }
 
@@ -75,6 +71,14 @@ impl Serialize for Chord {
 }
 
 impl Chord {
+    /// Identity for sampling: actual pitches, independent of name, root label,
+    /// note order, or optional-note metadata. Expand optional notes first.
+    fn sampling_notes(&self) -> Vec<i16> {
+        let mut notes = self.get_notes();
+        notes.sort_unstable();
+        notes.dedup();
+        notes
+    }
     /// Creates a new chord.
     pub fn new(root_index: u8, chord_type: &ChordType) -> Self {
         Chord {

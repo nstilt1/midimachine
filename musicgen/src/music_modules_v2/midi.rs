@@ -18,7 +18,8 @@ pub type Track<'a> = Vec<TrackEvent<'a>>;
  */
 #[derive(Debug, Clone)]
 pub struct MidiFile {
-    notes: Vec<MidiNote>
+    notes: Vec<MidiNote>,
+    channel: u8
 }
 
 #[derive(Debug, Clone)]
@@ -32,7 +33,7 @@ pub struct MidiNote {
 impl MidiFile {
     #[inline(always)]
     pub fn new() -> Self {
-        MidiFile{notes: Vec::new()}
+        MidiFile{notes: Vec::new(), channel: 0}
     }
     #[inline(always)]
     pub fn add_note_beats(
@@ -43,6 +44,12 @@ impl MidiFile {
         volume: u8
     ) {
         self.add_note(pitch, beats(initial_time), beats(duration), volume);
+    }
+
+    pub fn with_channel(channel: u8) -> Self { Self { notes: Vec::new(), channel } }
+
+    pub fn add_note_ticks(&mut self, pitch: u8, start: u32, duration: u32, velocity: u8) {
+        self.add_note(pitch, start, duration, velocity);
     }
 
     /**
@@ -76,13 +83,13 @@ impl MidiFile {
     #[inline(always)]
     pub fn finalize(&mut self) -> Track {
         console_log!("In finalize()");
-        self.notes.sort_unstable_by(|a, b| a.start_time.cmp(&b.start_time));
+        if self.channel == 0 { self.notes.sort_unstable_by(|a, b| a.start_time.cmp(&b.start_time)); } else { self.notes.sort_unstable_by_key(|n| (n.start_time, n.note_on)); }
         console_log!("Successfully sorted notes");
         let mut result: Track = Vec::new();
         let mut last_time = 0;
 
         for n in self.notes.iter() {
-            result.push_track_event(n.start_time, last_time, n.pitch, n.volume, n.note_on);
+            result.push_track_event(n.start_time, last_time, n.pitch, n.volume, n.note_on, self.channel);
 
             last_time = n.start_time;
         }
@@ -107,14 +114,14 @@ impl MidiFile {
             // if the note is supposed to be played, and it is already playing, end the note
             if n.note_on {
                 if on_notes.contains_key(&n.pitch) {
-                    result.push_track_event(n.start_time, last_time, n.pitch, *on_notes.get(&n.pitch).unwrap(), false);
+                    result.push_track_event(n.start_time, last_time, n.pitch, *on_notes.get(&n.pitch).unwrap(), false, self.channel);
                 }else{
                     on_notes.insert(n.pitch, n.volume);
                 }
-                result.push_track_event(n.start_time, last_time, n.pitch, n.volume, true);
+                result.push_track_event(n.start_time, last_time, n.pitch, n.volume, true, self.channel);
             }else{
                 if on_notes.contains_key(&n.pitch) {
-                    result.push_track_event(n.start_time, last_time, n.pitch, n.volume, false);
+                    result.push_track_event(n.start_time, last_time, n.pitch, n.volume, false, self.channel);
                     on_notes.remove(&n.pitch);
                 }
             }
@@ -130,19 +137,19 @@ trait TrackEventVecUtils {
     /**
      * A one-line way to add a track event to a vector
      */
-    fn push_track_event(&mut self, start_time: u32, last_time: u32, pitch: u8, velocity: u8, is_on: bool);
+    fn push_track_event(&mut self, start_time: u32, last_time: u32, pitch: u8, velocity: u8, is_on: bool, channel: u8);
 }
 
 impl TrackEventVecUtils for Vec<TrackEvent<'_>> {
     #[inline(always)]
-    fn push_track_event(&mut self, start_time: u32, last_time: u32, pitch: u8, velocity: u8, is_on: bool) {
+    fn push_track_event(&mut self, start_time: u32, last_time: u32, pitch: u8, velocity: u8, is_on: bool, channel: u8) {
         if start_time < last_time {
             console_log!("Start time: {} - last time: {}", start_time, last_time);
         }
         self.push(TrackEvent { 
             delta: (start_time - last_time).into(), 
             kind: TrackEventKind::Midi {
-                channel: 0.into(),
+                channel: channel.into(),
                 message: if is_on {
                     MidiMessage::NoteOn { key: pitch.into(), vel: velocity.into() }
                 }else{

@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST='{"app/page.js -> ../../public/musicgen.js":{"id":8695,"files":["static/chunks/695.8d84bc13d8bbba11.js"]}}';
